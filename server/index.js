@@ -13,9 +13,5 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.resolve(__dirname + '/../client/public/')));
 app.post('/createEvent', eventController.createEvent);
 
-app.listen(3000, () => {
-    console.log('getting dinner on port 3000');
-});
-
 
 module.exports = app;
