@@ -1,0 +1,46 @@
+h1 {
+  text-align: center;
+}
+
+.parent {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.header {
+  margin: 50px;
+  border: 1px solid black;
+  background-color: #be0000;
+  padding: 25px;
+  border-radius: 8px;
+  font-size: 150%;
+  color: white;
+}
+
+.picture {
+  margin: auto;
+  background-image: url('./images/pasta.jpg');
+  height: 400px;
+  width: 600px;
+  border-radius: 8px;
+}
+
+.name{
+  float: left;
+  font-size: large;
+}
+
+.login {
+  float: right;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.planMealButton {
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  margin: 50px;
+}
+
