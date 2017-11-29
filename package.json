@@ -21,7 +21,8 @@
     "express": "^4.16.2",
     "firebase-admin": "^5.5.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-google-maps": "^9.4.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

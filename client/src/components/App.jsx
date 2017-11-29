@@ -1,4 +1,5 @@
 import React from 'react'
+import Location from './location_form/Location'
 
 export default class App extends React.Component {
   constructor() {
@@ -14,6 +15,7 @@ export default class App extends React.Component {
   }
   render() {
     return (
+<<<<<<< HEAD
       <div className="parent">
         <div className="header"> 
           eatly
@@ -24,6 +26,12 @@ export default class App extends React.Component {
         <div className="planMealButton"><button className="mealButton" onClick={() => this.planAMeal()}>Plan a Meal</button></div>
         </div>
       </div>
+=======
+    <div>
+      <h1>Welcome to eatly</h1>
+      {/* <Location /> */}
+    </div>
+>>>>>>> location
     )
   }
 }
