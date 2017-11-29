@@ -1,0 +1,32 @@
+{
+  "name": "eatly",
+  "version": "0.0.1",
+  "description": "A fun way to pick a restaurant with your friends.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uss-franklin/eatly.git"
+  },
+  "author": "Stephen Akinyooye, Gil Mandler, RJ Barnett, Jimmy Sanderscannon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uss-franklin/eatly/issues"
+  },
+  "homepage": "https://github.com/uss-franklin/eatly#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "firebase-admin": "^5.5.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1"
+  }
+}
