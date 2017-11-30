@@ -1,5 +1,5 @@
-import React from 'react'
-import Location from './location_form/Location'
+import React from 'react';
+import InputForm from './InputForm';
 
 export default class App extends React.Component {
   constructor() {
@@ -24,6 +24,7 @@ export default class App extends React.Component {
         <div className="title"><h1>Welcome to eatly</h1></div>
         <div className="planMealButton"><button className="mealButton" onClick={() => this.planAMeal()}>Plan a Meal</button></div>
         </div>
+        <InputForm />
       </div>
     )
   }

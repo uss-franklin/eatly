@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import InputMoment from 'input-moment';
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -6,16 +8,26 @@ export default class InputForm extends React.Component {
     this.state = {
       address: '',
       searchTerm: '',
-      email: '',
-      hostName: ''
+      hostEmail: '',
+      hostName: '',
+      dateTime: moment(),
+      guestEmails: []
+      
     }
   }
   handleInputChange({ target }){
     this.setState({[target.name]: target.value},
-       () => console.log(this.state))
-    
+       () => console.log(this.state));  
   }
+  handleInputMoment(dateTime) {
+    this.setState({ dateTime }, () => console.log(this.state.dateTime.format('llll')))
+  }
+  handleInputMomentSave() {
+    console.log('saved', this.state.dateTime.format('llll'));
+  }
+
   render(){
+
     return (
       <div className="form-container">
         <div className="form-location">
@@ -47,7 +59,7 @@ export default class InputForm extends React.Component {
           Email:
           <input 
             type="text"
-            name="email"
+            name="hostEmail"
             placeholder="lookingforfood@something.com"
             value={this.state.email}
             onChange={this.handleInputChange.bind(this)}
@@ -77,6 +89,17 @@ export default class InputForm extends React.Component {
             onChange={this.handleInputChange.bind(this)}
           />
         </label>
+        </div>
+        <div className="form-date-time">
+          <InputMoment
+            moment={this.state.dateTime}
+            onChange={this.handleInputMoment.bind(this)}
+            minStep={10}
+            />
+        </div>
+        <div className="form-add-guests">
+          {/* TODO add email address for each guest*/}
+          <button className="add-guests">Add Another</button>
         </div>
 
 
