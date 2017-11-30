@@ -2,4 +2,4 @@
 /client/public/bundle.js
 .DS_Store
 /server/keys
-/package-lock.json
+package-lock.json
