@@ -1,5 +1,6 @@
 import React from 'react'
 import Location from './location_form/Location'
+import LoginForm from './LoginForm'
 
 export default class App extends React.Component {
   constructor() {
@@ -20,6 +21,7 @@ export default class App extends React.Component {
           eatly
           <button className="login" onClick={() => this.login()}>login or sign up</button>
         </div>
+        <LoginForm />
         <div className="picture">
         <div className="title"><h1>Welcome to eatly</h1></div>
         <div className="planMealButton"><button className="mealButton" onClick={() => this.planAMeal()}>Plan a Meal</button></div>
