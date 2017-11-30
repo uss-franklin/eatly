@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import App from './components/App.jsx'
-// import inputForm from './components/inputForm.jsx'
+import InputForm from './components/InputForm'
 //import LoginForm from './components/LoginForm.jsx'
 
 ReactDom.render(
@@ -10,7 +10,7 @@ ReactDom.render(
     <div>
       <Route exact path="/" component={App} />
       {/* <Route exact path="/LoginForm" component={LoginForm} /> */}
-      {/* <Route path="/inputForm" component={inputForm} />  */}
+      <Route exact path="/inputForm" component={InputForm} /> 
     </div>
   </Router>,  
   document.getElementById('app'));

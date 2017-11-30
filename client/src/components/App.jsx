@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import React from 'react'
 import Location from './location_form/Location'
-import NavBar from './NavBar.jsx'
+import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
-=======
-import React from 'react';
-import InputForm from './InputForm';
->>>>>>> inputForm
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,7 +21,6 @@ export default class App extends React.Component {
             </button>  
           </div>
         </div>
-        <InputForm />
       </div>
     )
   }
