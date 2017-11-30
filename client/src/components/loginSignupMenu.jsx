@@ -1,10 +1,13 @@
 import React from 'react'
 
+
+
+
 export default class loginSignUpForm extends React.Component {
 	constructor() {
 		super()
 	}
-
+//all buttons' functionality defined in the firebaseAuth.js file in server directory
 	render() {
 		return (
 			<div className="loginSignUpForm">
