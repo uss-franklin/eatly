@@ -1,6 +1,6 @@
 import React from 'react'
 import Location from './location_form/Location'
-import NavBar from './NavBar.jsx'
+import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
 
 export default class App extends React.Component {
