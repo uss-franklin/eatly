@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import InputMoment from 'input-moment';
+import GuestEmailInput from './GuestEmailForm';
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -11,8 +12,7 @@ export default class InputForm extends React.Component {
       hostEmail: '',
       hostName: '',
       dateTime: moment(),
-      guestEmails: []
-      
+      guestEmails: [''] //requires intial value to render the first guest email form
     }
   }
   handleInputChange({ target }){
@@ -25,9 +25,16 @@ export default class InputForm extends React.Component {
   handleInputMomentSave() {
     console.log('saved', this.state.dateTime.format('llll'));
   }
+  handleGuestEmailChange(){
 
+  }
+  addGuestEmailInput(){
+  //adds a new element to guest email state. The re-render will add a new guest email input field. 
+    this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}),
+    () => console.log(this.state.guestEmails)
+    )
+  }
   render(){
-
     return (
       <div className="form-container">
         <div className="form-location">
@@ -98,8 +105,14 @@ export default class InputForm extends React.Component {
             />
         </div>
         <div className="form-add-guests">
-          {/* TODO add email address for each guest*/}
-          <button className="add-guests">Add Another</button>
+          {this.state.guestEmails
+            .map((guest, idx) => 
+              <GuestEmailInput idx={idx} key={idx} 
+              handleChange={this.handleGuestEmailChange.bind(this)}/>)
+          }
+          <button className="add-guests" onClick={this.addGuestEmailInput.bind(this)}>
+            Add Another
+          </button>
         </div>
 
 
