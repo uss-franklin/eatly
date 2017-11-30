@@ -11,32 +11,41 @@ export default class InputForm extends React.Component {
       searchTerm: '',
       hostEmail: '',
       hostName: '',
+      eventName: '',
       dateTime: moment(),
       guestEmails: [''] //requires intial value to render the first guest email form
     }
   }
   handleInputChange({ target }){
-    this.setState({[target.name]: target.value},
-       () => console.log(this.state));  
+    this.setState({[target.name]: target.value});  
   }
   handleInputMoment(dateTime) {
+  //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
+  //see https://momentjs.com/docs/#/displaying/format/
     this.setState({ dateTime }, () => console.log(this.state.dateTime.format('llll')))
   }
   handleInputMomentSave() {
     console.log('saved', this.state.dateTime.format('llll'));
   }
-  handleGuestEmailChange(){
-
+  addGuestEmail(value, idx){
+    this.setState(prevState => {
+      let updatedGuestList = prevState.guestEmails.slice();
+      updatedGuestList[idx] = value
+      return {guestEmails: updatedGuestList}
+    }, () => console.log(this.state.guestEmails))
   }
-  addGuestEmailInput(){
+  addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}),
-    () => console.log(this.state.guestEmails)
+      () => console.log(this.state.guestEmails)
     )
+  }
+  submitForm(){
+    console.log(this.state)
   }
   render(){
     return (
-      <div className="form-container">
+      <div className="form-create-event">
         <div className="form-location">
         <label>
           Restaurants Around:
@@ -67,8 +76,8 @@ export default class InputForm extends React.Component {
           <input 
             type="text"
             name="hostEmail"
-            placeholder="lookingforfood@something.com"
-            value={this.state.email}
+            placeholder="Lookingforfood@something.com"
+            value={this.state.hostEmail}
             onChange={this.handleInputChange.bind(this)}
           />
         </label>
@@ -108,15 +117,15 @@ export default class InputForm extends React.Component {
           {this.state.guestEmails
             .map((guest, idx) => 
               <GuestEmailInput idx={idx} key={idx} 
-              handleChange={this.handleGuestEmailChange.bind(this)}/>)
+              handleGuestEmailChange={this.addGuestEmail.bind(this)}/>)
           }
-          <button className="add-guests" onClick={this.addGuestEmailInput.bind(this)}>
+          <button className="add-guests" onClick={this.addGuestEmailInputField.bind(this)}>
             Add Another
           </button>
         </div>
-
-
-
+        <div className="form-create-event">
+          <button onClick={this.submitForm.bind(this)}>Find Restaurants</button>
+        </div>
       </div>
     )
   }

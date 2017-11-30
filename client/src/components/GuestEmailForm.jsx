@@ -7,20 +7,21 @@ export default class GuestEmailForm extends React.Component {
       value: ''
     }
   }
-  handleInputChange() {
-
+  handleInputChange({ target }) {
+    this.setState({value: target.value })
   }
   render() {
-  let {handleChange, idx} = this.props;
+  const { handleGuestEmailChange, idx } = this.props;
   return (
     <div className="guest-email">
       <label>
         Guest Email:
         <input 
           type="text" 
-          placeholder="lookingforfoodtoo@something.com"
+          placeholder="Lookingforfoodtoo@something.com"
           value={this.state.value}
-          onChange={undefined}
+          onChange={this.handleInputChange.bind(this)}
+          onBlur={e => handleGuestEmailChange(e.target.value, idx)}
         />
       </label>
     </div>
