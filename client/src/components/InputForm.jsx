@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import InputMoment from 'input-moment';
 import GuestEmailInput from './GuestEmailForm';
+import Axios from 'axios';
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -24,9 +25,6 @@ export default class InputForm extends React.Component {
   //see https://momentjs.com/docs/#/displaying/format/
     this.setState({ dateTime }, () => console.log(this.state.dateTime.format('llll')))
   }
-  handleInputMomentSave() {
-    console.log('saved', this.state.dateTime.format('llll'));
-  }
   addGuestEmail(value, idx){
     this.setState(prevState => {
       let updatedGuestList = prevState.guestEmails.slice();
@@ -36,12 +34,13 @@ export default class InputForm extends React.Component {
   }
   addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
-    this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}),
-      () => console.log(this.state.guestEmails)
-    )
+    this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
   }
   submitForm(){
-    console.log(this.state)
+    let sendObj = Object.assign({}, this.state);
+    sendObj.dateTime = sendObj.dateTime.format('llll');
+    Axios.post('/createEvent', sendObj)
+      .catch(err => console.log('Form Submission Error: ', err));
   }
   render(){
     return (
