@@ -1,8 +1,8 @@
-import React from 'react';
-import moment from 'moment';
-import InputMoment from 'input-moment';
-import GuestEmailInput from './GuestEmailForm';
-import Axios from 'axios';
+import React from 'react'
+import moment from 'moment'
+import InputMoment from 'input-moment'
+import GuestEmailInput from './GuestEmailForm'
+import Axios from 'axios'
 import NavBar from './NavBar'
 
 export default class InputForm extends React.Component {
