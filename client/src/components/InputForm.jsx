@@ -2,11 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import InputMoment from 'input-moment'
 import GuestEmailInput from './GuestEmailForm'
-<<<<<<< HEAD
 import Axios from 'axios'
-=======
-import axios from 'axios'
->>>>>>> input form styling
 import NavBar from './NavBar'
 
 export default class InputForm extends React.Component {
