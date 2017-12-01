@@ -18,13 +18,18 @@ exports.yelpSearch  = function(searchRequestParams, eventDateTime){
                     promisedRestaurants.push(getYelpBusinessDetails(client, restaurant).then(business => {
                         restaurant.location = business.jsonBody.location;
                         restaurant.photos = business.jsonBody.photos;
-                        //Yelp currently only supports return of regular hours, accordingly the hours array currently only maintains a single object
-                        restaurant.hours = business.jsonBody.hours[0];
-                        restaurant.openAtEventTime = isRestaurantOpenAtEventTime(restaurant.hours.open, eventDateTime);
-                        delete restaurant.hours.is_open_now;
                         delete restaurant.is_closed;
-                        delete restaurant.hours.hours_type;
+
+                        if(business.jsonBody.hours) {
+                            //Yelp currently only supports return of regular hours, accordingly the hours array currently only maintains a single object
+                            restaurant.hours = business.jsonBody.hours[0];
+                            restaurant.openAtEventTime = isRestaurantOpenAtEventTime(restaurant.hours.open, eventDateTime);
+                            delete restaurant.hours.is_open_now;
+                            delete restaurant.hours.hours_type;
+                        }
+
                         return restaurant;
+
                     }).catch(err => {
                         console.log(err);
                     }))
