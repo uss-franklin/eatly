@@ -22,12 +22,9 @@
     "express": "^4.16.2",
     "firebase": "^4.7.0",
     "firebase-admin": "^5.5.1",
-<<<<<<< HEAD
     "input-moment": "^0.4.0",
     "material-ui": "^0.19.4",
-=======
     "firebase-auth": "^0.1.2",
->>>>>>> firebaseAuth
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.1",
