@@ -6,6 +6,7 @@ the firebase script is hard-loaded into the index.html rather than using the nod
 
 
 import React from 'react'
+import config from './FirebaseAuthKey'
 
 
 export default class LoginForm extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react'
 import Location from './location_form/Location'
 import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
-import LoginForm from './LoginForm'
+import LoginForm from './Login/LoginForm'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,11 +14,6 @@ export default class App extends React.Component {
     return (
       <div className="parent">
           <NavBar />
-        <div className="header"> 
-          eatly
-          <button className="login" onClick={() => this.login()}>login or sign up</button>
-        </div>
-        <LoginForm />
         <div className="picture">
           <div className="title"><h1>Welcome to eatly</h1></div>
           <div className="planMealButton">
