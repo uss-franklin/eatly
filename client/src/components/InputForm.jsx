@@ -2,7 +2,11 @@ import React from 'react';
 import moment from 'moment';
 import InputMoment from 'input-moment';
 import GuestEmailInput from './GuestEmailForm';
+<<<<<<< HEAD
 import Axios from 'axios';
+=======
+import NavBar from './NavBar'
+>>>>>>> input form styling
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -44,8 +48,11 @@ export default class InputForm extends React.Component {
   }
   render(){
     return (
+      <div className="parent">
+      <NavBar />
+      <div className="wholeForm">
       <div className="form-create-event">
-        <div className="form-location">
+        <div className="form-location" className="inputs">
         <label>
           Restaurants Around:
           <input 
@@ -57,7 +64,7 @@ export default class InputForm extends React.Component {
           />
           </label>
         </div>
-        <div className="form-food-searh">
+        <div className="form-food-search" className="inputs">
         <label>
           Type of Cuisine:
           <input 
@@ -69,9 +76,9 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-email">
+        <div className="form-email" className="inputs">
         <label>
-          Email:
+          Your Email:
           <input 
             type="text"
             name="hostEmail"
@@ -81,7 +88,7 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-host-name">
+        <div className="form-host-name" className="inputs">
         <label>
           Your Name:
           <input 
@@ -93,7 +100,7 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-event-name">
+        <div className="form-event-name" className="inputs">
         <label>
           Event Name:
           <input 
@@ -105,14 +112,14 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-date-time">
+        <div className="form-date-time" className="inputs">
           <InputMoment
             moment={this.state.dateTime}
             onChange={this.handleInputMoment.bind(this)}
             minStep={10}
             />
         </div>
-        <div className="form-add-guests">
+        <div className="form-add-guests" className="inputs">
           {this.state.guestEmails
             .map((guest, idx) => 
               <GuestEmailInput idx={idx} key={idx} 
@@ -122,9 +129,11 @@ export default class InputForm extends React.Component {
             Add Another
           </button>
         </div>
-        <div className="form-create-event">
+        <div className="form-create-event" className="inputs">
           <button onClick={this.submitForm.bind(this)}>Find Restaurants</button>
         </div>
+      </div>
+      </div>
       </div>
     )
   }

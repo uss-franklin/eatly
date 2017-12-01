@@ -12,13 +12,13 @@ export default class App extends React.Component {
     // console.log(this.props)
     return (
       <div className="parent">
-        <NavBar />
+          <NavBar />
         <div className="picture">
           <div className="title"><h1>Welcome to eatly</h1></div>
           <div className="planMealButton">
-            <button className="mealButton">
-              <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
-            </button>  
+              <button className="mealButton">
+                <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
+              </button>  
           </div>
         </div>
       </div>
