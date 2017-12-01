@@ -4,7 +4,7 @@ const yelpSearch = require('./yelpController.js').yelpSearch;
 let eventRef = dbRef.child('event');
 
 exports.createEvent = function(req, res){
-
+    console.log(req.body)
     //object to be constructed from request object
     var searchRequestParams = {
         limit: 20,
