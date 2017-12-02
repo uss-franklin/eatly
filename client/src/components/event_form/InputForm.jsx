@@ -5,6 +5,7 @@ import GuestEmailInput from './GuestEmailForm'
 import GuestPhoneInput from './GuestPhoneForm'
 import Axios from 'axios'
 import NavBar from '../NavBar'
+import { Link } from 'react-router-dom'
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -158,7 +159,9 @@ export default class InputForm extends React.Component {
           </button>
         </div>
         <div className="form-create-event" className="inputs">
-          <button onClick={this.submitForm.bind(this)}>Find Restaurants</button>
+          <button onClick={this.submitForm.bind(this)}>
+            <Link to="/swipe"Find Restaurants style={{textDecoration: 'none'}}> Find Restaurants </Link>
+          </button>
         </div>
       </div>
       </div>
