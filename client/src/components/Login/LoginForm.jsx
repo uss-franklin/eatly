@@ -37,14 +37,6 @@ export default class LoginForm extends React.Component {
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
 
-//removes the session token from the user, logs them out, bound to sign out button
-	handleSignOut() {
-		console.log('signing out - hopefully')
-		this.firebase.auth().signOut()
-			.then(() => console.log("logged out successfully"))
-			.catch ((error) => console.log("sign out error: " + error))
-	}
-
 //real-time listener for any authentication state change, toggles state logged-in property accordingly
 
 	render() {
@@ -57,7 +49,7 @@ export default class LoginForm extends React.Component {
 			<div className="buttons">
 					<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
 					<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
-					<button id="btnLogout" className="logoutButton" onClick={this.handleSignOut.bind(this)}>Log out</button>
+					
 			</div>
 		</div>
 		)

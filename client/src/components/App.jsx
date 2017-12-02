@@ -40,7 +40,7 @@ export default class App extends React.Component {
 
     <Router>
     <div className="parent">
-      <NavBar firebase={firebase}/>
+      <NavBar firebase={firebase} loggedIn={loggedIn}/>
       <Route exact path="/" component={Home} />
       <Route exact path="/loginForm" render={() => (
           loggedIn ?  <Redirect to="/account" /> : <LoginForm firebase={firebase}/>
@@ -48,7 +48,10 @@ export default class App extends React.Component {
       />
       <Route exact path="/inputForm" component={InputForm} /> 
       <Route exact path="/swipe" component={Swipe} />
-      <Route exact path="/account" render={() => <Account user={this.state.firebaseAuthenticatedUser}/> } />
+      <Route exact path="/account" render={() => (
+        loggedIn ? <Account user={this.state.firebaseAuthenticatedUser}/> : <Redirect to="/" />
+        )} 
+      />
     </div>
   </Router>
     )

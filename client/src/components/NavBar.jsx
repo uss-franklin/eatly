@@ -4,21 +4,27 @@ import {Link} from 'react-router-dom'
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props)
+    this.firebase = this.props.firebase
   }
-  handleLogOut() {
-    this.props.firebase.auth().signOut()
-    .then(() => console.log("logged out successfully"))
-    .catch ((error) => console.log("sign out error: " + error))
+//removes the session token from the user, logs them out, bound to sign out button
+  handleSignOut() {
+    console.log('signing out - hopefully')
+    this.firebase.auth().signOut()
+      .then(() => console.log("logged out successfully"))
+      .catch ((error) => console.log("sign out error: " + error))
   }
   render() {
-    //todo build out button for logout 
+    let loggedIn = this.props.loggedIn
+    let logoutButton = <button className="login" onClick={this.handleSignOut.bind(this)}>Log out</button>
+    let loginButton =  <button className="login">
+                         <Link to="/loginForm" style={{ textDecoration: 'none'}}>login or sign up</Link>
+                       </button>
+    console.log('navBar logged', loggedIn)
     return (
       <div className="parent">
         <div className="header"> 
         <Link to="/" style={{ textDecoration: 'none'}} className="navHeader"> eatly </Link> 
-          <button className="login">
-            <Link to="/loginForm" style={{ textDecoration: 'none'}}>login or sign up</Link>
-          </button>
+          {loggedIn ? logoutButton : loginButton}
         </div>
       </div>
     )
