@@ -1,21 +1,34 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
 
-let eventRef = dbRef.child('event');
+let eventsRef = dbRef.child('events');
 let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
+
+/*
+This controller expects that the the request object to the corresponding route for this controller
+includes a query string labeled as 'eventKey'. The value for this query string should be equal to the
+eventKey passed to the event_form (inputForm) view as a result of calling the 'createEvent' route.
+*/
+
 exports.getEventRestaurants = function(req, res){
-    eventKey = req.query.eventKey;
+    let eventKey = req.query.eventKey;
+    let eventRef = eventsRef.child(eventKey);
+    let returnObj = {};
 
-    eventRef.on('value', function(snapshot) {
-        let yelpSearchResultsKey = snapshot.val()[eventKey].yelpSearchResultsKey;
-        yelpSearchResultsRef.on('value', function(snapshot){
-            let yelpSearchResults = snapshot.val()[yelpSearchResultsKey];
-            res.send(yelpSearchResults);
-        });
+    eventRef.once('value').then((eventDetails) => {
+        returnObj.eventName = eventDetails.val().eventName;
+        returnObj.eventDateTime = eventDetails.val().eventDateTime;
+        returnObj.voteCutOffDateTime = eventDetails.val().voteCutOffDateTime;
 
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
+        let yelpSearchResultForEventRef = yelpSearchResultsRef.child(eventDetails.val().yelpSearchResultsKey);
+        return(yelpSearchResultForEventRef.once('value'));
+    }).then((yelpSearchResultForEvent) => {
+        returnObj.yelpSearchResultForEvent = yelpSearchResultForEvent;
+        res.send(returnObj);
+    }).catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
     });
 };
 
@@ -51,23 +64,35 @@ exports.createEvent = function(req, res){
         eventDateTime: new Date(req.body.dateTime).toString(),
         eventCreationDateTime: new Date().toString(),
         eventInvitees: [],
-        voteCutOffDateTime: new Date().toString() //new Date(req.body.voteCutOffDateTime).toString()
+        voteCutOffDateTime: new Date(req.body.cutOffDateTime).toString(),
+        eventName: req.body.eventName
     };
 
-    req.body.guestEmails.forEach((guestEmail) => {
-        eventDetails.eventInvitees.push({
+    //We should aim to get these guest emails and phone # entries as an object, so that we can insert directly into firebase db
+    let guestEmailAddresses = req.body.guestEmails;
+    let guestPhoneNumbers = req.body.guestPhones;
+
+    for(let i = 0; i < req.body.guestEmails.length; i++){
+        let eventInvitee = {
             Name: null,
-            contactType: 'email',
-            contactDetails: guestEmail,
+            contactDetails: [],
             voteCompleted: false
-        });
-    });
+        };
+
+        if(guestEmailAddresses[i]){
+            eventInvitee.emailAddress = guestEmailAddresses[i];
+        }
+        if(guestPhoneNumbers[i]){
+            eventInvitee.phoneNumber = guestPhoneNumbers[i];
+        }
+
+        eventDetails.eventInvitees.push(eventInvitee);
+    }
 
     yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
         eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
-        let newDataPath = eventRef.push(eventDetails);
-        res.send(newDataPath.key);
+        let newDataPath = eventsRef.push(eventDetails);
+        res.send(newDataPath.key); //send the eventKey
     });
 
-    //res.send('Event Controller Test');
 };
