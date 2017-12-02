@@ -2,8 +2,7 @@ import React from 'react'
 import Location from './location_form/Location'
 import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
-
-
+import Results from './Results'
 import Swipe from './Swipe'
 
 export default class App extends React.Component {
@@ -24,6 +23,7 @@ export default class App extends React.Component {
               </button>  
           </div>
         </div>
+        <Results />
       </div>
     )
   }
