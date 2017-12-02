@@ -4,18 +4,17 @@ this file takes care of all authentication through firebase.
 the firebase script is hard-loaded into the index.html rather than using the node module
 */
 import React from 'react'
-import firebase from './FirebaseAuthKey'
 import NavBar from '../NavBar'
 
 export default class LoginForm extends React.Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
 			txtEmail: '',
 			txtPassword: '',
 			loggedIn: 'false',
 		}
-		this.authenticateUser.call(this)
+		this.firebase = this.props.firebase
 	}
 	handleInputChange({ target }) {
 		this.setState({[target.name]: target.value})
@@ -24,7 +23,7 @@ export default class LoginForm extends React.Component {
 	handleLogIn() {
 		let { txtEmail, txtPassword } = this.state
 		//firebase does the heavy lifting of valid email input verification
-		firebase.auth().signInWithEmailAndPassword(txtEmail, txtPassword)
+		this.firebase.auth().signInWithEmailAndPassword(txtEmail, txtPassword)
 			.then((data) => console.log(data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
@@ -33,7 +32,7 @@ export default class LoginForm extends React.Component {
 	handleSignUp() {
 		let { txtEmail, txtPassword } = this.state
 		//all users created this way are visible on the online firebase console
-		firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
+		this.firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
 			.then((data) => console.log(data))
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
@@ -41,30 +40,17 @@ export default class LoginForm extends React.Component {
 //removes the session token from the user, logs them out, bound to sign out button
 	handleSignOut() {
 		console.log('signing out - hopefully')
-		firebase.auth().signOut()
+		this.firebase.auth().signOut()
 			.then(() => console.log("logged out successfully"))
 			.catch ((error) => console.log("sign out error: " + error))
 	}
 
 //real-time listener for any authentication state change, toggles state logged-in property accordingly
-	authenticateUser(){
-		firebase.auth().onAuthStateChanged(user => {
-			if (firebaseObj) {
-				console.log('authenticateUser():true')
-				//sets the state on the app to a logged in
-				this.props.isAuthenicated(firebaseObj) 
-			} else {
-				console.log('authenticateUser(): false')
-				//sets the state on the app to a logged outed
-				this.props.isAuthenicated(null) 
-			}
-		})
-	}
 
 	render() {
 		return (
-			<div className="loginSignUpForm parent">
-			<NavBar />
+			<div className="loginSignUpForm">
+			
 			<input id="txtEmail" name="txtEmail" type="email" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
 			<input id="txtPassword" name="txtPassword" type="password" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
             	

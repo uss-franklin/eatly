@@ -32,8 +32,7 @@ export default class Swipe extends React.Component {
     // console.log(this.props)
     console.log(this.state)
     return (
-      <div className="parent"> 
-      <NavBar />
+  
       <div className="swipeForm">
       <div> Event Name, Time and Date </div>
       <div> 
@@ -49,7 +48,6 @@ export default class Swipe extends React.Component {
         </button>
       </div>
       <div className="descriptions"> Descriptions here </div>
-      </div>
       </div>
     )
   }
