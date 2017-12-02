@@ -1,0 +1,16 @@
+.noButton {
+  float: left;
+}
+
+.yesButton {
+  float: right;
+}
+
+.swipeForm {
+  text-align: center;
+}
+
+.photos {
+  max-height: 750px;
+  max-width: 750px;
+}

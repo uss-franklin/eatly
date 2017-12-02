@@ -4,6 +4,8 @@ import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
 import LoginForm from './Login/LoginForm'
 
+import Swipe from './Swipe'
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -22,6 +24,7 @@ export default class App extends React.Component {
               </button>  
           </div>
         </div>
+        <Swipe />
       </div>
     )
   }
