@@ -33,8 +33,8 @@ export default class Swipe extends React.Component {
     console.log(this.state)
     return (
       <div className="parent"> 
-      <div className="swipeForm">
       <NavBar />
+      <div className="swipeForm">
       <div> Event Name, Time and Date </div>
       <div> 
         <img className="photos" src={data[this.state.current]} />
