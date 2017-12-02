@@ -8,7 +8,7 @@ h1 {
 
 .picture {
   margin: auto;
-  background-image: url('./images/pasta.jpg');
+  background-image: url('../images/pasta.jpg');
   height: 400px;
   width: 600px;
   border-radius: 8px;
