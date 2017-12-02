@@ -11,7 +11,10 @@ export default class Results extends React.Component {
 			<div className="parent resultsComponent">
 				<NavBar />
 					<h1 className="resultsTitle">
-						Congrats! You're Gonna Eat!
+						<div className="congratsText">
+							Congrats!
+						</div>
+						You're Gonna Eat!
 					</h1>
 					<p className="resultsHeader">
 						Get ready to meet your friends at:
@@ -22,7 +25,7 @@ export default class Results extends React.Component {
 					<h3 className="resultsDateAndTime">
 						[ Date ] @ [ Time ]
 					</h3>
-					<p className="viewInviteeVotes">
+					<p className="viewInviteeVotesText">
 						Want to see who you're gonna be dining with, and how they voted?
 					</p>
 					<button className="viewInviteesVotesButton">
