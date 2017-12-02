@@ -3,6 +3,14 @@ const yelpSearch = require('./yelpController.js').yelpSearch;
 
 let eventRef = dbRef.child('event');
 
+exports.getEventRestaurants = function(req, res){
+
+};
+
+exports.submitVote = function(req, res){
+
+};
+
 exports.createEvent = function(req, res){
     console.log(req.body);
     //object to be constructed from request object

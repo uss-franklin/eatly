@@ -13,6 +13,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 //Static Routes
 app.use(express.static(path.resolve(__dirname + '/../client/public/')));
 app.post('/createEvent', eventController.createEvent);
+app.get('/getRestaurants', eventController.getEventRestaurants);
+app.post('/vote', eventController.submitVote);
 
 //Catch-all to allow refreshing of react-router created pages
 app.get('/*', frontEndCatchAllRouter);
