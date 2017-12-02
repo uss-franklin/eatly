@@ -1,0 +1,19 @@
+.header {
+  border: 1px solid black;
+  background-color: #be0000;
+  padding: 25px;
+  font-size: 150%;
+  color: white;
+}
+
+.login {
+  float: right;
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: center;
+  padding-top: 3px;
+}
+
+.navHeader {
+  color: white;
+}
