@@ -16,7 +16,7 @@ export default class App extends React.Component {
     }
   }
   grabFirebaseUser(firebaseUser){
-    this.setState({firebaseAuthenticatedUser: firebaseUser})
+    this.setState({firebaseAuthenticatedUser: firebaseUser}, () => console.log(this.state))
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class App extends React.Component {
     <Router>
     <div>
       <Route exact path="/" component={Home} />
-      <Route exact path="/LoginForm" component={LoginForm} />
+      <Route exact path="/LoginForm" render={() => <LoginForm isAuthenicated={this.grabFirebaseUser.bind(this)}/>} />
       <Route exact path="/inputForm" component={InputForm} /> 
       <Route exact path="/swipe" component={Swipe} />
     </div>
