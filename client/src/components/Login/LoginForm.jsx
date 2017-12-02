@@ -48,13 +48,15 @@ export default class LoginForm extends React.Component {
 
 //real-time listener for any authentication state change, toggles state logged-in property accordingly
 	authenticateUser(){
-		firebase.auth().onAuthStateChanged(function(user) {
-			if (user) {
+		firebase.auth().onAuthStateChanged(user => {
+			if (firebaseObj) {
 				console.log('authenticateUser():true')
-				this.setState({loggedIn: 'true'})
+				//sets the state on the app to a logged in
+				this.props.isAuthenicated(firebaseObj) 
 			} else {
 				console.log('authenticateUser(): false')
-				this.setState({loggedIn: 'false'})
+				//sets the state on the app to a logged outed
+				this.props.isAuthenicated(null) 
 			}
 		})
 	}
