@@ -3,10 +3,9 @@
 this file takes care of all authentication through firebase.
 the firebase script is hard-loaded into the index.html rather than using the node module
 */
-
-
 import React from 'react'
 import config from './FirebaseAuthKey'
+import NavBar from './NavBar'
 
 
 export default class LoginForm extends React.Component {
@@ -74,6 +73,7 @@ export default class LoginForm extends React.Component {
 	render() {
 		return (
 			<div className="loginSignUpForm parent">
+			<NavBar />
 				<input id="txtEmail" type="email" placeholder="email"></input>
             	<input id="txtPassword" type="password" placeholder="password"></input>
             	
