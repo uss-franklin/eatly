@@ -55,8 +55,6 @@ export default class InputForm extends React.Component {
   }
   render(){
     return (
-      <div className="parent">
-      <NavBar />
       <div className="wholeForm">
       <div className="form-create-event">
         <div className="form-location" className="inputs">
@@ -163,7 +161,6 @@ export default class InputForm extends React.Component {
             <Link to="/swipe"Find Restaurants style={{textDecoration: 'none'}}> Find Restaurants </Link>
           </button>
         </div>
-      </div>
       </div>
       </div>
     )
