@@ -2,7 +2,7 @@ import React from 'react'
 import Location from './location_form/Location'
 import NavBar from './NavBar'
 import {Link} from 'react-router-dom'
-import LoginForm from './Login/LoginForm'
+
 
 import Swipe from './Swipe'
 
