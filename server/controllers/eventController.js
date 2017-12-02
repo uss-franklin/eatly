@@ -2,9 +2,21 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
 
 let eventRef = dbRef.child('event');
+let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
 exports.getEventRestaurants = function(req, res){
+    eventKey = req.query.eventKey;
 
+    eventRef.on('value', function(snapshot) {
+        let yelpSearchResultsKey = snapshot.val()[eventKey].yelpSearchResultsKey;
+        yelpSearchResultsRef.on('value', function(snapshot){
+            let yelpSearchResults = snapshot.val()[yelpSearchResultsKey];
+            res.send(yelpSearchResults);
+        });
+
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
 };
 
 exports.submitVote = function(req, res){
