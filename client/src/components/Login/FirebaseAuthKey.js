@@ -6,4 +6,4 @@ const config = {
   storageBucket: "eatly-77e88.appspot.com",
   messagingSenderId: "1067097111951"
 }
-export default config
+export default firebase.initializeApp(config)
