@@ -1,3 +1,9 @@
+//component is only rendered when an event timeout has been reached
+//only invitees and host can see it
+
+//data in [ ] is dummy for now, later to be interpolated with event specific details
+
+
 import React from 'react'
 import NavBar from './NavBar'
 
