@@ -6,7 +6,6 @@ import InputForm from './components/event_form/InputForm'
 import Swipe from './components/Swipe'
 import LoginForm from './components/login/LoginForm'
 
-
 ReactDom.render(
   <Router>
     <div>
