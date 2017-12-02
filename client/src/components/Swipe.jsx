@@ -1,5 +1,6 @@
 import React from 'react'
 import NavBar from './NavBar'
+import Axios from 'axios'
 
 var data = ['http://www.ozarlington.com/wp-content/uploads/2017/04/bar-buffet.jpg', 
             'https://awscloudfront.kempinski.com/2646/slider_isttugrarestaurantinteriorl.jpg;width=1024;height=576;mode=crop;anchor=middlecenter;autorotate=true;quality=90;scale=both;progressive=true;encoder=freeimage',
@@ -15,22 +16,35 @@ export default class Swipe extends React.Component {
       current: 0
     }
   }
+
+  getYelpData(){
+    Axios.get('/getRestaurants', )
+      .then((reponse) => {
+        console.log('getYelpData')
+        this.setState({
+          test: response.eventKey
+        })
+      })
+  }
+
   goToNext() {
     var num = ++this.state.current;
     this.setState({current: num})
-    console.log(this.state.current)
-    console.log(addData)
   }
 
   addRestaurant() {
     addData.push(data[this.state.current])
     var num = ++this.state.current;
     this.setState({current: num})
-    console.log(addData)
   }
+
+    componentDidMount() {
+      this.getYelpData()
+      console.log('ComponentDidMount')
+    }
+ 
   render() {
-    // console.log(this.props)
-    console.log(this.state)
+    console.log('Swipe State:',this.state)
     return (
   
       <div className="swipeForm">

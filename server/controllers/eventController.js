@@ -37,7 +37,7 @@ exports.submitVote = function(req, res){
 };
 
 exports.createEvent = function(req, res){
-    console.log(req.body);
+    console.log('req.body CreateEvent', req.body);
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,
