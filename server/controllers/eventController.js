@@ -1,5 +1,6 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
+const inviteSMS = require('.././twilioSms.js').inviteSMS;
 
 let eventsRef = dbRef.child('events');
 let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -35,6 +36,10 @@ exports.getEventRestaurants = function(req, res){
 exports.submitVote = function(req, res){
 
 };
+
+exports.sendInviteSMS = function(req, res){
+    inviteSMS();
+} 
 
 exports.createEvent = function(req, res){
     console.log(req.body);

@@ -15,7 +15,7 @@ const client = require('twilio')(keys.accountSid, keys.authToken)
 //when called this method sends SMS to the desired 'to' number
 //'from' number always stays the same, it is the number registered on twilio acct
 //'to' and 'body' fields can by dynamic
-const inviteSMS = () => {
+const inviteSMS = function() {
 	client.messages.create({
 	    to: '+14254083980',
 	    from: "+13473086897",
@@ -23,7 +23,7 @@ const inviteSMS = () => {
 	}).then((message) => console.log(message.sid))
 }
 
-const resultsSMS = () => {
+const resultsSMS = function() {
 	client.messages.create({
 		to: '+14254083980',
 		from: '+13473086897',
