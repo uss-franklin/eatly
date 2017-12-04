@@ -41,7 +41,8 @@ exports.submitVote = function(req, res){
 };
 
 exports.sendInviteSMS = function(req, res){
-    inviteSMS();
+    inviteSMS()
+    console.log('sending SMS message to Invitees')
 } 
 
 exports.createEvent = function(req, res){

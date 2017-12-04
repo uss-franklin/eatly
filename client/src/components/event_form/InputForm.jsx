@@ -59,7 +59,6 @@ export default class InputForm extends React.Component {
       })
       .catch(err => console.log('Form Submission Error: ', err));
     Axios.post('/messages', dummyNumber)
-      .then(console.log('axios post to messages working to send SMS'))
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
