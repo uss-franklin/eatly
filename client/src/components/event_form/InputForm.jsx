@@ -54,6 +54,7 @@ export default class InputForm extends React.Component {
       .then((response) => {
         console.log('submit form response data: ', response)
         this.props.getEventId(response.data)
+        this.props.getYelpData(response.data)
       })
       .catch(err => console.log('Form Submission Error: ', err));
   }

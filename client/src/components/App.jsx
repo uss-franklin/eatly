@@ -9,6 +9,7 @@ import Location from './location_form/Location'
 import NavBar from './NavBar'
 import Account from './user/Account'
 import firebase from './login/FirebaseAuth'
+import Axios from 'axios'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,9 +34,15 @@ export default class App extends React.Component {
 			}
 		})
 	}
-
   getEventId(eventid) {
     this.setState({eventid: eventid})
+  }
+  getYelpData(eventid){
+    Axios.get('/getRestaurants?eventKey=' + eventid)
+      .then((response) => {
+        this.setState({data: response})
+      })
+      .catch((err) => {console.log('getYelpDataError: ', err)})
   }
 
   render() {
@@ -55,8 +62,12 @@ export default class App extends React.Component {
         loggedIn ? <Account user={this.state.firebaseAuthenticatedUser}/> : <Redirect to="/" />
         )} 
       />
-      <Route exact path="/inputForm" render={() => <InputForm getEventId={this.getEventId.bind(this) }/>} /> 
-      <Route exact path="/swipe" render={() => <Swipe eventid={this.state.eventid} />} />
+      <Route exact path="/inputForm" render={() => 
+        <InputForm getEventId={this.getEventId.bind(this) } 
+        getYelpData={this.getYelpData.bind(this)}
+      />} /> 
+      <Route exact path="/swipe" render={() => (
+        <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  />
     </div>
   </Router>
     )
