@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const eventController = require('./controllers/eventController.js');
 const frontEndCatchAllRouter = require('./controllers/frontEndController.js');
 const gmailAuthenticationController = require('./controllers/gmailAuthenticationController.js');
+const voteController = require('./controllers/voteController.js');
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -22,6 +23,8 @@ app.post('/createEvent', eventController.createEvent);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.post('/vote', eventController.submitVote);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
+app.post('vote', voteController.voteOnRestaurant);
+
 
 
 //Catch-all to allow refreshing of react-router created pages
