@@ -19,7 +19,9 @@ export default class InputForm extends React.Component {
       dateTime: moment(),
       cutOffDateTime: moment(),
       guestEmails: [''], //requires intial value to render the first guest email form
-      guestPhones: [''] //same as above comment
+      guestPhones: [''], //same as above comment
+      firebaseId: '' // needed to check whether we need to create the user
+
     }
   }
   handleInputChange({ target }){

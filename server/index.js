@@ -15,9 +15,9 @@ const gmailCredentials = {
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-//Static Routes
 app.use(express.static(path.resolve(__dirname + '/../client/public/')));
+
+//Routes
 app.post('/createEvent', eventController.createEvent);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.post('/vote', eventController.submitVote);
