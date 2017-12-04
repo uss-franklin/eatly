@@ -19,7 +19,6 @@ export default class NavBar extends React.Component {
     let loginButton =  <button className="login">
                          <Link to="/loginForm" style={{ textDecoration: 'none'}}>login or sign up</Link>
                        </button>
-    console.log('navBar logged', loggedIn)
     return (
       <div className="parent">
         <div className="header"> 
