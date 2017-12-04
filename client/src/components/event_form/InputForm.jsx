@@ -19,7 +19,8 @@ export default class InputForm extends React.Component {
       dateTime: moment(),
       cutOffDateTime: moment(),
       guestEmails: [''], //requires intial value to render the first guest email form
-      guestPhones: [''] //same as above comment
+      guestPhones: [''],
+      dummyPhoneNumber: '+14254083980' //same as above comment
     }
   }
   handleInputChange({ target }){
@@ -48,6 +49,7 @@ export default class InputForm extends React.Component {
   submitForm(){
     // console.log('submit form state:', this.state)
     let sendObj = Object.assign({}, this.state);
+    let dummyNumber = this.state.dummyPhoneNumber;
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
@@ -56,6 +58,9 @@ export default class InputForm extends React.Component {
         this.props.getEventId(response.data)
       })
       .catch(err => console.log('Form Submission Error: ', err));
+    Axios.post('/messages', dummyNumber)
+      .then(console.log('axios post to messages working to send SMS'))
+      .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
     return (
