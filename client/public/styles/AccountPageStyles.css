@@ -1,0 +1,42 @@
+.usernameHeader {
+	font-size: 1.5em;
+}
+
+.usersEvents {
+	background-color: #dbdbdb;
+	width: 65%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 4px;
+}
+
+.usersEventsTitle {
+	text-align: center;
+	font-size: 2em;
+}
+
+.usersEventItemTitle {
+	font-size: 1em;
+	display: inline-block;
+}
+
+.editEventButton {
+	display: inline-block;
+}
+
+.usersInvitedEvents {
+	background-color: #dbdbdb;
+	width: 65%;
+	margin-top: 2%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 4px;
+}
+
+.usersInvitedEventsTitle {
+	text-align: center;
+	font-size: 2em;
+}
+
+
+
