@@ -20,5 +20,11 @@ module.exports = {
   },
   resolve:  {
     extensions: ['.js', '.jsx']
+  },
+  node: {
+    dns: 'mock',
+    net: 'mock',
+    tls: 'mock',
+    fs: 'empty'
   }
 }
