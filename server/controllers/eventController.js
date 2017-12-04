@@ -12,10 +12,13 @@ eventKey passed to the event_form (inputForm) view as a result of calling the 'c
 */
 
 exports.getEventRestaurants = function(req, res){
+  
     let eventKey = req.query.eventKey;
+    // console.log('req.body:', req.body)
     let eventRef = eventsRef.child(eventKey);
+    // console.log('eventRef', eventRef)
     let returnObj = {};
-
+    // console.log('eventKey', req.query)
     eventRef.once('value').then((eventDetails) => {
         returnObj.eventName = eventDetails.val().eventName;
         returnObj.eventDateTime = eventDetails.val().eventDateTime;
@@ -37,7 +40,7 @@ exports.submitVote = function(req, res){
 };
 
 exports.createEvent = function(req, res){
-    console.log('req.body CreateEvent', req.body);
+  console.log('request started')
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,
@@ -92,6 +95,7 @@ exports.createEvent = function(req, res){
     yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
         eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
         let newDataPath = eventsRef.push(eventDetails);
+        console.log('ending the request, sending back', newDataPath.key)
         res.send(newDataPath.key); //send the eventKey
     });
 

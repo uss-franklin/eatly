@@ -18,13 +18,14 @@ export default class Swipe extends React.Component {
   }
 
   getYelpData(){
-    Axios.get('/getRestaurants', )
+    Axios.get('/getRestaurants?', )
       .then((reponse) => {
         console.log('getYelpData')
         this.setState({
           test: response.eventKey
         })
       })
+      .catch((err) => {console.log('getYelpDataError: ', err)})
   }
 
   goToNext() {
@@ -38,13 +39,13 @@ export default class Swipe extends React.Component {
     this.setState({current: num})
   }
 
-    componentDidMount() {
-      this.getYelpData()
-      console.log('ComponentDidMount')
-    }
+    // componentDidMount() {
+    //   this.getYelpData()
+    //   console.log('ComponentDidMount')
+    // }
  
   render() {
-    console.log('Swipe State:',this.state)
+    console.log('Swipe props:', this.props)
     return (
   
       <div className="swipeForm">
