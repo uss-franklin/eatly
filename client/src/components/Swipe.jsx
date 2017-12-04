@@ -17,17 +17,6 @@ export default class Swipe extends React.Component {
     }
   }
 
-  getYelpData(){
-    Axios.get('/getRestaurants?', )
-      .then((reponse) => {
-        console.log('getYelpData')
-        this.setState({
-          test: response.eventKey
-        })
-      })
-      .catch((err) => {console.log('getYelpDataError: ', err)})
-  }
-
   goToNext() {
     var num = ++this.state.current;
     this.setState({current: num})
@@ -39,17 +28,16 @@ export default class Swipe extends React.Component {
     this.setState({current: num})
   }
 
-    // componentDidMount() {
-    //   this.getYelpData()
-    //   console.log('ComponentDidMount')
-    // }
- 
   render() {
-    console.log('Swipe props:', this.props)
-    return (
-  
-      <div className="swipeForm">
-      <div> Event Name, Time and Date </div>
+    console.log('Swipe props: ', this.props)
+    console.log('Swipe State: ', this.state)
+    //if else goes here for loading and data 
+    let loading = null
+    if (this.props.eventData === undefined) {
+      loading = <div> restaurants being found </div>
+    } else {
+      loading = <div className="swipeForm">
+      <div> {this.props.eventData.data.eventName} Time and Date </div>
       <div> 
         <img className="photos" src={data[this.state.current]} />
       </div> 
@@ -63,6 +51,12 @@ export default class Swipe extends React.Component {
         </button>
       </div>
       <div className="descriptions"> Descriptions here </div>
+      </div>
+    }
+
+    return (
+      <div> 
+        {loading}
       </div>
     )
   }
