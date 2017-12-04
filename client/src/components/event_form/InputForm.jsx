@@ -46,11 +46,15 @@ export default class InputForm extends React.Component {
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
   }
   submitForm(){
-    console.log(this.state)
+    // console.log('submit form state:', this.state)
     let sendObj = Object.assign({}, this.state);
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
+      .then((response) => {
+        console.log('submit form response data: ', response)
+        this.props.getEventId(response.data)
+      })
       .catch(err => console.log('Form Submission Error: ', err));
   }
   render(){
@@ -158,7 +162,7 @@ export default class InputForm extends React.Component {
         </div>
         <div className="form-create-event" className="inputs">
           <button onClick={this.submitForm.bind(this)}>
-            <Link to="/swipe"Find Restaurants style={{textDecoration: 'none'}}> Find Restaurants </Link>
+            <Link to="/swipe" Find Restaurants style={{textDecoration: 'none'}}> Find Restaurants </Link>
           </button>
         </div>
       </div>

@@ -14,7 +14,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      firebaseAuthenticatedUser: null
+      firebaseAuthenticatedUser: null,
+      eventid: ''
     }
     //listen for firebase logged in state
     this.authenticateUser.call(this)
@@ -33,12 +34,16 @@ export default class App extends React.Component {
 		})
 	}
 
+  getEventId(eventid) {
+    this.setState({eventid: eventid})
+  }
+
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser !== null
     console.log('is logged in: ', loggedIn)
     return (
 
-    <Router>
+  <Router>
     <div className="parent">
       <NavBar firebase={firebase} loggedIn={loggedIn}/>
       <Route exact path="/" component={Home} />
@@ -46,12 +51,12 @@ export default class App extends React.Component {
           loggedIn ?  <Redirect to="/account" /> : <LoginForm firebase={firebase}/>
         )} 
       />
-      <Route exact path="/inputForm" component={InputForm} /> 
-      <Route exact path="/swipe" component={Swipe} />
       <Route exact path="/account" render={() => (
         loggedIn ? <Account user={this.state.firebaseAuthenticatedUser}/> : <Redirect to="/" />
         )} 
       />
+      <Route exact path="/inputForm" render={() => <InputForm getEventId={this.getEventId.bind(this) }/>} /> 
+      <Route exact path="/swipe" render={() => <Swipe eventid={this.state.eventid} />} />
     </div>
   </Router>
     )
