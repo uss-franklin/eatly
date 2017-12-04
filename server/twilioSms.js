@@ -19,7 +19,7 @@ const inviteSMS = function() {
 	client.messages.create({
 	    to: '+14254083980',
 	    from: "+13473086897",
-	    body: "You've been invited to TeamFranklin's meal! Join the fun @ 10:00PM @ McDonald's. Click here to help find the perfect spot."
+	    body: "You've been invited to a meal with your friend! Help find the perfect spot now, with Eatly."
 	}).then((message) => console.log(message.sid))
 }
 
