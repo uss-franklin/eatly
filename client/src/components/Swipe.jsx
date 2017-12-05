@@ -20,29 +20,38 @@ export default class Swipe extends React.Component {
     let num = ++this.state.current;
     this.setState({current: num})
   }
+  votingExpired(current, cutoff) {
+    cutoff = new Date(cutoff)
+    return (current.valueOf() > cutoff.valueOf())
+  }
 
   render() {
     console.log('Swipe props: ', this.props)
     console.log('Swipe State: ', this.state)
-    //if else goes here for loading and data 
+
     let loading = null
     if (this.props.eventData === undefined) {
-      loading = <div> restaurants being found... 
-        <img src="./images/trex.gif" />
+      loading = <div className="loadingtext"> restaurants being found... 
+        <img className="trex" src="./images/trex.gif" />
       </div>
+    } else if (this.votingExpired(new Date(), this.props.eventData.data.voteCutOffDateTime) === true) {
+      loading = 
+      <div> 
+        Thanks for voting, this page will display results for your event when everyone has voted
+        <img className="photos" src="./images/done.png" />
+      </div> 
     } else if (this.state.current >= Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length) {
       loading = 
         <div> 
           Thanks for voting, this page will display results for your event when everyone has voted
-          <img src="./images/done.png" />
+          <img className="photos" src="./images/done.png" />
         </div> 
     }
     else {
-      console.log('keys', Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length)
       let restaurant = this.props.eventData.data.yelpSearchResultForEvent[this.state.current]
       let event = this.props.eventData.data
       loading = <div className="swipeForm">
-      <div> {event.eventName} {event.eventDateTime} </div>
+      <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,21)} </div>
       <div className="photoholder"> 
         <img className="photos" src={restaurant.image_url} />
       </div> 
@@ -58,7 +67,7 @@ export default class Swipe extends React.Component {
       <div className="descriptions"> Price: {restaurant.price} </div>
       <div className="descriptions"> Rating: {restaurant.rating}/5 </div>
       <div className="descriptions"> Number of Reviews: {restaurant.review_count} </div>
-      <div> Voting ends at: {event.voteCutOffDateTime}</div>
+      <div> Voting ends at: {event.voteCutOffDateTime.slice(0,21)}</div>
       </div>
     }
     
