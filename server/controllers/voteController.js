@@ -1,4 +1,5 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
+var cron = require('node-cron');
 
 let eventsRef = dbRef.child('events');
 
@@ -19,8 +20,18 @@ exports.voteOnRestaurant = function(req, res, routeFunc = true){
 
 exports.voteAndGetConsensus = function(req, res) {
     let {eventId} = req.body;
+    votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
+
     exports.voteOnRestaurant(req, res, false).then(() => {
-        gatherVotesAndDetermineConsensus(eventId).then((val) => res.send(val)).catch((err) => console.error(err));
+        gatherVotesAndDetermineConsensus(eventId).then((consensus) => {
+            if(consensus){
+                votingResultRef.set(consensus).then(() => {
+                    res.send(consensus);
+                });
+            } else {
+                res.send(consensus);
+            }
+        }).catch((err) => console.error(err));
     }).catch((err) => console.err(err));
 };
 

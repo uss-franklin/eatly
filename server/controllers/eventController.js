@@ -69,7 +69,7 @@ const createEventDetail = function(details, hostId, guestIds) {
         eventName: details.eventName,
     };
     let eventInvitees = {}
-    guestIds.forEach(id => eventInvitees[id] = {r1: '-'})
+    guestIds.forEach(id => eventInvitees[id] = {r1: '-', r2: '-', r3: '-'});
     eventDetails.eventInvitees = eventInvitees
     
     return eventDetails
