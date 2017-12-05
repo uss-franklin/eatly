@@ -8,8 +8,8 @@ import NavBar from '../NavBar'
 import { Link } from 'react-router-dom'
 
 export default class InputForm extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       address: '',
       searchTerm: '',
@@ -19,8 +19,8 @@ export default class InputForm extends React.Component {
       dateTime: moment(),
       cutOffDateTime: moment().add(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
-      guestPhones: [''],
-      dummyPhoneNumber: '+14254083980' //same as above comment
+      guestPhones: [''], //same as above comment
+      firebaseId: this.props.firebaseId // needed to check whether we need to create the user
     }
   }
   handleInputChange({ target }){
@@ -63,6 +63,7 @@ export default class InputForm extends React.Component {
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
+    console.log(this.state.firebaseId)
     return (
       <div className="wholeForm">
       <div className="form-create-event">

@@ -5,6 +5,7 @@ the firebase script is hard-loaded into the index.html rather than using the nod
 */
 import React from 'react'
 import NavBar from '../NavBar'
+import Axios from 'axios'
 
 export default class LoginForm extends React.Component {
 	constructor(props) {
@@ -24,8 +25,14 @@ export default class LoginForm extends React.Component {
 		let { txtEmail, txtPassword } = this.state
 		//firebase does the heavy lifting of valid email input verification
 		this.firebase.auth().signInWithEmailAndPassword(txtEmail, txtPassword)
-			.then((data) => console.log(data))
+			.then((data) => console.log('logged in with: ', data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
+	}
+// Sends the newly created user to be written to firebase users "table" via userController
+	postNewUser(email, UID) {
+		console.log('posting user')
+		Axios.post('/createAuthUser', {id: UID, emailAddress: email})
+			.catch(err => console.log(err))
 	}
 
 //handles sign up event, bound to the sign up button
@@ -33,7 +40,10 @@ export default class LoginForm extends React.Component {
 		let { txtEmail, txtPassword } = this.state
 		//all users created this way are visible on the online firebase console
 		this.firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
-			.then((data) => console.log(data))
+			.then((data) => {
+				this.postNewUser(data.email, data.uid)
+				console.log('new user: ', data)
+			})
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
 

@@ -5,6 +5,7 @@ const eventController = require('./controllers/eventController.js');
 const frontEndCatchAllRouter = require('./controllers/frontEndController.js');
 const gmailAuthenticationController = require('./controllers/gmailAuthenticationController.js');
 const voteController = require('./controllers/voteController.js');
+const createAuthUser = require('./controllers/userController.js').createAuthUser;
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -16,15 +17,16 @@ const gmailCredentials = {
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-//Static Routes
 app.use(express.static(path.resolve(__dirname + '/../client/public/')));
+
+//Routes
 app.post('/createEvent', eventController.createEvent);
 app.post('/messages', eventController.sendInviteSMS);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
 app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
+app.post('/createAuthUser', createAuthUser);
 
 
 

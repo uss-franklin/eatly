@@ -1,5 +1,6 @@
 import React from 'react'
 import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
+import Axios from 'axios'
 
 import Home from './Home'
 import InputForm from './event_form/InputForm'
@@ -9,16 +10,17 @@ import Location from './location_form/Location'
 import NavBar from './NavBar'
 import Account from './user/Account'
 import firebase from './login/FirebaseAuth'
-import Axios from 'axios'
 import EditEvent from './EditEvent'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      firebaseAuthenticatedUser: null,
+      firebaseAuthenticatedUser: {id: null},
       eventid: ''
     }
+  }
+  componentDidMount() {
     //listen for firebase logged in state
     this.authenticateUser.call(this)
   }
@@ -31,7 +33,7 @@ export default class App extends React.Component {
 			} else {
 				console.log('authenticateUser(): false')
 				//sets the state on the app to a logged outed
-				this.setState({firebaseAuthenticatedUser: null})
+				this.setState({firebaseAuthenticatedUser: {id: null}})
 			}
 		})
 	}
@@ -47,8 +49,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let loggedIn = this.state.firebaseAuthenticatedUser !== null
-    console.log('is logged in: ', loggedIn)
+    let loggedIn = this.state.firebaseAuthenticatedUser.id !== null
     return (
 
   <Router>
@@ -64,9 +65,13 @@ export default class App extends React.Component {
         )} 
       />
       <Route exact path="/inputForm" render={() => 
-        <InputForm getEventId={this.getEventId.bind(this) } 
-        getYelpData={this.getYelpData.bind(this)}
-      />} /> 
+          <InputForm 
+            getEventId={this.getEventId.bind(this)} 
+            getYelpData={this.getYelpData.bind(this)}
+            firebaseId={this.state.firebaseAuthenticatedUser.id}
+          />
+        } 
+      /> 
       <Route exact path="/swipe" render={() => (
         <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  />
     
