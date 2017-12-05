@@ -1,6 +1,5 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
-const inviteSMS = require('.././twilioSms.js').inviteSMS;
 
 let eventsRef = dbRef.child('events');
 let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -13,7 +12,7 @@ eventKey passed to the event_form (inputForm) view as a result of calling the 'c
 */
 
 exports.getEventRestaurants = function(req, res){
-  
+
     let eventKey = req.query.eventKey;
     // console.log('req.body:', req.body)
     let eventRef = eventsRef.child(eventKey);
@@ -39,11 +38,6 @@ exports.getEventRestaurants = function(req, res){
 exports.submitVote = function(req, res){
 
 };
-
-exports.sendInviteSMS = function(req, res){
-    inviteSMS()
-    console.log('sending SMS message to Invitees')
-} 
 
 exports.createEvent = function(req, res){
   console.log('request started')

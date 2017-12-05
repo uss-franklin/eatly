@@ -24,6 +24,7 @@ app.post('/messages', eventController.sendInviteSMS);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
+app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
 
 
 
