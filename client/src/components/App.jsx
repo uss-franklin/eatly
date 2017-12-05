@@ -47,11 +47,7 @@ export default class App extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
     let loggedIn = this.state.firebaseAuthenticatedUser.id !== null
-=======
-    let loggedIn = this.state.firebaseAuthenticatedUser !== null
->>>>>>> Merge upstream dev
     return (
 
   <Router>
