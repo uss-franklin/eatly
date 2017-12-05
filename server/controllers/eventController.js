@@ -61,41 +61,35 @@ exports.createEvent = function(req, res){
             longitude: null
         },
         foodType: req.body.searchTerm,
-        hostName: req.body.hostName,
-        hostContactType: 'email',
-        hostContactDetails: req.body.hostEmail,
+        eventHost :{
+            h0: {
+                r1: '-',
+                r2: '-',
+                r3: '-'
+            }
+        },
         eventDateTime: new Date(req.body.dateTime).toString(),
         eventCreationDateTime: new Date().toString(),
-        eventInvitees: [],
         voteCutOffDateTime: new Date(req.body.cutOffDateTime).toString(),
-        eventName: req.body.eventName
+        eventName: req.body.eventName,
+        eventInvitees: {
+            u0: {
+                r1: '-',
+                r2: '-',
+                r3: '-'
+            },
+            u1: {
+                r1: '-',
+                r2: '-',
+                r3: '-'
+            },
+        }
     };
-
-    //We should aim to get these guest emails and phone # entries as an object, so that we can insert directly into firebase db
-    let guestEmailAddresses = req.body.guestEmails;
-    let guestPhoneNumbers = req.body.guestPhones;
-
-    for(let i = 0; i < req.body.guestEmails.length; i++){
-        let eventInvitee = {
-            Name: null,
-            contactDetails: [],
-            voteCompleted: false
-        };
-
-        if(guestEmailAddresses[i]){
-            eventInvitee.emailAddress = guestEmailAddresses[i];
-        }
-        if(guestPhoneNumbers[i]){
-            eventInvitee.phoneNumber = guestPhoneNumbers[i];
-        }
-
-        eventDetails.eventInvitees.push(eventInvitee);
-    }
 
     yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
         eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
         let newDataPath = eventsRef.push(eventDetails);
-        console.log('ending the request, sending back', newDataPath.key)
+        console.log('ending the request, sending back', newDataPath.key);
         res.send(newDataPath.key); //send the eventKey
     });
 
