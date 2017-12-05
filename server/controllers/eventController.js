@@ -1,7 +1,8 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
 const inviteSMS = require('.././twilioSms.js').inviteSMS;
-// const createUsers = require('./userController.js').createUsers;
+const createAnonUsers = require('./userController.js').createAnonUsers;
+const createGuestEmailUser = require('./userController.js').createGuestEmailUser
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -42,8 +43,47 @@ exports.submitVote = function(req, res){
 
 };
 
+exports.sendInviteSMS = function(req, res){
+    // inviteSMS()
+    // console.log('sending SMS message to Invitees')
+} 
+
+const createEventDetail = function(details, hostId, guestIds) {
+    let eventDetails = {
+        locationDetails: {
+            address: details.address,
+            latitude: null,
+            longitude: null
+        },
+        foodType: details.searchTerm,
+        eventHost :{
+            [hostId]: {
+                r1: '-',
+                r2: '-',
+                r3: '-'
+            }
+        },
+        eventDateTime: new Date(details.dateTime).toString(),
+        eventCreationDateTime: new Date().toString(),
+        voteCutOffDateTime: new Date(details.cutOffDateTime).toString(),
+        eventName: details.eventName,
+    };
+    let eventInvitees = {}
+    guestIds.forEach(id => eventInvitees[id] = {r1: '-'})
+    eventDetails.eventInvitees = eventInvitees
+    
+    return eventDetails
+}
+
+const createYelpResultsAndSend = function(eventDetails, searchRequestParams, res) {
+    return yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
+        eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
+        let newDataPath = eventsRef.push(eventDetails);
+        console.log('ending the request, sending back', newDataPath.key);
+        res.send(newDataPath.key); //send the eventKey
+    });
+}
 exports.createEvent = function(req, res){
-    console.log('firebaseId', req.body.firebaseId)
     console.log('request started')
     //object to be constructed from request object
     let searchRequestParams = {
@@ -57,44 +97,18 @@ exports.createEvent = function(req, res){
         //latitude
         //categories:
     };
-
-    let eventDetails = {
-        locationDetails: {
-            address: req.body.address,
-            latitude: null,
-            longitude: null
-        },
-        foodType: req.body.searchTerm,
-        eventHost :{
-            h0: {
-                r1: '-',
-                r2: '-',
-                r3: '-'
+    createGuestEmailUser(req.body.guestEmails)
+        .then(guestIds => {
+            if (!req.body.firebaseId) {
+                createAnonUsers(req.body.hostEmail)
+                    .then(hostId =>  createEventDetail(req.body, hostId, guestIds))
+                        .then((eventDetails) => createYelpResultsAndSend(eventDetails, searchRequestParams, res))
+            } else {
+                let eventDetails = createEventDetail(req.body, firebaseId, guestIds)
+                createYelpResultsAndSend(eventDetails, searchRequestParams, res)
             }
-        },
-        eventDateTime: new Date(req.body.dateTime).toString(),
-        eventCreationDateTime: new Date().toString(),
-        voteCutOffDateTime: new Date(req.body.cutOffDateTime).toString(),
-        eventName: req.body.eventName,
-        eventInvitees: {
-            u0: {
-                r1: '-',
-                r2: '-',
-                r3: '-'
-            },
-            u1: {
-                r1: '-',
-                r2: '-',
-                r3: '-'
-            },
-        }
-    };
+    })
 
-    yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
-        eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
-        let newDataPath = eventsRef.push(eventDetails);
-        console.log('ending the request, sending back', newDataPath.key);
-        res.send(newDataPath.key); //send the eventKey
-    });
+    
 
 };
