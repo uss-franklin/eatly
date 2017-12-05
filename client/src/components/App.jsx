@@ -10,6 +10,7 @@ import NavBar from './NavBar'
 import Account from './user/Account'
 import firebase from './login/FirebaseAuth'
 import Axios from 'axios'
+import EditEvent from './EditEvent'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -68,6 +69,12 @@ export default class App extends React.Component {
       />} /> 
       <Route exact path="/swipe" render={() => (
         <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  />
+    
+
+      <EditEvent />
+
+
+
     </div>
   </Router>
     )
