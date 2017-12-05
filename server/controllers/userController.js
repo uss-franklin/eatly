@@ -1,5 +1,6 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 
+<<<<<<< HEAD
 const UsersRef = dbRef.child('Users');
 
 const createUsers = (emailAddress, firebaseId) => {
@@ -42,6 +43,31 @@ module.exports.createUsers = createUsers;
 
 
 
+=======
+let anonUsersRef = dbRef.child('anonUsers');
+
+//Process non-authenticated users
+const anonUsers = (userToCheckorCreate) => {
+  let fireBaseUserId; //capture the user id of a user whether are created or exist 
+  anonUsersRef.orderByChild('email').equalTo(userToCheckorCreate).once('value')
+  .then(user => {
+    if (user.val()) { 
+      fireBaseUserId = Object.keys(user.val())[0] 
+      console.log('user exists')
+    } else {
+      let fireBaseUserId = anonUsersRef.push()
+      fireBaseUserId.set({email: userToCheckorCreate})
+      .then(() => console.log('Creating user with id: ', fireBaseUserId.key))
+    }
+  })
+}
+
+module.exports.addUser = (req, res) => {
+  console.log(req.body)
+}
+
+//Process authenticated users and thier data to the auth users table
+>>>>>>> Merge upstream dev
 
 
 
