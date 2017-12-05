@@ -1,7 +1,7 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
 const inviteSMS = require('.././twilioSms.js').inviteSMS;
-// const createUsers = require('./userController.js').createUsers;
+const createUsers = require('./userController.js').createUsers;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -48,7 +48,12 @@ exports.sendInviteSMS = function(req, res){
 } 
 
 exports.createEvent = function(req, res){
-    console.log('firebaseId', req.body.firebaseId)
+    let usersPromise = []
+    req.body.guestEmails.forEach((guest) => {
+        usersPromise.push(createUsers(guest, null))
+    })
+    Promise.all(usersPromise).then(data => console.log(data))
+
     console.log('request started')
     //object to be constructed from request object
     let searchRequestParams = {
@@ -94,7 +99,7 @@ exports.createEvent = function(req, res){
             },
         }
     };
-
+    
     yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
         eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
         let newDataPath = eventsRef.push(eventDetails);

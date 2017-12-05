@@ -3,9 +3,16 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const UsersRef = dbRef.child('Users');
 
 const createUsers = (emailAddress, firebaseId) => {
-  UsersRef.child(firebaseId).once('value')
+  if (firebaseId === null) {
+    console.log('here')
+    let newUserId = UsersRef.push()
+    console.log('creating user: ', emailAddress)
+    newUserId.set({email: emailAddress})
+    return newUserId.key
+  }
+  return UsersRef.child(firebaseId).once('value')
     .then((user) => {
-        if (user.val() === null && firebaseId !== null) {
+        if (user.val() === null && firebaseId !== 'null') {
           console.log(user.val())
           console.log('creating user: ', emailAddress)
           let firebaseUser = UsersRef.child(firebaseId)
@@ -20,7 +27,7 @@ const createUsers = (emailAddress, firebaseId) => {
     )
 
 } 
-createUsers('anothertest@gmail.com', 'YyjnfBf0nJbebYWJtEGUsuJdo803')
+// createUsers('anothertest@gmail.com', 'YyjnfBf0nJbebYWJtEGUsuJdo803')
 
 module.exports.createUsers = createUsers;
 
