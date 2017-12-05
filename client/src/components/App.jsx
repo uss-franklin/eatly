@@ -70,11 +70,6 @@ export default class App extends React.Component {
       <Route exact path="/swipe" render={() => (
         <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  />
     
-
-      <EditEvent />
-
-
-
     </div>
   </Router>
     )
