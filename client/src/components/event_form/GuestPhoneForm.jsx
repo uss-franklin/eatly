@@ -15,10 +15,10 @@ export default class GuestPhoneForm extends React.Component {
   return (
     <div className="guest-email">
       <label>
-        Guest Email:
+        Guest Phone Number:
         <input 
           type="text" 
-          placeholder="212-555-5656"
+          placeholder="(optional) +12123994045"
           value={this.state.value}
           onChange={this.handleInputChange.bind(this)}
           onBlur={e => handleGuestEmailPhoneChange('guestPhones', e.target.value, idx)}
