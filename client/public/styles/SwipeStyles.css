@@ -11,6 +11,14 @@
 }
 
 .photos {
-  max-height: 750px;
-  max-width: 750px;
+  max-height: 550px;
+  max-width: 650px;
+  min-width: 550px;
+  min-height: 550px;
+}
+
+.photoholder {
+  margin: auto;
+  height: 600px;
+  width: 750px;
 }
