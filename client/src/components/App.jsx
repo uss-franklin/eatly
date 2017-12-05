@@ -1,5 +1,6 @@
 import React from 'react'
 import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
+import Axios from 'axios'
 
 import Home from './Home'
 import InputForm from './event_form/InputForm'
@@ -48,7 +49,6 @@ export default class App extends React.Component {
 
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser !== null
-    console.log('is logged in: ', loggedIn)
     return (
 
   <Router>
