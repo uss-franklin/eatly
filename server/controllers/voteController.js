@@ -1,9 +1,16 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 
 let eventsRef = dbRef.child('events');
-let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
-exports.voteOnRestaurant = function(req, res) {
+exports.voteOnRestaurant = function(req, res){
+    let {eventId, userId, restaurantId, vote} = req.body;
+    let userRestaurantVoteRef = eventsRef.child(eventId).child('eventInvitees').child(userId).child(restaurantId);
+    userRestaurantVoteRef.set(vote);
+    res.send();
+};
+
+//Refactor and additional logic is pending.
+exports.voteAndGetWinner = function(req, res) {
     let {eventId, userId, restaurantId, vote} = req.body;
     let userRestaurantVoteRef = eventsRef.child(eventId).child('eventInvitees').child(userId).child(restaurantId);
     userRestaurantVoteRef.set(vote);
