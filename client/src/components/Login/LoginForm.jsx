@@ -25,11 +25,7 @@ export default class LoginForm extends React.Component {
 		let { txtEmail, txtPassword } = this.state
 		//firebase does the heavy lifting of valid email input verification
 		this.firebase.auth().signInWithEmailAndPassword(txtEmail, txtPassword)
-<<<<<<< HEAD
-			.then((data) => console.log('this is a new user', data))
-=======
 			.then((data) => console.log('logged in with: ', data))
->>>>>>> temp4
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
 // Sends the newly created user to be written to firebase users "table" via userController
