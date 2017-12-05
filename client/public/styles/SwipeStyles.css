@@ -30,14 +30,40 @@
   border-radius: 4px;
 }
 
-.trex {
-  min-height: 450px;
-  min-width: 450px;
-  display: inline-block;
-  padding: 15px;
-}
-
 .loadingtext {
   text-align: center;
   padding: 15px;
+  margin: auto;
 }
+
+.trex {
+  min-height: 450px;
+  min-width: 450px;
+  display: block;
+  padding: 15px;
+  text-align: center;
+  margin: auto;
+}
+
+.endtext {
+  text-align: center;
+  display: block;
+  padding: 15px;
+  margin-bottom: 10px;
+  margin: auto;
+}
+
+.endphoto {
+  max-height: 550px;
+  max-width: 500px;
+  display: block;
+  text-align: center;
+  margin: auto;
+  border-radius: 10px;
+}
+
+
+
+
+
+

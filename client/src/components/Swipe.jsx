@@ -31,21 +31,28 @@ export default class Swipe extends React.Component {
 
     let loading = null
     if (this.props.eventData === undefined) {
-      loading = <div className="loadingtext"> restaurants being found... 
-        <img className="trex" src="./images/trex.gif" />
-      </div>
+      loading = <div>
+        <div className="loadingtext"> restaurants being found... 
+        </div>
+          <img className="trex" src="./images/trex.gif" />
+        </div>
+      
     } else if (this.votingExpired(new Date(), this.props.eventData.data.voteCutOffDateTime) === true) {
       loading = 
-      <div> 
+      <div > 
+      <div className="endtext">
         Thanks for voting, this page will display results for your event when everyone has voted
-        <img className="photos" src="./images/done.png" />
+        </div>
+        <img className="endphoto" src="./images/done.png" />
       </div> 
     } else if (this.state.current >= Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length) {
       loading = 
-        <div> 
-          Thanks for voting, this page will display results for your event when everyone has voted
-          <img className="photos" src="./images/done.png" />
-        </div> 
+      <div > 
+      <div className="endtext">
+        Thanks for voting, this page will display results for your event when everyone has voted
+        </div>
+        <img className="endphoto" src="./images/done.png" />
+      </div> 
     }
     else {
       let restaurant = this.props.eventData.data.yelpSearchResultForEvent[this.state.current]
