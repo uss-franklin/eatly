@@ -63,7 +63,6 @@ export default class InputForm extends React.Component {
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
-    console.log(this.state.firebaseId)
     return (
       <div className="wholeForm">
       <div className="form-create-event">
