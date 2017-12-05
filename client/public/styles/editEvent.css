@@ -1,0 +1,52 @@
+.editEventTitleDiv {
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+}
+
+.editEventTitleInput {
+	padding: 10px;
+}
+
+.editEventCutoffTimeDiv {
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+}
+
+.editEventCutoffTimeInput {
+	padding: 10px;
+}
+
+.editEventTimeInput {
+	padding: 10px;
+}
+
+.editEventTimeDiv {
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+}
+
+.addRemoveGuestsButton {
+	display: block;
+	margin-top: 2%;
+	margin-left: 5%;
+	padding: 10px;
+}
+
+.saveChangesEditEventButton {
+	display: block;
+	margin-top: 2%;
+	margin-left: 5%;
+	padding: 10px;
+}
+
+.deleteEventButton {
+	display: block;
+	margin-top: 2%;
+	margin-left: 5%;
+	background-color: #ad0011;
+	color: #FFFFFF;
+	padding: 10px;
+}
