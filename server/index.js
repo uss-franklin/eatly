@@ -22,9 +22,8 @@ app.use(express.static(path.resolve(__dirname + '/../client/public/')));
 app.post('/createEvent', eventController.createEvent);
 app.post('/messages', eventController.sendInviteSMS);
 app.get('/getRestaurants', eventController.getEventRestaurants);
-app.post('/vote', eventController.submitVote);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
-app.post('vote', voteController.voteOnRestaurant);
+app.post('/vote', voteController.voteOnRestaurant);
 
 
 
