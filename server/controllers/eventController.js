@@ -1,8 +1,11 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
+const inviteSMS = require('.././twilioSms.js').inviteSMS;
+// const createUsers = require('./userController.js').createUsers;
 
-let eventsRef = dbRef.child('events');
-let yelpSearchResultsRef = dbRef.child('yelpSearchResults');
+const eventsRef = dbRef.child('events');
+const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
+
 
 
 /*
@@ -40,7 +43,8 @@ exports.submitVote = function(req, res){
 };
 
 exports.createEvent = function(req, res){
-  console.log('request started')
+    console.log('firebaseId', req.body.firebaseId)
+    console.log('request started')
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,

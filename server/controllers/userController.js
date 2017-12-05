@@ -1,28 +1,47 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 
-let anonUsersRef = dbRef.child('anonUsers');
+const UsersRef = dbRef.child('Users');
 
-//Process non-authenticated users
-const anonUsers = (userToCheckorCreate) => {
-  let fireBaseUserId; //capture the user id of a user whether are created or exist 
-  anonUsersRef.orderByChild('email').equalTo(userToCheckorCreate).once('value')
-  .then(user => {
-    if (user.val()) { 
-      fireBaseUserId = Object.keys(user.val())[0] 
-      console.log('user exists')
-    } else {
-      let fireBaseUserId = anonUsersRef.push()
-      fireBaseUserId.set({email: userToCheckorCreate})
-      .then(() => console.log('Creating user with id: ', fireBaseUserId.key))
-    }
-  })
-}
+const createUsers = (emailAddress, firebaseId) => {
+  UsersRef.child(firebaseId).once('value')
+    .then((user) => {
+        if (user.val() === null && firebaseId !== null) {
+          console.log(user.val())
+          console.log('creating user: ', emailAddress)
+          let firebaseUser = UsersRef.child(firebaseId)
+          firebaseUser.set({email: emailAddress})
+          console.log(firebaseUser.key)
+          return firebaseUser.key
+        } else {
+          console.log('user exists: ', user.val())
+          return firebaseId
+        }
+      }
+    )
 
-module.exports.addUser = (req, res) => {
-  console.log(req.body)
-}
+} 
+createUsers('anothertest@gmail.com', 'YyjnfBf0nJbebYWJtEGUsuJdo803')
 
-//Process authenticated users and thier data to the auth users table
+module.exports.createUsers = createUsers;
+
+
+// const anonUsers = (userToCheckorCreate, firebaseId) => {
+//   let fireBaseUserId; //capture the user id of a user whether are created or exist 
+//   anonUsersRef.orderByChild('email').equalTo(userToCheckorCreate).once('value')
+//   .then(user => {
+//     if (user.val()) { 
+//       fireBaseUserId = Object.keys(user.val())[0] 
+//       console.log('user exists')
+//     } else {
+//       let fireBaseUserId = anonUsersRef.push()
+//       fireBaseUserId.set({email: userToCheckorCreate})
+//       .then(() => console.log('Creating user with id: ', fireBaseUserId.key))
+//     }
+//   })
+// }
+
+
+
 
 
 
