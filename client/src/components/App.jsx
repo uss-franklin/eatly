@@ -18,6 +18,8 @@ export default class App extends React.Component {
       firebaseAuthenticatedUser: {id: null},
       eventid: ''
     }
+  }
+  componentDidMount() {
     //listen for firebase logged in state
     this.authenticateUser.call(this)
   }

@@ -13,9 +13,9 @@ export default class GuestPhoneForm extends React.Component {
   render() {
   const { handleGuestEmailPhoneChange, idx } = this.props;
   return (
-    <div className="guest-email">
+    <div className="guest-phone">
       <label>
-        Guest Email:
+        Guest Phone:
         <input 
           type="text" 
           placeholder="212-555-5656"
