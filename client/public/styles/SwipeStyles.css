@@ -15,10 +15,29 @@
   max-width: 650px;
   min-width: 550px;
   min-height: 550px;
+  border-radius: 8px;
 }
 
 .photoholder {
   margin: auto;
   height: 600px;
   width: 750px;
+}
+
+.eventtitle {
+  border: 1px solid black;
+  padding: 7px;
+  border-radius: 4px;
+}
+
+.trex {
+  min-height: 450px;
+  min-width: 450px;
+  display: inline-block;
+  padding: 15px;
+}
+
+.loadingtext {
+  text-align: center;
+  padding: 15px;
 }
