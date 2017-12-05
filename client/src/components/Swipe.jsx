@@ -30,12 +30,15 @@ export default class Swipe extends React.Component {
       loading = <div> restaurants being found... 
         <img src="./images/trex.gif" />
       </div>
-    } else if (this.state.current > 11) {
-      loading = <div> Thanks for voting, this page will display results for your event when everyone has voted
-                  <img src="./images/done.png" />
-                </div> 
+    } else if (this.state.current >= Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length) {
+      loading = 
+        <div> 
+          Thanks for voting, this page will display results for your event when everyone has voted
+          <img src="./images/done.png" />
+        </div> 
     }
     else {
+      console.log('keys', Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length)
       let restaurant = this.props.eventData.data.yelpSearchResultForEvent[this.state.current]
       let event = this.props.eventData.data
       loading = <div className="swipeForm">
