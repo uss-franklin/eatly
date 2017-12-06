@@ -53,15 +53,13 @@ export default class InputForm extends React.Component {
     let dummyNumber = this.state.dummyPhoneNumber;
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
-    Axios.post('/createEvent', sendObj)
+    Axios.post('/editEvent', sendObj)
       .then((response) => {
-        console.log('submit form response data: ', response)
+        console.log('edit event form response data: ', response)
         this.props.getEventId(response.data)
         this.props.getYelpData(response.data)
       })
-      .catch(err => console.log('Form Submission Error: ', err));
-    Axios.post('/messages', dummyNumber)
-      .catch(err => console.log('SMS sending error: ' + err))
+      .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   
   render(){
