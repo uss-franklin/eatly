@@ -100,15 +100,17 @@ exports.createEvent = function(req, res){
         //latitude
         //categories:
     };
+    //need to create the ref to new event so that we can add it to the each user
+    let newEvent = eventsRef.push()
     Promise.all([
-        createAnonUsers(req.body.hostEmail),
-        createGuestEmailUser(req.body.guestEmails),
+        createAnonUsers(req.body.hostEmail, newEvent.key, true),
+        createGuestEmailUser(req.body.guestEmails, newEvent.key, false),
         createYelpResults(searchRequestParams),
     ])
     //var resultsarr unpacks to hostId, guestIds, yelpResults
     .then(resultsArr => createEventDetail(req.body, ...resultsArr))
     .then(eventDetails => {
-        let newEvent = eventsRef.push(eventDetails);
+        newEvent.set(eventDetails) //set the event details in firebase
         console.log('ending the request, sending back', newEvent.key);
         res.send(newEvent.key)
     })
