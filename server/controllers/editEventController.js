@@ -10,10 +10,12 @@ const EventsRef = dbRef.child('events');
 //pulls in the sent object that's assigned values from the edit event form component
 //this function queries the DB for the event by its name, then sets new values to it
 exports.editEvent = function(req, res) {
-	EventsRef.orderByKey().equalTo(req.body.eventName).once('child_changed')
-	  .then(event => {
-	  	//TODO add in functionality for setting data to DB
-	  	EventRef.set({ })
-	  	console.log("event edited! resulting changes to db : " + event)
-	  })
+	Promise.all([
+		EventsRef.update(req.sendObj)
+		])
+	.then(editedEvent => {
+	 console.log('successfully changed event in DB')
+	 res.end()
+	})
+	.catch((err) => console.log('error in logging to DB : ' + err))
 }

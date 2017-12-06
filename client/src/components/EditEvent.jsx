@@ -56,8 +56,6 @@ export default class InputForm extends React.Component {
     Axios.post('/editEvent', sendObj)
       .then((response) => {
         console.log('edit event form response data: ', response)
-        this.props.getEventId(response.data)
-        this.props.getYelpData(response.data)
       })
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
