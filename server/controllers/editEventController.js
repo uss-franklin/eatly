@@ -29,7 +29,7 @@ const EventsRef = dbRef.child('events');
 
 //THIS IMPLEMENTATION WORKS, BUT ONLY WITH DUMMY DATA
 //SPECIFICALLY THE CHILD ID FIELD IS DRAWING FROM HARD COPY FROM DB
-editEvent = function(req, res) {
+exports.editEvent = function(req, res) {
 		EventsRef.child('-L-hHjkRMsleNYb-aBwS').update({eventName: 'FUCK YOU I WORK'})
 	.then(editedEvent => {
 	 console.log('successfully changed event in DB')
@@ -37,5 +37,3 @@ editEvent = function(req, res) {
 	})
 	.catch((err) => console.log('error in logging to DB : ' + err))
 };
-
-editEvent();
