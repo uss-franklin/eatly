@@ -4,8 +4,8 @@ const UsersRef = dbRef.child('users');
 
 //Creates user on signup using firebase auth 
 const createAuthUser = (req, res) => {
-  let {emailAddress, id} = req.body
-  UsersRef.child(id).set({email: emailAddress})
+  let {emailAddress, id, name} = req.body
+  UsersRef.child(id).set({email: emailAddress, name: name})
     .then(() => console.log('Successfully created user', id))
     .catch(err => console.log('Erro creating auth user: ', err))
 }
