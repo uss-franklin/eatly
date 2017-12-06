@@ -1,6 +1,6 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 
-const UsersRef = dbRef.child('Users');
+const UsersRef = dbRef.child('users');
 
 //Creates user on signup using firebase auth 
 const createAuthUser = (req, res) => {
