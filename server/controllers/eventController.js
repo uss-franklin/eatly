@@ -47,8 +47,15 @@ exports.sendInviteSMS = function(req, res){
     // inviteSMS()
     // console.log('sending SMS message to Invitees')
 } 
-
-const createEventDetail = function(details, hostId, guestIds) {
+const createEventUsersVoteList = function(count) {
+    let restaurantsObj = {}
+    for (let i = 0; i < count; i++) {
+        restaurantsObj[i] = '-'
+    }
+    return restaurantsObj
+}
+const createEventDetail = function(details, hostId, guestIds, yelpResults) {
+    let {yelpSearchResultsKey, count} = yelpResults;
     let eventDetails = {
         locationDetails: {
             address: details.address,
@@ -57,32 +64,28 @@ const createEventDetail = function(details, hostId, guestIds) {
         },
         foodType: details.searchTerm,
         eventHost :{
-            [hostId]: {
-                r1: '-',
-                r2: '-',
-                r3: '-'
-            }
+            [hostId]: createEventUsersVoteList(count)
         },
         eventDateTime: new Date(details.dateTime).toString(),
         eventCreationDateTime: new Date().toString(),
         voteCutOffDateTime: new Date(details.cutOffDateTime).toString(),
         eventName: details.eventName,
+        yelpSearchResultsKey: yelpSearchResultsKey
     };
     let eventInvitees = {}
-    guestIds.forEach(id => eventInvitees[id] = {r1: '-', r2: '-', r3: '-'});
+    guestIds.forEach(id => eventInvitees[id] = createEventUsersVoteList(count))
     eventDetails.eventInvitees = eventInvitees
     
     return eventDetails
 }
 
-const createYelpResultsAndSend = function(eventDetails, searchRequestParams, res) {
-    return yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)')). then(yelpSearchResultsKey => {
-        eventDetails.yelpSearchResultsKey = yelpSearchResultsKey;
-        let newDataPath = eventsRef.push(eventDetails);
-        console.log('ending the request, sending back', newDataPath.key);
-        res.send(newDataPath.key); //send the eventKey
-    });
+const createYelpResults = function(searchRequestParams) {
+    return yelpSearch(searchRequestParams, new Date('Thu Dec 21 2017 18:00:00 GMT-0500 (EST)'))
+        .then((yelpResults) => {
+            return yelpResults
+        });
 }
+
 exports.createEvent = function(req, res){
     console.log('request started')
     //object to be constructed from request object
@@ -97,18 +100,16 @@ exports.createEvent = function(req, res){
         //latitude
         //categories:
     };
-    createGuestEmailUser(req.body.guestEmails)
-        .then(guestIds => {
-            if (!req.body.firebaseId) {
-                createAnonUsers(req.body.hostEmail)
-                    .then(hostId =>  createEventDetail(req.body, hostId, guestIds))
-                        .then((eventDetails) => createYelpResultsAndSend(eventDetails, searchRequestParams, res))
-            } else {
-                let eventDetails = createEventDetail(req.body, firebaseId, guestIds)
-                createYelpResultsAndSend(eventDetails, searchRequestParams, res)
-            }
+    Promise.all([
+        createAnonUsers(req.body.hostEmail),
+        createGuestEmailUser(req.body.guestEmails),
+        createYelpResults(searchRequestParams),
+    ])
+    //var resultsarr unpacks to hostId, guestIds, yelpResults
+    .then(resultsArr => createEventDetail(req.body, ...resultsArr))
+    .then(eventDetails => {
+        let newEvent = eventsRef.push(eventDetails);
+        console.log('ending the request, sending back', newEvent.key);
+        res.send(newEvent.key)
     })
-
-    
-
 };
