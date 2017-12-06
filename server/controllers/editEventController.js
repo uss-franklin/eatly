@@ -10,7 +10,7 @@ exports.editEvent = function(req, res) {
 	EventsRef.orderByKey().equalTo(req.body.eventName).once('child_changed')
 	  .then(event => {
 	  	//TODO add in functionality for setting data to DB
-	  	EventRef.set({${thing}: ${other thing}})
+	  	EventRef.set({ })
 	  	console.log("event edited! resulting changes to db : " + event)
 	  })
 }
