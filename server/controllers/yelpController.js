@@ -40,7 +40,8 @@ exports.yelpSearch  = function(searchRequestParams, eventDateTime){
                     //get the first 12 results only
                     decoratedRestaurants = decoratedRestaurants.length > 12 ? decoratedRestaurants.slice(0, 12) : decoratedRestaurants;
                     var newDataPath = yelpRef.push(decoratedRestaurants);
-                    resolve(newDataPath.key);
+                    //Todo
+                    resolve({yelpSearchResultsKey: newDataPath.key, count: decoratedRestaurants.length });
                 });
 
             }).catch(err => {
