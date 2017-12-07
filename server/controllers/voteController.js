@@ -70,7 +70,7 @@ var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedH
         return(eventsRef.child(eventId).child('eventHost').child(userId).child(restaurantId));
 
     } else if(resolvedHostInviteeCheck[0].val() === null && resolvedHostInviteeCheck[1].val() !== null){
-        return(userRestaurantVoteRef = eventsRef.child(eventId).child('eventInvitees').child(userId).child(restaurantId));
+        return(eventsRef.child(eventId).child('eventInvitees').child(userId).child(restaurantId));
 
     } else {
         return null;

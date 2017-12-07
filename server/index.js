@@ -38,9 +38,9 @@ app.get('/getEvents', getAuthUserCreatedEvents);
 //Catch-all to allow refreshing of react-router created pages
 app.get('/*', frontEndCatchAllRouter);
 
-gmailAuthenticationController.authorize(gmailCredentials).then((oauth2Credentials) => {
+/*gmailAuthenticationController.authorize(gmailCredentials).then((oauth2Credentials) => {
     console.log(oauth2Credentials.credentials);
-});
+});*/
 
 cron.schedule('* * * * *', () => {
     console.log('>>>>>>>>>>>>>>>');
