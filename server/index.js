@@ -6,6 +6,7 @@ const frontEndCatchAllRouter = require('./controllers/frontEndController.js');
 const gmailAuthenticationController = require('./controllers/gmailAuthenticationController.js');
 const voteController = require('./controllers/voteController.js');
 const createAuthUser = require('./controllers/userController.js').createAuthUser;
+const editEvent = require('./controllers/editEventController.js').editEvent;
 const getAuthUserCreatedEvents = require('./controllers/getEventsController').getAuthUserCreatedEvents;
 
 const gmailCredentials = {
@@ -28,6 +29,7 @@ app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
 app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
 app.post('/createAuthUser', createAuthUser);
+app.post('/editEvent', editEvent);
 app.get('/getEvents', getAuthUserCreatedEvents);
 
 

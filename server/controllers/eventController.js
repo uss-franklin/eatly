@@ -2,7 +2,7 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const yelpSearch = require('./yelpController.js').yelpSearch;
 const inviteSMS = require('.././twilioSms.js').inviteSMS;
 const createAnonUsers = require('./userController.js').createAnonUsers;
-const createGuestEmailUser = require('./userController.js').createGuestEmailUser
+const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -42,8 +42,8 @@ exports.submitVote = function(req, res){
 };
 
 exports.sendInviteSMS = function(req, res){
-    // inviteSMS()
-    // console.log('sending SMS message to Invitees')
+    inviteSMS()
+    console.log('sending SMS message to Invitees')
 } 
 const createEventUsersVoteList = function(count) {
     let restaurantsObj = {}
