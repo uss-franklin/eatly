@@ -116,7 +116,7 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
                               You've been invited to 
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
-                              ` +eventName+ `!"</div> <br>
+                              ` +eventName+ `!</div> <br>
 
                               Hosted by <br> 
                               
