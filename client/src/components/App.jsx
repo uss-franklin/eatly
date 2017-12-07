@@ -11,6 +11,8 @@ import NavBar from './NavBar'
 import Account from './user/Account'
 import firebase from './login/FirebaseAuth'
 import EditEvent from './EditEvent'
+import queryString from 'query-string'
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -75,8 +77,9 @@ export default class App extends React.Component {
           />
         } 
       /> 
-      <Route exact path="/swipe" render={() => (
-        <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  />
+      <Route path="/swipe" render={() => (
+        <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  
+      />
     
     </div>
   </Router>
