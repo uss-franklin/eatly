@@ -38,7 +38,6 @@ exports.getConsensusOnEventsPastCutOff = function() {
 
 exports.voteOnRestaurant = function(req, res, routeFunc = true){
     let {eventId, userId, restaurantId, vote} = req.body;
-
     let hostEventUserRef = eventsRef.child(eventId).child('eventHost').child(userId);//.child(userId).child(restaurantId);
     let inviteeEventUserRef = eventsRef.child(eventId).child('eventInvitees').child(userId);
     let hostInviteeCheckPromises = [hostEventUserRef.once('value'), inviteeEventUserRef.once('value')];
@@ -65,7 +64,8 @@ exports.voteOnRestaurant = function(req, res, routeFunc = true){
 };
 
 var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedHostInviteeCheck) {
-
+  console.log('resolvedHostInviteeCheck[0]', resolvedHostInviteeCheck[0].val())
+  console.log('resolvedHostInviteeCheck[1]', resolvedHostInviteeCheck[1].val())
     if(resolvedHostInviteeCheck[0].val() !== null && resolvedHostInviteeCheck[1].val() === null){
         return(eventsRef.child(eventId).child('eventHost').child(userId).child(restaurantId));
 
@@ -79,6 +79,7 @@ var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedH
 
 exports.voteAndCheckForConsensus = function(req, res){
     let {eventId} = req.body;
+    console.log('consensus req.body', req.body)
     votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
 
     exports.voteOnRestaurant(req, res, false).then(() => {
