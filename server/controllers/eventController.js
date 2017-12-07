@@ -14,30 +14,73 @@ includes a query string labeled as 'eventKey'. The value for this query string s
 eventKey passed to the event_form (inputForm) view as a result of calling the 'createEvent' route.
 */
 
-exports.getEventRestaurants = function(req, res){
+//mostly copied code from voteController -- needs to be refactored
+let getUnVotedRestaurants = function(userId, eventId){
+    let hostEventUserRef = eventsRef.child(eventId).child('eventHost').child(userId);//.child(userId).child(restaurantId);
+    let inviteeEventUserRef = eventsRef.child(eventId).child('eventInvitees').child(userId);
+    let hostInviteeCheckPromises = [hostEventUserRef.once('value'), inviteeEventUserRef.once('value')];
 
-    let eventKey = req.query.eventKey;
-    // console.log('req.body:', req.body)
+    return Promise.all(hostInviteeCheckPromises).then((resolvedHostInviteeCheck) => {
+        let userRef = getUserRef(eventId, userId, resolvedHostInviteeCheck);
+        if(!userRef){
+            console.error(`Function: getUnVotedRestaurants --- There is a data integrity problem. userId should not correspond with both (or neither) of the refs`);
+            return [];
+        } else {
+            return userRef.once('value').then((restaurantVotes) => {
+                return restaurantVotes.val().reduce(function(accumulator, currentValue, index) {
+                    if (currentValue === '-')
+                        accumulator.push(index);
+                    return accumulator;
+                }, []);
+            })
+        }
+    });
+};
+
+var getUserRef = function(eventId, userId, resolvedHostInviteeCheck) {
+    if(resolvedHostInviteeCheck[0].val() !== null && resolvedHostInviteeCheck[1].val() === null){
+        return(eventsRef.child(eventId).child('eventHost').child(userId));
+
+    } else if(resolvedHostInviteeCheck[0].val() === null && resolvedHostInviteeCheck[1].val() !== null){
+        return(eventsRef.child(eventId).child('eventInvitees').child(userId));
+
+    } else {
+        return null;
+    }
+};
+
+exports.getEventRestaurants = function(req, res){
+    let {eventKey, userId} = req.query;
     let eventRef = eventsRef.child(eventKey);
-    // console.log('eventRef', eventRef)
     let returnObj = {};
-    // console.log('eventKey', req.query)
+
     eventRef.once('value').then((eventDetails) => {
         returnObj.eventName = eventDetails.val().eventName;
         returnObj.eventDateTime = eventDetails.val().eventDateTime;
         returnObj.voteCutOffDateTime = eventDetails.val().voteCutOffDateTime;
         returnObj.eventHost = Object.keys(eventDetails.val().eventHost)[0];
+        let unVotedRestaurantsPromise = getUnVotedRestaurants(userId, eventKey);
 
         let yelpSearchResultForEventRef = yelpSearchResultsRef.child(eventDetails.val().yelpSearchResultsKey);
-        return(yelpSearchResultForEventRef.once('value'));
-    }).then((yelpSearchResultForEvent) => {
-        returnObj.yelpSearchResultForEvent = yelpSearchResultForEvent;
-        res.send(returnObj);
-    }).catch((err) => {
-        console.error(err);
-        res.sendStatus(500);
+
+        let yelpSearchResultsPromise = yelpSearchResultForEventRef.once('value');
+        Promise.all([unVotedRestaurantsPromise, yelpSearchResultsPromise]).then((resolvedPromisesArr) => {
+            let [unVotedRestaurantsArr, restaurants] = resolvedPromisesArr;
+            let unVotedRestaurants = {};
+            unVotedRestaurantsArr.forEach((restaurantIndex) => {
+                unVotedRestaurants[restaurantIndex] = restaurants.val()[restaurantIndex];
+            });
+
+            returnObj.yelpSearchResultForEvent = unVotedRestaurants;
+            res.send(returnObj);
+        }).catch((err) => {
+            console.error(err);
+            res.sendStatus(500);
+        });
     });
 };
+
+
 
 exports.sendInviteSMS = function(req, res){
     inviteSMS()
