@@ -8,10 +8,7 @@ export default class EditEvent extends React.Component {
 
 	render() {
 		return(
-			<div className="editEventFormComponent parent">
-
-				<NavBar />
-				
+			<div className="editEventFormComponent parent">			
 				<div className="editEventTitleDiv">
 					<h1 className="currentEventTitle">
 						[event title]
