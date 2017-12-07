@@ -2,6 +2,7 @@ import React from 'react'
 import NavBar from '../NavBar'
 import Axios from 'axios'
 import EventEntry from './EventEntry'
+import Moment from 'moment'
 
 export default class Account extends React.Component {
   constructor(props){
@@ -19,6 +20,9 @@ export default class Account extends React.Component {
   getUserEvents() {
     return Axios.get(`/getEvents?uid=${this.props.user.uid}`)
   }
+  makeCutOffTimeMoment(cutOffTime){
+
+  }
   componentDidMount() {
     Axios.all([
       this.getUserDetails(),
@@ -26,6 +30,7 @@ export default class Account extends React.Component {
     ])
     .then(Axios.spread((userDetails, userEvents) => {
       console.log(userEvents.data)
+      this.makeCutOffTimeMoment(userEvents.data.voteCutOffDateTime)
       this.setState(Object.assign(userDetails.data, userEvents.data))
     }))
   }
