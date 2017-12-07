@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 })
 
 
-const mailOptions = function(email, hostName) {
+const mailOptions = function(email, hostName, eventDate, eventName) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: email,
@@ -99,7 +99,7 @@ const mailOptions = function(email, hostName) {
 
 
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-                You've been invited by {host} to collaborate a meal planning on Eatly!</span>
+                You've been invited by ` + hostName + ` to collaborate a meal planning on Eatly!</span>
               
               <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 4px;">
 
@@ -116,7 +116,7 @@ const mailOptions = function(email, hostName) {
                               You've been invited to 
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
-                              {event name}!"</div> <br>
+                              ` +eventName+ `!"</div> <br>
 
                               Hosted by <br> 
                               
@@ -124,12 +124,10 @@ const mailOptions = function(email, hostName) {
                               ` +hostName+ `</div> <br> on
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event date}</div> <br> at
+                                ` +eventDate+ `
+                              </div>... <br><br>
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event time}</div>... <br><br>
-                              
-                              But where?! You might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
+                              "But where?!" you might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
                               
                               <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
                               Eatly
@@ -181,8 +179,8 @@ const mailOptions = function(email, hostName) {
   }
 }
 
-const sendInviteEmail = function(email, hostName) { 
-  transporter.sendMail(mailOptions(email, hostName), function(err, info){
+const sendInviteEmail = function(email, hostName, eventDate, eventName) { 
+  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName), function(err, info){
   	console.log(hostName)
     if(err)
   		console.log(err)
