@@ -4,10 +4,7 @@ const UsersRef = dbRef.child('users')
 
 const getBothEventTypes = (uid, eventType) => {
   return UsersRef.child(uid).child(eventType).once('value')
-    .then(events => {
-      console.log(events.val())
-      return events.val()
-    })
+    .then(events =>  events.val())
 }
 
 exports.getAuthUserCreatedEvents = (req, res) => {

@@ -6,24 +6,33 @@ export default class Account extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      email: '',
+      name: '',
       hostEvents: [],
       invitedEvents: []
     }
   }
+  getUserDetails() {
+    return Axios.get(`/getUserDetails?uid=${this.props.user.uid}`)
+  }
+  getUserEvents() {
+    return Axios.get(`/getEvents?uid=${this.props.user.uid}`)
+  }
   componentDidMount() {
-    console.log('account page user', this.props.user)
-    Axios.get(`/getEvents?uid=${this.props.user.uid}`)
-    .then(resp => {
-      this.setState(resp.data, () => console.log(this.state))
-    })
-    .catch(err => console.log('error retrieving events: ', err))
+    Axios.all([
+      this.getUserDetails(),
+      this.getUserEvents()
+    ])
+    .then(Axios.spread((userDetails, userEvents) => {
+      this.setState(userDetails.data)
+    }))
   }
   render() {
-    
+    let welcome = !this.state.name ? 'loading...' : `Welcome ${this.state.name}` 
     return (
     <div className="Parent">
       <div className="usernameHeader">
-        <h1>[your name here]</h1>
+        <h1>{welcome}</h1>
       </div>
 
       <div className="usersEvents">
