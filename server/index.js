@@ -7,6 +7,7 @@ const gmailAuthenticationController = require('./controllers/gmailAuthentication
 const voteController = require('./controllers/voteController.js');
 const createAuthUser = require('./controllers/userController.js').createAuthUser;
 const editEvent = require('./controllers/editEventController.js').editEvent;
+const getAuthUserCreatedEvents = require('./controllers/getEventsController').getAuthUserCreatedEvents;
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -29,6 +30,7 @@ app.post('/vote', voteController.voteOnRestaurant);
 app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
 app.post('/createAuthUser', createAuthUser);
 app.post('/editEvent', editEvent);
+app.get('/getEvents', getAuthUserCreatedEvents);
 
 
 

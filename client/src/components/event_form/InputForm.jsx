@@ -13,7 +13,7 @@ export default class InputForm extends React.Component {
     this.state = {
       address: '',
       searchTerm: '',
-      hostEmail: '',
+      hostEmail: this.props.userAccountEmail || '',
       hostName: '',
       eventName: '',
       dateTime: moment(),

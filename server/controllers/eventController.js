@@ -7,8 +7,6 @@ const createGuestEmailUser = require('./userController.js').createGuestEmailUser
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
-
-
 /*
 This controller expects that the the request object to the corresponding route for this controller
 includes a query string labeled as 'eventKey'. The value for this query string should be equal to the
@@ -100,15 +98,17 @@ exports.createEvent = function(req, res){
         //latitude
         //categories:
     };
+    //need to create the ref to new event so that we can add it to the each user
+    let newEvent = eventsRef.push()
     Promise.all([
-        createAnonUsers(req.body.hostEmail),
-        createGuestEmailUser(req.body.guestEmails),
+        createAnonUsers(req.body.hostEmail, newEvent.key, true),
+        createGuestEmailUser(req.body.guestEmails, newEvent.key, false),
         createYelpResults(searchRequestParams),
     ])
     //var resultsarr unpacks to hostId, guestIds, yelpResults
     .then(resultsArr => createEventDetail(req.body, ...resultsArr))
     .then(eventDetails => {
-        let newEvent = eventsRef.push(eventDetails);
+        newEvent.set(eventDetails) //set the event details in firebase
         console.log('ending the request, sending back', newEvent.key);
         res.send(newEvent.key)
     })

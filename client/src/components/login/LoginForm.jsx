@@ -11,6 +11,7 @@ export default class LoginForm extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			name: '',
 			txtEmail: '',
 			txtPassword: '',
 			loggedIn: 'false',
@@ -29,9 +30,9 @@ export default class LoginForm extends React.Component {
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
 // Sends the newly created user to be written to firebase users "table" via userController
-	postNewUser(email, UID) {
+	postNewUser(email, uid, name) {
 		console.log('posting user')
-		Axios.post('/createAuthUser', {id: UID, emailAddress: email})
+		Axios.post('/createAuthUser', {id: uid, emailAddress: email, name: name})
 			.catch(err => console.log(err))
 	}
 
@@ -41,8 +42,8 @@ export default class LoginForm extends React.Component {
 		//all users created this way are visible on the online firebase console
 		this.firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
 			.then((data) => {
-				this.postNewUser(data.email, data.uid)
-				console.log('new user: ', data)
+				this.postNewUser(data.email, data.uid, this.state.name)
+				console.log('new user: ', data, this.state.name)
 			})
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
@@ -52,9 +53,9 @@ export default class LoginForm extends React.Component {
 	render() {
 		return (
 			<div className="loginSignUpForm">
-			
-			<input id="txtEmail" name="txtEmail" type="email" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
-			<input id="txtPassword" name="txtPassword" type="password" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
+			<input name="name" type="text" placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
+			<input name="txtEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+			<input name="txtPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
             	
 			<div className="buttons">
 					<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
