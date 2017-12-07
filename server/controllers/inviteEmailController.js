@@ -2,7 +2,6 @@
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
 
-
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -11,10 +10,12 @@ const transporter = nodemailer.createTransport({
 	}
 })
 
-const mailOptions = function(email) { return {
+
+const mailOptions = function(email, hostName, eventDate, eventName) {
+ return {
 	from: 'team.eatly@gmail.com',
 	to: email,
-	subject: 'TEST SUBJECT',
+	subject: hostName + ` invited you to a meal with Eatly!`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -98,7 +99,7 @@ const mailOptions = function(email) { return {
 
 
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-                You've been invited by {host} to collaborate a meal planning on Eatly!</span>
+                You've been invited by ` + hostName + ` to collaborate a meal planning on Eatly!</span>
               
               <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 4px;">
 
@@ -109,26 +110,24 @@ const mailOptions = function(email) { return {
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
                           <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            Hi {name},</p>
+                            Hi!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
                               You've been invited to 
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
-                              {event name}!"</div> <br>
+                              ` +eventName+ `!</div> <br>
 
                               Hosted by <br> 
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event organizer}</div> <br> on
+                              ` +hostName+ `</div> <br> on
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event date}</div> <br> at
+                                ` +eventDate+ `
+                              </div>... <br><br>
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event time}</div>... <br><br>
-                              
-                              But where?! You might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
+                              "But where?!" you might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
                               
                               <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
                               Eatly
@@ -180,8 +179,10 @@ const mailOptions = function(email) { return {
   }
 }
 
-const sendInviteEmail = function(email) { transporter.sendMail(mailOptions(email), function(err, info){
-  	if(err)
+const sendInviteEmail = function(email, hostName, eventDate, eventName) { 
+  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName), function(err, info){
+  	console.log(hostName)
+    if(err)
   		console.log(err)
   	else
   		console.log(info)
