@@ -3,6 +3,7 @@ const yelpSearch = require('./yelpController.js').yelpSearch;
 const inviteSMS = require('.././twilioSms.js').inviteSMS;
 const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
+// const mailOptions = require('./inviteEmailController.js').mailOptins;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -88,6 +89,10 @@ const createYelpResults = function(searchRequestParams) {
 
 exports.createEvent = function(req, res){
     console.log('request started')
+
+    //sends email to users when button is clicked
+    let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
+
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,

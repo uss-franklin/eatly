@@ -180,9 +180,12 @@ const mailOptions = {
 </html>`
 }
 
-transporter.sendMail(mailOptions, function(err, info){
+const sendInviteEmail = transporter.sendMail(mailOptions, function(err, info){
 	if(err)
 		console.log(err)
 	else
 		console.log(info)
 })
+
+exports.sendInviteEmail = sendInviteEmail
+exports.mailOptions = mailOptions
