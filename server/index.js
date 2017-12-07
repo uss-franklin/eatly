@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 const eventController = require('./controllers/eventController.js');
 const frontEndCatchAllRouter = require('./controllers/frontEndController.js');
 const gmailAuthenticationController = require('./controllers/gmailAuthenticationController.js');
@@ -27,7 +28,7 @@ app.post('/messages', eventController.sendInviteSMS);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
-app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
+app.post('/voteAndGetConsensus', voteController.voteAndCheckForConsensus);
 app.post('/createAuthUser', createAuthUser);
 app.post('/editEvent', editEvent);
 app.get('/getEvents', getAuthUserCreatedEvents);
@@ -41,6 +42,13 @@ gmailAuthenticationController.authorize(gmailCredentials).then((oauth2Credential
     console.log(oauth2Credentials.credentials);
 });
 
+cron.schedule('* * * * *', () => {
+    console.log('>>>>>>>>>>>>>>>');
+    console.log('running cron.... (Every minute)');
+    voteController.getConsensusOnEventsPastCutOff();
+    console.log('cron complete...');
+    console.log('>>>>>>>>>>>>>>>');
+});
 
 
 
