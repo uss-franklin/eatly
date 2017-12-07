@@ -25,6 +25,7 @@ exports.getEventRestaurants = function(req, res){
         returnObj.eventName = eventDetails.val().eventName;
         returnObj.eventDateTime = eventDetails.val().eventDateTime;
         returnObj.voteCutOffDateTime = eventDetails.val().voteCutOffDateTime;
+        returnObj.eventHost = Object.keys(eventDetails.val().eventHost)[0];
 
         let yelpSearchResultForEventRef = yelpSearchResultsRef.child(eventDetails.val().yelpSearchResultsKey);
         return(yelpSearchResultForEventRef.once('value'));
@@ -37,14 +38,11 @@ exports.getEventRestaurants = function(req, res){
     });
 };
 
-exports.submitVote = function(req, res){
-
-};
-
 exports.sendInviteSMS = function(req, res){
     inviteSMS()
     console.log('sending SMS message to Invitees')
-} 
+}
+
 const createEventUsersVoteList = function(count) {
     let restaurantsObj = {}
     for (let i = 0; i < count; i++) {
@@ -52,6 +50,7 @@ const createEventUsersVoteList = function(count) {
     }
     return restaurantsObj
 }
+
 const createEventDetail = function(details, hostId, guestIds, yelpResults) {
     let {yelpSearchResultsKey, count} = yelpResults;
     let eventDetails = {
