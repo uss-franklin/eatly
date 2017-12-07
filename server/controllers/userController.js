@@ -3,9 +3,13 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const UsersRef = dbRef.child('users');
 
 const getUserDetails  = (req, res) => {
-  console.log(req.query)
   UsersRef.child(req.query.uid).once('value')
-  .then(user => res.send(user.val()))
+  .then(user => {
+    userObj = user.val()
+    delete userObj.hostEvents
+    delete userObj.invitedEvents
+    res.send(userObj)
+  })
 }
 
 //Creates user on signup using firebase auth 
