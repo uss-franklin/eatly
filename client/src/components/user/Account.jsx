@@ -1,12 +1,25 @@
 import React from 'react'
 import NavBar from '../NavBar'
+import Axios from 'axios'
 
 export default class Account extends React.Component {
   constructor(props){
     super(props)
+    this.state = {
+      hostEvents: [],
+      invitedEvents: []
+    }
+  }
+  componentDidMount() {
+    console.log('account page user', this.props.user)
+    Axios.get(`/getEvents?uid=${this.props.user.uid}`)
+    .then(resp => {
+      this.setState(resp.data, () => console.log(this.state))
+    })
+    .catch(err => console.log('error retrieving events: ', err))
   }
   render() {
-    console.log("account page user", this.props.user)
+    
     return (
     <div className="Parent">
       <div className="usernameHeader">

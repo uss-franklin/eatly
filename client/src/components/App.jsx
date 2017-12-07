@@ -16,14 +16,16 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      firebaseAuthenticatedUser: {id: null},
-      eventid: ''
+      firebaseAuthenticatedUser: {uid: null},
+      eventid: '',
+      userEvents: []
     }
   }
   componentDidMount() {
     //listen for firebase logged in state
     this.authenticateUser.call(this)
   }
+  
   authenticateUser(){
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
@@ -33,7 +35,7 @@ export default class App extends React.Component {
 			} else {
 				console.log('authenticateUser(): false')
 				//sets the state on the app to a logged outed
-				this.setState({firebaseAuthenticatedUser: {id: null}})
+				this.setState({firebaseAuthenticatedUser: {uid: null}})
 			}
 		})
 	}
@@ -49,7 +51,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let loggedIn = this.state.firebaseAuthenticatedUser.id !== null
+    let loggedIn = this.state.firebaseAuthenticatedUser.uid !== null
     return (
 
   <Router>
@@ -68,7 +70,8 @@ export default class App extends React.Component {
           <InputForm 
             getEventId={this.getEventId.bind(this)} 
             getYelpData={this.getYelpData.bind(this)}
-            firebaseId={this.state.firebaseAuthenticatedUser.id}
+            userAccountEmail={this.state.firebaseAuthenticatedUser.email}
+            firebaseId={this.state.firebaseAuthenticatedUser.uid}
           />
         } 
       /> 
