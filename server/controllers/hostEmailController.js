@@ -1,4 +1,3 @@
-
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
 
@@ -11,11 +10,11 @@ const transporter = nodemailer.createTransport({
 })
 
 
-const mailOptions = function(email, hostName, eventDate, eventName) {
+const mailOptions = function(hostEmail, hostName, eventName) {
  return {
 	from: 'team.eatly@gmail.com',
-	to: email,
-	subject: hostName + ` invited you to a meal with Eatly!`,
+	to: hostEmail,
+	subject: `Hi, `+hostName+`! Here's the rundown on your Eatly Meal`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -99,7 +98,7 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
 
 
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-                You've been invited by ` + hostName + ` to collaborate a meal planning on Eatly!</span>
+                You've started a new meal with Eatly!</span>
               
               <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 4px;">
 
@@ -110,29 +109,12 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
                           <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            Hi!</p>
+                            Hey there ` +hostName+`!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                              You've been invited to 
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
-                              ` +eventName+ `!</div> <br>
+                              You've started a new event on Eatly!
+                               <br>
 
-                              Hosted by <br> 
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              ` +hostName+ `</div> <br> on
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                                ` +eventDate+ `
-                              </div>... <br><br>
-                              
-                              "But where?!" you might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
-                              
-                              <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
-                              Eatly
-                            </div>
-                            --- cast your ballots for a place to go, and the final results will be revealed before you and your friends go to meet up!
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
@@ -142,7 +124,7 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://memory-alpha.wikia.com/wiki/USS_Franklin" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Get Started!</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://memory-alpha.wikia.com/wiki/USS_Franklin" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -178,9 +160,8 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
   }
 }
 
-const sendInviteEmail = function(email, hostName, eventDate, eventName) { 
-  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName), function(err, info){
-  	console.log(hostName)
+const sendHostEmail = function(hostEmail, hostName, eventName) { 
+  transporter.sendMail(mailOptions(hostEmail, hostName, eventName), function(err, info){
     if(err)
   		console.log(err)
   	else
@@ -188,5 +169,5 @@ const sendInviteEmail = function(email, hostName, eventDate, eventName) {
   })
 }
 
-exports.sendInviteEmail = sendInviteEmail
+exports.sendHostEmail = sendHostEmail
 exports.mailOptions = mailOptions

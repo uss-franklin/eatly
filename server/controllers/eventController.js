@@ -4,6 +4,7 @@ const inviteSMS = require('.././twilioSms.js').inviteSMS;
 const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
+let sendHostEmail = require('./hostEmailController.js').sendHostEmail;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -134,10 +135,15 @@ exports.createEvent = function(req, res){
     let hostName = req.body.hostName
     let eventDate = req.body.dateTime
     let eventName = req.body.eventName
+    let hostEmail = req.body.hostEmail
+
+    console.log('THIS IS THE HOST EMAIL:: ' + hostEmail)
 
     req.body.guestEmails.forEach(function(email){
         sendInviteEmail(email, hostName, eventDate, eventName)
     })
+
+    sendHostEmail(hostEmail, hostName, eventName);
 
     //object to be constructed from request object
     let searchRequestParams = {
