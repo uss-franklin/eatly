@@ -17,7 +17,7 @@ const client = require('twilio')(keys.accountSid, keys.authToken)
 //'to' and 'body' fields can by dynamic
 const inviteSMS = function() {
 	client.messages.create({
-	    to: '+14254083980',
+	    to: '',
 	    from: "+13473086897",
 	    body: "You've been invited to a meal with your friend! Help find the perfect spot now, with Eatly."
 	}).then((message) => console.log(message.sid))
