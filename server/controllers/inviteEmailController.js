@@ -2,7 +2,6 @@
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
 
-
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -11,10 +10,12 @@ const transporter = nodemailer.createTransport({
 	}
 })
 
-const mailOptions = function(email) { return {
+
+const mailOptions = function(email, hostName) {
+ return {
 	from: 'team.eatly@gmail.com',
 	to: email,
-	subject: 'TEST SUBJECT',
+	subject: hostName + ` invited you to a meal with Eatly!`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -109,7 +110,7 @@ const mailOptions = function(email) { return {
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
                           <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            Hi {name},</p>
+                            Hi!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
                               You've been invited to 
@@ -120,7 +121,7 @@ const mailOptions = function(email) { return {
                               Hosted by <br> 
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              {event organizer}</div> <br> on
+                              ` +hostName+ `</div> <br> on
                               
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
                               {event date}</div> <br> at
@@ -180,8 +181,10 @@ const mailOptions = function(email) { return {
   }
 }
 
-const sendInviteEmail = function(email) { transporter.sendMail(mailOptions(email), function(err, info){
-  	if(err)
+const sendInviteEmail = function(email, hostName) { 
+  transporter.sendMail(mailOptions(email, hostName), function(err, info){
+  	console.log(hostName)
+    if(err)
   		console.log(err)
   	else
   		console.log(info)

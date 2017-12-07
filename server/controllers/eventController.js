@@ -88,9 +88,10 @@ exports.createEvent = function(req, res){
     console.log('request started')
 
     //sends email to users when button is clicked
+    let hostName = req.body.hostName
 
     req.body.guestEmails.forEach(function(email){
-        sendInviteEmail(email)
+        sendInviteEmail(email, hostName)
     })
 
     //object to be constructed from request object
