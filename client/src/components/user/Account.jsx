@@ -25,6 +25,7 @@ export default class Account extends React.Component {
       this.getUserEvents()
     ])
     .then(Axios.spread((userDetails, userEvents) => {
+      console.log(userEvents.data)
       this.setState(Object.assign(userDetails.data, userEvents.data))
     }))
   }
