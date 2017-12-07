@@ -28,7 +28,7 @@ app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
 app.post('/voteAndGetConsensus', voteController.voteAndGetConsensus);
 app.post('/createAuthUser', createAuthUser);
-app.get('./getEvents', getAuthUserCreatedEvents);
+app.get('/getEvents', getAuthUserCreatedEvents);
 
 
 

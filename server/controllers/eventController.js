@@ -7,8 +7,6 @@ const createGuestEmailUser = require('./userController.js').createGuestEmailUser
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
-
-
 /*
 This controller expects that the the request object to the corresponding route for this controller
 includes a query string labeled as 'eventKey'. The value for this query string should be equal to the

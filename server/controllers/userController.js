@@ -7,8 +7,8 @@ const createAuthUser = (req, res) => {
   let {emailAddress, id, name} = req.body
   let userRef = UsersRef.child(id)
   userRef.set({email: emailAddress, name: name})
-    .then(() => console.log('Successfully created user', id))
-    .catch(err => console.log('Erro creating auth user: ', err))
+    .then(() => console.log('Successfully created Auth user', id))
+    .catch(err => console.log('Error creating auth user: ', err))
 }
 
 //Creates user on filling out the input form
@@ -17,7 +17,6 @@ const createAnonUsers = (emailAddress, newEventKey, isHost) => {
   return UsersRef.orderByChild('email').equalTo(emailAddress).once('value')
     .then(user => {
       // pass in the property to write the new event key hosting vs invitedEvents list
-      console.log('hosting? ', isHost, newEventKey, emailAddress)
       let hosting = isHost ? 'hostEvents' : 'invitedEvents'
       if (user.val() === null) {
         let newUserId = UsersRef.push()
@@ -25,6 +24,7 @@ const createAnonUsers = (emailAddress, newEventKey, isHost) => {
         return newUserId.key
       } else  {
         //turning the firebase snapshot into plan js object to modify it
+        console.log(user.val())
         let userId = Object.keys(user.val())[0]
         let userObj = user.val()[userId]
         if (!userObj[hosting]) userObj[hosting]= [newEventKey]
