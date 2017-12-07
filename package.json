@@ -30,6 +30,7 @@
     "js-base64": "^2.4.0",
     "material-ui": "^0.19.4",
     "node-cron": "^1.2.1",
+    "nodemailer": "^4.4.0",
     "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
