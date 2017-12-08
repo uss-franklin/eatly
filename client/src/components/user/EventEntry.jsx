@@ -5,12 +5,12 @@ const EventEntry = ({event, vote}) => {
 
   return (
   <div className="userEvent">
-    <ul>
-      <li className="usersEventItemTitle">{event.eventName}</li>
-      <li className="eventFootType">{event.foodType}</li>
-      <li className="userEventCutOff">{event.voteCutOffDateTimeMoment.fromNow()}</li>
-      <li><button className="editEventButton">{vote ? 'vote' : 'edit'}</button></li>
-    </ul>
+    <tr>
+      <td className="usersEventItemTitle">{event.eventName}</td>
+      <td className="eventFootType">{event.foodType}</td>
+      <td className="userEventCutOff">{event.voteCutOffDateTimeMoment.fromNow()}</td>
+      <td><button className="editEventButton">{vote ? 'vote' : 'edit'}</button></td>
+    </tr>
   </div> 
   )
 }
