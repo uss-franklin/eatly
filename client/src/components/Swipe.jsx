@@ -98,10 +98,6 @@ export default class Swipe extends React.Component {
     .catch((err) => {console.log('lastClick error', err)})
   }
 
-  //duplicate voting functions for guest users noVote, yesVote, lastClick
-
-
-
   //example: http://localhost:3000/swipe?eventKey=-L-hkkpXZ58b7l6Kicgk&userId=1234 
   //parse returns {eventKey: "-L-hkkpXZ58b7l6Kicgk", userId: "1234"}
 
@@ -115,7 +111,7 @@ export default class Swipe extends React.Component {
     let parsedqs = queryString.parse(location.search)
     console.log('parse', parsedqs)
     this.setState({userId: parsedqs.userId})
-    Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey)
+    Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
         console.log('get req response', response)
         this.setState({eventKey: parsedqs.eventKey, data: response}, (cb) => {
@@ -130,6 +126,7 @@ export default class Swipe extends React.Component {
     let loading = null
     //guest code 
     if (location.search !== '') {
+      console.log('location search')
       if (this.state.data === undefined) {
         loading = <div>
           <div className="loadingtext"> restaurants being found... 
@@ -183,14 +180,23 @@ export default class Swipe extends React.Component {
     else {
     console.log('Swipe props: ', this.props)
     console.log('Swipe State: ', this.state)
-    let loading = null
+
     if (this.props.eventData === undefined) {
-      loading = <div>
+      loading = 
+      <div>
         <div className="loadingtext"> restaurants being found... 
         </div>
           {/* <img className="trex" src="./images/trex.gif" /> */}
         </div>
-    } else if (this.votingExpired(new Date(), this.props.eventData.data.voteCutOffDateTime) === true) {
+    }  else if (this.votingExpired(new Date(), this.props.eventData.data.voteCutOffDateTime) === true) {
+      loading = (
+      <div > 
+      <div className="endtext">
+        Thanks for voting, this page will display results for your event when everyone has voted
+        </div>
+        <img className="endphoto" src="./images/done.png" />
+      </div> 
+      )} else if (this.state.current >= Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length) {
       loading = 
       <div > 
       <div className="endtext">
@@ -198,15 +204,7 @@ export default class Swipe extends React.Component {
         </div>
         <img className="endphoto" src="./images/done.png" />
       </div> 
-    } else if (this.state.current >= Object.keys(this.props.eventData.data.yelpSearchResultForEvent).length) {
-      loading = 
-      <div > 
-      <div className="endtext">
-        Thanks for voting, this page will display results for your event when everyone has voted
-        </div>
-        <img className="endphoto" src="./images/done.png" />
-      </div> 
-    }
+      }
     else {
       let restaurant = this.props.eventData.data.yelpSearchResultForEvent[this.state.current]
       let event = this.props.eventData.data
@@ -231,7 +229,6 @@ export default class Swipe extends React.Component {
       </div>
     }
   }
-    
     return (
       <div> 
         {loading}

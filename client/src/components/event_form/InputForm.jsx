@@ -55,8 +55,8 @@ export default class InputForm extends React.Component {
     Axios.post('/createEvent', sendObj)
       .then((response) => {
         console.log('submit form response data: ', response)
-        this.props.getEventId(response.data)
-        this.props.getYelpData(response.data)
+        this.props.getEventId(response.data.eventId)
+        this.props.getYelpData(response.data.eventId, response.data.hostId) //add userid here
       })
       .catch(err => console.log('Form Submission Error: ', err));
     Axios.post('/messages', dummyNumber)
