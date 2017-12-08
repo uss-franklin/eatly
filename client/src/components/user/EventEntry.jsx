@@ -1,14 +1,17 @@
 import React from 'react'
+import moment from 'moment'
 
-const EventEntry = ({event, vote}) => (
+const EventEntry = ({event, vote}) => {
+
+  return (
   <div className="userEvent">
-    <h3 className="usersEventItemTitle">
-      {event.eventName}
-    </h3>
-    <button className="editEventButton">
-      {vote ? 'vote' : 'edit'}
-    </button>
+    <ul>
+      <li className="usersEventItemTitle">{event.eventName}</li>
+      <li className="eventFootType">{event.foodType}</li>
+      <li className="userEventCutOff">{event.voteCutOffDateTimeMoment.fromNow()}</li>
+      <li><button className="editEventButton">{vote ? 'vote' : 'edit'}</button></li>
+    </ul>
   </div> 
-)
-
+  )
+}
 export default EventEntry

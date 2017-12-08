@@ -8,6 +8,8 @@
 	margin-left: auto;
 	margin-right: auto;
 	border-radius: 4px;
+	display:block;
+	height:auto;
 }
 
 .usersEventsTitle {
@@ -36,6 +38,16 @@
 .usersInvitedEventsTitle {
 	text-align: center;
 	font-size: 2em;
+}
+
+.userEvent ul{
+	list-style: none;
+	clear:both;
+}
+
+.userEvent ul li {
+	width: 130px;
+
 }
 
 
