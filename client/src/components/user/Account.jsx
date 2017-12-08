@@ -69,14 +69,28 @@ export default class Account extends React.Component {
         <h2 className="usersEventsTitle">
           Your Events
         </h2>
-          <div> {hostEventsEntriesDOM} </div>
+          <table> 
+          <tr>
+            <th>Name</th>
+            <th>Time left</th>
+            <th></th>
+          </tr>
+          {hostEventsEntriesDOM} 
+          </table>
       </div>
 
       <div className="usersInvitedEvents">
         <h2 className="usersInvitedEventsTitle">
           Events You're Attending
         </h2>
-        <div> {invitedEventsEntriesDOM} </div>
+        <table> 
+          <tr>
+            <th>Name</th>
+            <th>Time left</th>
+            <th></th>
+          </tr>
+          {invitedEventsEntriesDOM} 
+        </table>
       </div>
 
     </div>
