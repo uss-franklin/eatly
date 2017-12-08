@@ -10,6 +10,7 @@ const EventEntry = ({event, vote}) => {
       <td className="userEventCutOff">{event.voteCutOffDateTimeMoment.fromNow()}</td>
       <td><button className="editEventButton">{vote ? 'vote' : 'edit'}</button></td>
     </tr>
+
   )
 }
 export default EventEntry

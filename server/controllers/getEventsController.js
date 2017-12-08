@@ -13,7 +13,11 @@ const getEventDetails = (eventId) => {
   //either no host or invited events
   if (eventId === undefined) return 
   return EventsRef.child(eventId).once('value')
-    .then(event => event.val())
+    .then(event => {
+      let eventDetails = event.val()
+      eventDetails.eid = eventId
+      return eventDetails
+    })
 }
 
 exports.getAuthUserCreatedEvents = (req, res) => {
