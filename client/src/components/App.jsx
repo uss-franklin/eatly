@@ -44,8 +44,8 @@ export default class App extends React.Component {
   getEventId(eventid) {
     this.setState({eventid: eventid})
   }
-  getYelpData(eventid){
-    Axios.get('/getRestaurants?eventKey=' + eventid)
+  getYelpData(eventid, userid){
+    Axios.get('/getRestaurants?eventKey=' + eventid + '&userId=' + userid)
       .then((response) => {
         this.setState({data: response})
       })
