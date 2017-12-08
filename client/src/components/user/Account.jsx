@@ -72,13 +72,13 @@ export default class Account extends React.Component {
           <table> 
           <tr>
             <th>Name</th>
+            <th>Cuisine</th>
             <th>Time left</th>
             <th></th>
           </tr>
           {hostEventsEntriesDOM} 
           </table>
       </div>
-
       <div className="usersInvitedEvents">
         <h2 className="usersInvitedEventsTitle">
           Events You're Attending
@@ -86,6 +86,7 @@ export default class Account extends React.Component {
         <table> 
           <tr>
             <th>Name</th>
+            <th>Cuisine</th>
             <th>Time left</th>
             <th></th>
           </tr>
