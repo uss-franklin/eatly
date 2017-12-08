@@ -11,7 +11,9 @@ export default class Account extends React.Component {
       email: '',
       name: '',
       hostEvents: [],
-      invitedEvents: []
+      invitedEvents: [],
+      hostEventsIds: [],
+      invitedEventsIds: []
     }
   }
   getUserDetails() {
@@ -33,10 +35,12 @@ export default class Account extends React.Component {
     event.sortBy = event.voteCutOffDateTimeMoment.unix()
   }
   processData(userData, eventsData){
+    //Update and sort all event details
     eventsData.hostEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
+    
     this.setState(Object.assign(userData, eventsData), () => console.log(this.state))
   }
   componentDidMount() {
