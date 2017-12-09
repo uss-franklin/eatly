@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     its rendered as a function so that data can be passed in dynamically from front
     all data is generated from the create event component the user fills in
 */
-const mailOptions = function(hostEmail, hostName, eventName, eventLocation) {
+const mailOptions = function(hostEmail, hostName, eventName) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: hostEmail,
@@ -124,7 +124,21 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation) {
                                You and your friends will be eating at
 
                                <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            ` +eventLocation+`!</p>
+                            
+
+                            !</p>
+                         
+
+
+
+
+
+
+
+
+
+
+
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
@@ -173,7 +187,7 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation) {
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendHostEmail = function(hostEmail, hostName, eventName) { 
+const sendHostResultsEmail = function(hostEmail, hostName, eventName) { 
   transporter.sendMail(mailOptions(hostEmail, hostName, eventName), function(err, info){
     if(err)
   		console.log(err)
@@ -182,5 +196,5 @@ const sendHostEmail = function(hostEmail, hostName, eventName) {
   })
 }
 
-exports.sendHostEmail = sendHostEmail
+exports.sendHostResultsEmail = sendHostResultsEmail
 exports.mailOptions = mailOptions

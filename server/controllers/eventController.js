@@ -5,6 +5,7 @@ const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
 let sendHostEmail = require('./hostEmailController.js').sendHostEmail;
+let sendHostResultsEmail = require('./hostResultsEmailController.js').sendHostResultsEmail;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -146,6 +147,8 @@ exports.createEvent = function(req, res){
     //sends different email to host with information regarding their event
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
+
+    sendHostResultsEmail(hostEmail, hostName, eventName);
 
     //object to be constructed from request object
     let searchRequestParams = {
