@@ -77,7 +77,25 @@ var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedH
     }
 };
 
-exports.voteAndCheckForConsensus = function(req, res){
+exports.calculateConsensus = function(req, res){
+    let {eventId} = req.body;
+    votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
+
+    checkForConsensus(eventId, 'vote').then((consensus) => {
+        if(consensus){
+            votingResultRef.set(consensus).then(() => {
+                res.send(consensus);
+            });
+        } else {
+            res.sendStatus(500);
+        }
+    }).catch((err) => {
+        console.err(err);
+        res.sendStatus(500);
+    });
+};
+
+/*exports.voteAndCheckForConsensus = function(req, res){
     let {eventId} = req.body;
     console.log('consensus req.body', req.body)
     votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
@@ -97,7 +115,7 @@ exports.voteAndCheckForConsensus = function(req, res){
         console.err(err);
         res.sendStatus(500);
     });
-};
+};*/
 
 let checkForConsensus = function(eventId, consensusType){
     let allEventInviteesRef = eventsRef.child(eventId).child('eventInvitees');
@@ -157,10 +175,10 @@ let gatherVotes = function(eventId, ref, consensusType){
                             }
                         }
                         //This needs to change to boolean comparison once vote functionality is integrated with screens
-                        if(votes[restaurantId] === 'true' && votes.hasOwnProperty(restaurantId)){
+                        if((votes[restaurantId] === true || votes[restaurantId] === 'true') && votes.hasOwnProperty(restaurantId)){
                             votesObj[restaurantId] = votesObj[restaurantId] ? votesObj[restaurantId] + 1 : 1;
                         }
-                        if(votes[restaurantId] === 'false' && votes.hasOwnProperty(restaurantId)){
+                        if((votes[restaurantId] === false || votes[restaurantId] === 'false') && votes.hasOwnProperty(restaurantId)){
                             votesObj[restaurantId] = votesObj[restaurantId] ? votesObj[restaurantId] : 0;
                         }
                     }
