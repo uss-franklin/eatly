@@ -40,6 +40,8 @@ exports.editEvent = function(req, res) {
 	.catch((err) => console.log('error in logging to DB : ' + err))
 };
 
+
+//TODO Delete event for invited users. 
 exports.deleteEvent = (req, res) => {
 	console.log('deleting: ', req.query.eid)
 	res.end()
