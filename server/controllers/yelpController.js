@@ -5,6 +5,8 @@ const clientSecret = require('../keys/yelpKey.js').clientSecret;
 
 let yelpRef = dbRef.child('yelpSearchResults');
 
+
+
 exports.yelpSearch  = function(searchRequestParams, eventDateTime){
     return new Promise((resolve, reject) => {
         yelp.accessToken(clientId, clientSecret).then(response => {
