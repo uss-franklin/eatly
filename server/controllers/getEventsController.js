@@ -9,11 +9,15 @@ const getBothEventTypes = (uid, eventType) => {
 }
 
 const getEventDetails = (eventId) => {
-  //adds pre-emptive return for passing an empty [] if the person has 
-  //either no host or invited events
+  //pre-emptive return for passing an empty [] if the person has 
+  //either no hosted or invited events
   if (eventId === undefined) return 
   return EventsRef.child(eventId).once('value')
-    .then(event => event.val())
+    .then(event => {
+      let eventDetails = event.val()
+      eventDetails.eid = eventId
+      return eventDetails
+    })
 }
 
 exports.getAuthUserCreatedEvents = (req, res) => {
@@ -30,8 +34,9 @@ exports.getAuthUserCreatedEvents = (req, res) => {
     .then(magic => {
       let eventsObj = {
         hostEvents: magic.slice(0, allEvents[0].length),
-        invitedEvents: magic.slice(0, allEvents[1].length)
+        invitedEvents: magic.slice(allEvents[0].length)
       }
+      // console.log('**** Returning events obj *****' , eventsObj)
       res.send(eventsObj)
     })
     

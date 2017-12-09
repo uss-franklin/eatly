@@ -6,8 +6,7 @@ const getUserDetails  = (req, res) => {
   UsersRef.child(req.query.uid).once('value')
   .then(user => {
     userObj = user.val()
-    delete userObj.hostEvents
-    delete userObj.invitedEvents
+    delete userObj.hostEvents, userObj.invitedEvents
     res.send(userObj)
   })
 }

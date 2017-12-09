@@ -11,7 +11,9 @@ export default class Account extends React.Component {
       email: '',
       name: '',
       hostEvents: [],
-      invitedEvents: []
+      invitedEvents: [],
+      hostEventsIds: [],
+      invitedEventsIds: []
     }
   }
   getUserDetails() {
@@ -33,6 +35,7 @@ export default class Account extends React.Component {
     event.sortBy = event.voteCutOffDateTimeMoment.unix()
   }
   processData(userData, eventsData){
+    //Update and sort all event details
     eventsData.hostEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
@@ -49,14 +52,32 @@ export default class Account extends React.Component {
       this.processData(userDetails.data, userEvents.data)
     }))
   }
+  handleVoteButtonClick(eventId, userId){
+    window.location = `/swipe?eventKey=${eventId}&userId=${userId}`
+  }
   render() {
     let loading = 'loading...'
     let welcome = !this.state.name ? loading : `Welcome ${this.state.name}` 
 
-    let hostEventEntires = this.state.hostEvents.map((event, idx) => <EventEntry event={event} vote={false} key={idx}/>)
+    let hostEventEntires = this.state.hostEvents.map(
+      (event, idx) => 
+        <EventEntry 
+          event={event} 
+          vote={false} 
+          key={idx} 
+          uid={this.props.user.uid} />
+      )
     let hostEventsEntriesDOM = !this.state.hostEvents.length ? loading : hostEventEntires
 
-    let invitedEventsEntries = this.state.invitedEvents.map((event, idx) => <EventEntry event={event} vote={true} key={idx}/>)
+    let invitedEventsEntries = this.state.invitedEvents.map(
+      (event, idx) => 
+        <EventEntry 
+          event={event} 
+          vote={true} 
+          key={idx} 
+          uid={this.props.user.uid} 
+          buttonAction={this.handleVoteButtonClick}/>
+      )
     let invitedEventsEntriesDOM = !this.state.invitedEvents.length ? loading : invitedEventsEntries
     
     return (
