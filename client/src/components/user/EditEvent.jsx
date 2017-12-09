@@ -14,6 +14,7 @@ export default class InputForm extends React.Component {
       eid: '',
       eventName: '',
       eventDateTime: '',
+      eventHost: '',
       voteCutOffDateTime: moment(),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''],
@@ -31,7 +32,7 @@ export default class InputForm extends React.Component {
     .hour(cutOfftimeArr[0])
     .minute(cutOfftimeArr[1])
     .second(cutOfftimeArr[2])
-    this.setState(event), () => console.log('state', this.state)
+    this.setState(event, () => console.log('state', this.state))
   }
   componentDidMount(){
     let parsedEid = queryString.parse(location.search).eventKey
@@ -61,7 +62,14 @@ export default class InputForm extends React.Component {
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
   }
-  
+  deleteEvent(){
+    let eventHostId = Object.keys(this.state.eventHost)[0]
+    let payload = {params: {eid: this.state.eid, uid: eventHostId}}
+    console.log(payload)
+    Axios.delete('/deleteEvent', payload)
+    .then(() => console.log('deleted: ', this.state.eid))
+
+  }
   submitForm(){
     let sendObj = Object.assign({}, this.state);
     let dummyNumber = this.state.dummyPhoneNumber;
@@ -125,7 +133,7 @@ export default class InputForm extends React.Component {
         </div>
 
         <div className="editFormDeleteEvent">
-        	<button className="editFormDeleteEventButton">Delete Event</button>
+        	<button className="editFormDeleteEventButton" onClick={this.deleteEvent.bind(this)}>Delete Event</button>
         </div>
         
       	</div>

@@ -6,6 +6,8 @@ const createGuestEmailUser = require('./userController.js').createGuestEmailUser
 
 //Targets all entries in DB under events tree
 const EventsRef = dbRef.child('events');
+const UsersRef = dbRef.child('users')
+
 
 
 
@@ -37,3 +39,20 @@ exports.editEvent = function(req, res) {
 	})
 	.catch((err) => console.log('error in logging to DB : ' + err))
 };
+
+exports.deleteEvent = (req, res) => {
+	console.log('deleting: ', req.query.eid)
+	res.end()
+	EventsRef.child(req.query.eid).remove()
+	.then(() => {
+		UsersRef.child(req.query.uid).child('hostEvents').once('value')
+		.then(hostEvents =>{
+			let eventsArr = hostEvents.val().slice()
+			eventsArr.splice(eventsArr.indexOf(req.query.eid), 1)
+			UsersRef.child(req.query.uid).child('hostEvents').set(eventsArr)
+			.then(res.end())
+		})
+		.catch(err => console.log('error deleteing event', req.query.eid, err ))
+	})
+	
+}

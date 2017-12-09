@@ -16,7 +16,7 @@ export default class Account extends React.Component {
       hostEventsIds: [],
       invitedEventsIds: [],
       dataFetched: false
-    } 
+    }
   }
   getUserDetails() {
     return Axios.get(`/getUserDetails?uid=${this.props.user.uid}`)
