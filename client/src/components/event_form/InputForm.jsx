@@ -59,6 +59,7 @@ export default class InputForm extends React.Component {
         this.props.getYelpData(response.data.eventId, response.data.hostId) //add userid here
       })
       .catch(err => console.log('Form Submission Error: ', err));
+    //activates the twilio function to send SMS out to all guests user inputs into form
     Axios.post('/messages', dummyNumber)
       .catch(err => console.log('SMS sending error: ' + err))
   }
