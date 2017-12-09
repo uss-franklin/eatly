@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import NavBar from '../NavBar'
 import Axios from 'axios'
 import EventEntry from './EventEntry'
@@ -13,7 +14,8 @@ export default class Account extends React.Component {
       hostEvents: [],
       invitedEvents: [],
       hostEventsIds: [],
-      invitedEventsIds: []
+      invitedEventsIds: [],
+      dataFetched: false
     }
   }
   getUserDetails() {
@@ -40,7 +42,7 @@ export default class Account extends React.Component {
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
-    this.setState(Object.assign(userData, eventsData), () => console.log(this.state))
+    this.setState(Object.assign(userData, eventsData, {dataFetched : true}), () => console.log(this.state))
   }
   componentDidMount() {
     Axios.all([
@@ -52,8 +54,9 @@ export default class Account extends React.Component {
       this.processData(userDetails.data, userEvents.data)
     }))
   }
-  handleVoteButtonClick(eventId, userId){
-    window.location = `/swipe?eventKey=${eventId}&userId=${userId}`
+  handleVoteOrEditButton(page, eventId, userId){
+    let addUser = page === 'swipe' ? `&userId=${userId}` : ' '
+    window.location = `/${page}?eventKey=${eventId}${addUser}`
   }
   render() {
     let loading = 'loading...'
@@ -65,7 +68,9 @@ export default class Account extends React.Component {
           event={event} 
           vote={false} 
           key={idx} 
-          uid={this.props.user.uid} />
+          uid={this.props.user.uid} 
+          buttonAction={this.handleVoteOrEditButton}
+        />
       )
     let hostEventsEntriesDOM = !this.state.hostEvents.length ? loading : hostEventEntires
 
@@ -76,14 +81,19 @@ export default class Account extends React.Component {
           vote={true} 
           key={idx} 
           uid={this.props.user.uid} 
-          buttonAction={this.handleVoteButtonClick}/>
+          buttonAction={this.handleVoteOrEditButton}
+        />
       )
     let invitedEventsEntriesDOM = !this.state.invitedEvents.length ? loading : invitedEventsEntries
-    
+    if (this.state.dataFetched && !this.state.invitedEvents.length) invitedEventsEntriesDOM = []
+    if (this.state.dataFetched && !this.state.hostEvents.length) hostEventsEntriesDOM = []
     return (
     <div className="Parent">
       <div className="usernameHeader">
         <h1>{welcome}</h1>
+        <button className="mealButton">
+            <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
+        </button> 
       </div>
 
       <div className="usersEvents">
@@ -91,13 +101,15 @@ export default class Account extends React.Component {
           Your Events
         </h2>
           <table> 
-          <tr>
-            <th>Name</th>
-            <th>Cuisine</th>
-            <th>Time left</th>
-            <th></th>
-          </tr>
-          {hostEventsEntriesDOM} 
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Cuisine</th>
+              <th>Time left</th>
+              <th>Actions</th>
+            </tr>
+              {hostEventsEntriesDOM}
+            </tbody>
           </table>
       </div>
       <div className="usersInvitedEvents">
@@ -105,13 +117,15 @@ export default class Account extends React.Component {
           Events You're Attending
         </h2>
         <table> 
-          <tr>
-            <th>Name</th>
-            <th>Cuisine</th>
-            <th>Time left</th>
-            <th></th>
-          </tr>
-          {invitedEventsEntriesDOM} 
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Cuisine</th>
+              <th>Time left</th>
+              <th>Actions</th>
+            </tr>
+            {invitedEventsEntriesDOM} 
+          </tbody>
         </table>
       </div>
 

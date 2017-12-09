@@ -9,6 +9,7 @@ const voteController = require('./controllers/voteController.js');
 const createAuthUser = require('./controllers/userController.js').createAuthUser;
 const editEvent = require('./controllers/editEventController.js').editEvent;
 const getAuthUserCreatedEvents = require('./controllers/getEventsController').getAuthUserCreatedEvents;
+const getSingleEvent = require('./controllers/getEventsController').getSingleEvent;
 const getUserDetails = require('./controllers/userController.js').getUserDetails;
 
 const gmailCredentials = {
@@ -34,6 +35,7 @@ app.post('/createAuthUser', createAuthUser);
 app.post('/editEvent', editEvent);
 app.get('/getEvents', getAuthUserCreatedEvents);
 app.get('/getUserDetails', getUserDetails);
+app.get('/getSingleEvent', getSingleEvent);
 
 
 
