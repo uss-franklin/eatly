@@ -65,6 +65,7 @@ exports.voteOnRestaurant = function(req, res, routeFunc = true){
 
 var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedHostInviteeCheck) {
   console.log('resolvedHostInviteeCheck[0]', resolvedHostInviteeCheck[0].val())
+  console.log('eventid: ', eventId, 'userid: ', userId, 'restaurantid:', restaurantId)
   console.log('resolvedHostInviteeCheck[1]', resolvedHostInviteeCheck[1].val())
     if(resolvedHostInviteeCheck[0].val() !== null && resolvedHostInviteeCheck[1].val() === null){
         return(eventsRef.child(eventId).child('eventHost').child(userId).child(restaurantId));
@@ -97,12 +98,12 @@ exports.calculateConsensus = function(req, res){
 
 /*exports.voteAndCheckForConsensus = function(req, res){
     let {eventId} = req.body;
-    console.log('consensus req.body', req.body)
+    console.log('voteAndCheckForConsensus req.body:', req.body)
     votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
 
     exports.voteOnRestaurant(req, res, false).then(() => {
         checkForConsensus(eventId, 'vote').then((consensus) => {
-            //console.log('Consensus = ', consensus);
+            console.log('Consensus = ', consensus);
             if(consensus){
                 votingResultRef.set(consensus).then(() => {
                     res.send(consensus);
