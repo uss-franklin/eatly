@@ -9,8 +9,8 @@ import LoginForm from './login/LoginForm'
 import Location from './location_form/Location'
 import NavBar from './NavBar'
 import Account from './user/Account'
+import EditEvent from './user/EditEvent'
 import firebase from './login/FirebaseAuth'
-import EditEvent from './EditEvent'
 import queryString from 'query-string'
 
 
@@ -80,6 +80,7 @@ export default class App extends React.Component {
       <Route path="/swipe" render={() => (
         <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  
       />
+      <Route path="/edit" component={EditEvent}/>
     
     </div>
   </Router>

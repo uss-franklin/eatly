@@ -19,6 +19,10 @@ const getEventDetails = (eventId) => {
       return eventDetails
     })
 }
+exports.getSingleEvent = (req, res) => {
+  getEventDetails(req.query.eid)
+  .then(event => res.send(event))
+}
 
 exports.getAuthUserCreatedEvents = (req, res) => {
   Promise.all([
