@@ -60,7 +60,11 @@ export default class Swipe extends React.Component {
   lastClickTrue(){
     console.log('lastclick is working')
     console.log('last click eventid', this.props.eventid )
+<<<<<<< HEAD
     Axios.post('/voteAndGetConsensus', {eventId: this.props.eventid, 
+=======
+    Axios.post('/calculateConsensus', {eventId: this.props.eventid, 
+>>>>>>> finalvoting
       userId: this.props.eventData.data.eventHost, 
       restaurantId:this.state.current, vote: true 
     })
@@ -72,7 +76,11 @@ export default class Swipe extends React.Component {
   lastClickFalse(){
     console.log('lastclick is working')
     console.log('last click eventid', this.props.eventid )
+<<<<<<< HEAD
     Axios.post('/voteAndGetConsensus', {eventId: this.props.eventid, 
+=======
+    Axios.post('/calculateConsensus', {eventId: this.props.eventid, 
+>>>>>>> finalvoting
       userId: this.props.eventData.data.eventHost, 
       restaurantId:this.state.current, vote: false 
     })
@@ -120,7 +128,11 @@ export default class Swipe extends React.Component {
   }
   guestLastClickTrue() {
     console.log('guest last click working')
+<<<<<<< HEAD
     Axios.post('/voteAndGetConsensus', {eventId: this.state.eventKey, userId: this.state.userId, 
+=======
+    Axios.post('/calculateConsensus', {eventId: this.state.eventKey, userId: this.state.userId, 
+>>>>>>> finalvoting
       restaurantId: this.state.current, vote: true})
       .then((response) => {
         console.log('GuestlastClick res', response)
@@ -129,7 +141,11 @@ export default class Swipe extends React.Component {
   }
   guestLastClickFalse() {
     console.log('guest last click working')
+<<<<<<< HEAD
     Axios.post('/voteAndGetConsensus', {eventId: this.state.eventKey, userId: this.state.userId, 
+=======
+    Axios.post('/calculateConsensus', {eventId: this.state.eventKey, userId: this.state.userId, 
+>>>>>>> finalvoting
       restaurantId: this.state.current, vote: false})
       .then((response) => {
         console.log('GuestlastClick res', response)
