@@ -15,10 +15,8 @@ const transporter = nodemailer.createTransport({
 
 /*  
     this function inits all necessary fields for email message.
-    its rendered as a function so that data can be passed in dynamically from front
-    all data is generated from the create event component the user fills in
 */
-const mailOptions = function(email, hostName, eventDate, eventName) {
+const mailOptions = function(email, hostName, eventDate, eventName, eventLocation) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: email,
@@ -134,7 +132,9 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
                                 ` +eventDate+ `
                               </div> at ... <br><br>
                               
-                              <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
+                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
+                              ` +hostName+ `</div>
+
                               
                           </p>
 
@@ -183,7 +183,7 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendResultsEmail = function(email, hostName, eventDate, eventName) { 
+const sendGuestResultsEmail = function(email, hostName, eventDate, eventName) { 
   transporter.sendMail(mailOptions(email, hostName, eventDate, eventName), function(err, info){
   	console.log(hostName)
     if(err)
