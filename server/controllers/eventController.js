@@ -129,20 +129,22 @@ const createYelpResults = function(searchRequestParams) {
 }
 
 exports.createEvent = function(req, res){
-    console.log('request started')
+    console.log('create event request started')
 
-    //sends email to users when button is clicked
+    //sets data for sending emails to convenient variables
     let hostName = req.body.hostName
     let eventDate = req.body.dateTime
     let eventName = req.body.eventName
     let hostEmail = req.body.hostEmail
 
-    console.log('THIS IS THE HOST EMAIL:: ' + hostEmail)
-
+    //iterates through every email passed in by user and sends email invite notification
+    //ref: logic in inviteEmailController
     req.body.guestEmails.forEach(function(email){
         sendInviteEmail(email, hostName, eventDate, eventName)
     })
 
+    //sends different email to host with information regarding their event
+    //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
 
     //object to be constructed from request object

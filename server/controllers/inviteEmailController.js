@@ -2,6 +2,7 @@
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
 
+//sets up connection with team's gmail account, passing in secret keys
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -11,6 +12,12 @@ const transporter = nodemailer.createTransport({
 })
 
 
+
+/*  
+    this function inits all necessary fields for email message.
+    its rendered as a function so that data can be passed in dynamically from front
+    all data is generated from the create event component the user fills in
+*/
 const mailOptions = function(email, hostName, eventDate, eventName) {
  return {
 	from: 'team.eatly@gmail.com',
@@ -178,6 +185,8 @@ const mailOptions = function(email, hostName, eventDate, eventName) {
   }
 }
 
+//the actual send email function that takes in same dynamic data
+//also passes along the mailOptions object generated in previous function
 const sendInviteEmail = function(email, hostName, eventDate, eventName) { 
   transporter.sendMail(mailOptions(email, hostName, eventDate, eventName), function(err, info){
   	console.log(hostName)
