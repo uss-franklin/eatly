@@ -40,7 +40,6 @@ export default class Account extends React.Component {
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
-    
     this.setState(Object.assign(userData, eventsData), () => console.log(this.state))
   }
   componentDidMount() {
@@ -53,14 +52,32 @@ export default class Account extends React.Component {
       this.processData(userDetails.data, userEvents.data)
     }))
   }
+  handleVoteButtonClick(eventId, userId){
+    window.location = `/swipe?eventKey=${eventId}&userId=${userId}`
+  }
   render() {
     let loading = 'loading...'
     let welcome = !this.state.name ? loading : `Welcome ${this.state.name}` 
 
-    let hostEventEntires = this.state.hostEvents.map((event, idx) => <EventEntry event={event} vote={false} key={idx}/>)
+    let hostEventEntires = this.state.hostEvents.map(
+      (event, idx) => 
+        <EventEntry 
+          event={event} 
+          vote={false} 
+          key={idx} 
+          uid={this.props.user.uid} />
+      )
     let hostEventsEntriesDOM = !this.state.hostEvents.length ? loading : hostEventEntires
 
-    let invitedEventsEntries = this.state.invitedEvents.map((event, idx) => <EventEntry event={event} vote={true} key={idx}/>)
+    let invitedEventsEntries = this.state.invitedEvents.map(
+      (event, idx) => 
+        <EventEntry 
+          event={event} 
+          vote={true} 
+          key={idx} 
+          uid={this.props.user.uid} 
+          buttonAction={this.handleVoteButtonClick}/>
+      )
     let invitedEventsEntriesDOM = !this.state.invitedEvents.length ? loading : invitedEventsEntries
     
     return (
