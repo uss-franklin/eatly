@@ -6,11 +6,9 @@ const eventController = require('./controllers/eventController.js');
 const frontEndCatchAllRouter = require('./controllers/frontEndController.js');
 const gmailAuthenticationController = require('./controllers/gmailAuthenticationController.js');
 const voteController = require('./controllers/voteController.js');
-const createAuthUser = require('./controllers/userController.js').createAuthUser;
-const editEvent = require('./controllers/editEventController.js').editEvent;
-const getAuthUserCreatedEvents = require('./controllers/getEventsController').getAuthUserCreatedEvents;
-const getSingleEvent = require('./controllers/getEventsController').getSingleEvent;
-const getUserDetails = require('./controllers/userController.js').getUserDetails;
+const {editEvent, deleteEvent}= require('./controllers/editEventController.js');
+const {getAuthUserCreatedEvents, getSingleEvent} = require('./controllers/getEventsController');
+const {getUserDetails, createAuthUser} = require('./controllers/userController.js');
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -37,6 +35,7 @@ app.post('/editEvent', editEvent);
 app.get('/getEvents', getAuthUserCreatedEvents);
 app.get('/getUserDetails', getUserDetails);
 app.get('/getSingleEvent', getSingleEvent);
+app.delete('/deleteEvent', deleteEvent);
 
 
 
