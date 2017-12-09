@@ -12,7 +12,7 @@ const EventEntry = ({event, vote, uid, buttonAction}) => {
   }
   let isExpired = event.voteCutOffDateTimeMoment.isBefore(moment())
   let timeLeft = event.voteCutOffDateTimeMoment.fromNow()
-  if (isExpired) buttons = null
+  if (isExpired || event.groupConsensusRestaurant) buttons = null
   return (
     <tr>
       <td className="usersEventItemTitle">{event.eventName}</td>

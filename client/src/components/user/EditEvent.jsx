@@ -13,8 +13,8 @@ export default class InputForm extends React.Component {
     this.state = {
       eid: '',
       eventName: '',
-      dateTime: moment(),
-      cutOffDateTime: moment(),
+      eventDateTime: '',
+      voteCutOffDateTime: moment(),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''],
     }
@@ -22,25 +22,29 @@ export default class InputForm extends React.Component {
   getEventDetail(eid) {
     return Axios.get(`/getSingleEvent?eid=${eid}`).then(resp => resp.data)
   }
+  processData(event) {
+    let cutOffDateArr = event.voteCutOffDateTime.split(' ')
+    let cutOfftimeArr = cutOffDateArr[4].split(':')
+    event.voteCutOffDateTime = moment()
+    .month(cutOffDateArr[1])
+    .date(cutOffDateArr[2])
+    .hour(cutOfftimeArr[0])
+    .minute(cutOfftimeArr[1])
+    .second(cutOfftimeArr[2])
+    this.setState(event), () => console.log('state', this.state)
+  }
   componentDidMount(){
     let parsedEid = queryString.parse(location.search).eventKey
-    console.log(parsedEid)
+    console.log('event id: ', parsedEid)
     this.getEventDetail(parsedEid)
-    .then(eventDetails => {
-      console.log(eventDetails)
-      this.setState(eventDetails), () => console.log('state', this.state)
-    })
+    .then(eventDetails => this.processData(eventDetails))
   }
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
   
-  handleInputMoment(dateTime, isCutOff) {
-    //a boolean is passed to this function to tell set state if the dateTime object is for cutoff date or eventDate
-    let stateProp = isCutOff ? 'cutOffDateTime' : 'dateTime'
-  //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
-  //see https://momentjs.com/docs/#/displaying/format/
-    this.setState({[stateProp]: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
+  handleInputMoment(dateTime) {
+    this.setState({voteCutOffDateTime: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
   }
   
   addGuestEmailPhone(list, value, idx){
@@ -59,7 +63,6 @@ export default class InputForm extends React.Component {
   }
   
   submitForm(){
-    // console.log('submit form state:', this.state)
     let sendObj = Object.assign({}, this.state);
     let dummyNumber = this.state.dummyPhoneNumber;
     sendObj.dateTime = sendObj.dateTime.format('llll');
@@ -97,23 +100,12 @@ export default class InputForm extends React.Component {
 	        </label>
         
         </div>
-
-        <div className="form-date-time" className="inputs">
-          <label>
-            New Event Date:
-            <InputMoment
-              moment={this.state.dateTime}
-              onChange={m => this.handleInputMoment.call(this, m, false)}
-              minStep={10}
-              />
-          </label>
-        </div>
         
         <div className="form-date-time-cutoff" className="inputs">
           <label>
             New Cutoff Time:
           <InputMoment
-            moment={this.state.cutOffDateTime}
+            moment={this.state.voteCutOffDateTime}
             onChange={m => this.handleInputMoment.call(this, m, true)}
             minStep={10}
             />
