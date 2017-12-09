@@ -1,25 +1,36 @@
 import React from 'react'
 import moment from 'moment'
 import InputMoment from 'input-moment'
-import GuestEmailInput from './event_form/GuestEmailForm'
-import GuestPhoneInput from './event_form/GuestPhoneForm'
+// import GuestEmailInput from './event_form/GuestEmailForm'
+// import GuestPhoneInput from './event_form/GuestPhoneForm'
 import Axios from 'axios'
-import NavBar from './NavBar'
 import { Link } from 'react-router-dom'
+import queryString from  'query-string'
 
 export default class InputForm extends React.Component {
   constructor() {
     super()
     this.state = {
+      eid: '',
       eventName: '',
       dateTime: moment(),
       cutOffDateTime: moment(),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''],
-      dummyPhoneNumber: '+14254083980' //same as above comment
     }
   }
-
+  getEventDetail(eid) {
+    return Axios.get(`/getSingleEvent?eid=${eid}`).then(resp => resp.data)
+  }
+  componentDidMount(){
+    let parsedEid = queryString.parse(location.search).eventKey
+    console.log(parsedEid)
+    this.getEventDetail(parsedEid)
+    .then(eventDetails => {
+      console.log(eventDetails)
+      this.setState(eventDetails), () => console.log('state', this.state)
+    })
+  }
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
@@ -107,31 +118,6 @@ export default class InputForm extends React.Component {
             minStep={10}
             />
           </label>
-        </div>
-        <div className="form-add-guests" className="inputs">
-          
-          <h3 className="editFormAddRemoveGuestsText">
-          	Add Guests: 
-          </h3>
-
-          {this.state.guestEmails
-            .map((guest, idx) => {
-              let emailKey = 'email' + idx
-              let phoneKey = 'phone' + idx
-               return (
-                 <div>
-                  <GuestEmailInput idx={idx} key={emailKey} 
-                  handleGuestEmailPhoneChange={this.addGuestEmailPhone.bind(this)}/>
-                  <GuestPhoneInput idx={idx} key={phoneKey}
-                  handleGuestEmailPhoneChange={this.addGuestEmailPhone.bind(this)}/>
-                </div>
-              )
-            })
-          }
-
-          <button className="editFormAddGuestsButton" onClick={this.addGuestEmailInputField.bind(this)}>
-            Add Another
-          </button>
         </div>
 
         <div className="editFormRemoveGuests">
