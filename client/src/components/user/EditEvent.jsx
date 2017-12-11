@@ -6,6 +6,7 @@ import InputMoment from 'input-moment'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
 import queryString from  'query-string'
+import EventGuest from './EventGuest'
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -74,20 +75,6 @@ export default class InputForm extends React.Component {
     this.setState({voteCutOffDateTime: dateTime })
     this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
   }
-  // addGuestEmailPhone(list, value, idx){
-  //   //list determines whether we need to update the guestemail list or phone guest list
-  //   this.setState(prevState => {
-  //     let updatedGuestList = prevState[list].slice();
-  //     console.log('getting state list: ', list, updatedGuestList)
-  //     updatedGuestList[idx] = value
-  //     return {[list]: updatedGuestList}
-  //   }, () => console.log('updated state', this.state[list]))
-  // }
-  
-  // addGuestEmailInputField(){
-  // //adds a new element to guest email state. The re-render will add a new guest email input field. 
-  //   this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
-  // }
 
   submitForm() {
     let payload = {eid: this.state.eid, fieldsToUpdate: this.state.eventDataToUpdate}
@@ -149,10 +136,19 @@ export default class InputForm extends React.Component {
 
         <div className="editFormRemoveGuests">
         	<h3 className="editFormRemoveGuestsText">
-        		Remove Guests:
+        		Guests:
         	</h3>
-
-        	<button className="editFormRemoveGuestsButton">Remove Guests</button>
+          <table> 
+          <tbody>
+            <tr>
+              {/* <th>Name</th> */}
+              <th>Email</th>
+              <th>Remove</th>
+            </tr>
+              {this.state.inviteesDetails.map((userDetails, idx) => <EventGuest details={userDetails} key={idx}/>)}
+            </tbody>
+          </table>
+        	<button className="editFormRemoveGuestsButton">Remove Select</button>
         </div>
           
         <div className="editFormSaveChanges">
