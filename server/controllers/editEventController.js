@@ -5,41 +5,23 @@ const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 
 //Targets all entries in DB under events tree
-const EventsRef = dbRef.child('events');
-const UsersRef = dbRef.child('users');
-const YelpRef = dbRef.child('yelpSearchResults');
+const EventsRef = dbRef.child('events')
+const UsersRef = dbRef.child('users')
+const YelpRef = dbRef.child('yelpSearchResults')
 
-
-
-
-/*TODO: REFACTOR THIS TO MIRROR THE WORKING VERSION BELOW
- 	NEED TO PULL ID FIELD DOWN FROM STATE OF EDIT FORM COMPONENT
- 	TO QUERY PARTICULAR EVENT IN THE EVENTS BUCKET OF DB
- */
-// pulls in the sent object that's assigned values from the edit event form component
-// this function queries the DB for the event by its name, then sets new values to it
-// exports.editEvent = function(req, res) {
-// 		EventsRef.child('id').update(req.body)
-// 	.then(editedEvent => {
-// 	 console.log('successfully changed event in DB')
-// 	 res.end()
-// 	})
-// 	.catch((err) => console.log('error in logging to DB : ' + err))
-// }
-
-
-
-
-//THIS IMPLEMENTATION WORKS, BUT ONLY WITH DUMMY DATA
-//SPECIFICALLY THE CHILD ID FIELD IS DRAWING FROM HARD COPY FROM DB
 exports.editEvent = function(req, res) {
-		EventsRef.child('-L-hHjkRMsleNYb-aBwS').update({eventName: req.body.eventName})
-	.then(editedEvent => {
-	 console.log('successfully changed event in DB')
-	 Promise.resolve(editedEvent)
-	})
-	.catch((err) => console.log('error in logging to DB : ' + err))
-};
+	console.log('updating event: ', req.body.eid)
+	Promise.all(Object.keys(req.body.fieldsToUpdate).map(field => {
+		console.log('trying to update field: ',field)
+		if (field === 'voteCutOffDateTime') {
+			req.body.fieldsToUpdate[field] = new Date(req.body.fieldsToUpdate[field]).toString()
+		}
+		return EventsRef.child(req.body.eid).update({[field]: req.body.fieldsToUpdate[field]})
+					.then(() => console.log('successfully updated: ', {[field]: req.body.fieldsToUpdate[field]}))
+					.catch((err) => console.log('error in updating event: ', req.body.eid,  err))
+	}))
+	.then(() => res.end())
+}
 
 const deleteUserEvent = (uid, eid, isHost) => {
 	let userType = isHost ? 'hostEvents' : 'invitedEvents'

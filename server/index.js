@@ -31,7 +31,7 @@ app.post('/vote', voteController.voteOnRestaurant);
 //app.post('/voteAndGetConsensus', voteController.voteAndCheckForConsensus);
 app.post('/calculateConsensus', voteController.calculateConsensus);
 app.post('/createAuthUser', createAuthUser);
-app.post('/editEvent', editEvent);
+app.put('/editEvent', editEvent);
 app.get('/getEvents', getAuthUserCreatedEvents);
 app.get('/getUserDetails', getUserDetails);
 app.get('/getSingleEvent', getSingleEvent);

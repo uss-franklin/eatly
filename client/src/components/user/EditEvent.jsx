@@ -13,55 +13,78 @@ export default class InputForm extends React.Component {
     this.state = {
       eid: '',
       eventName: '',
-      eventDateTime: '',
+      eventDateTime: moment(),
       eventHost: '',
       voteCutOffDateTime: moment(),
-      guestEmails: [''], //requires intial value to render the first guest email form
-      guestPhones: [''],
+      eventDataToUpdate: {}
     }
   }
+  //// START FETCH AND PROCESS DATA
   getEventDetail(eid) {
     return Axios.get(`/getSingleEvent?eid=${eid}`).then(resp => resp.data)
   }
-  processData(event) {
-    let cutOffDateArr = event.voteCutOffDateTime.split(' ')
+  makeMoment(dateTime) {
+    let cutOffDateArr = dateTime.split(' ')
     let cutOfftimeArr = cutOffDateArr[4].split(':')
-    event.voteCutOffDateTime = moment()
-    .month(cutOffDateArr[1])
-    .date(cutOffDateArr[2])
-    .hour(cutOfftimeArr[0])
-    .minute(cutOfftimeArr[1])
-    .second(cutOfftimeArr[2])
+    return moment()
+      .month(cutOffDateArr[1])
+      .date(cutOffDateArr[2])
+      .hour(cutOfftimeArr[0])
+      .minute(cutOfftimeArr[1])
+      .second(cutOfftimeArr[2])
+  }
+  processFetchedData(event) {
+    event.voteCutOffDateTime = this.makeMoment(event.voteCutOffDateTime)
+    event.eventDateTime = this.makeMoment(event.eventDateTime)
+    console.log(event)
     this.setState(event, () => console.log('state', this.state))
   }
   componentDidMount(){
     let parsedEid = queryString.parse(location.search).eventKey
     console.log('event id: ', parsedEid)
     this.getEventDetail(parsedEid)
-    .then(eventDetails => this.processData(eventDetails))
+    .then(eventDetails => this.processFetchedData(eventDetails))
   }
-  handleInputChange({ target }){
-    this.setState({[target.name]: target.value});  
-  }
-  
-  handleInputMoment(dateTime) {
-    this.setState({voteCutOffDateTime: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
-  }
-  
-  addGuestEmailPhone(list, value, idx){
-    //list determines whether we need to update the guestemail list or phone guest list
+
+  ////START HTTP PUT AND PROCESS DATA
+  updatePutObj(eventPropToUpdate, value) {
     this.setState(prevState => {
-      let updatedGuestList = prevState[list].slice();
-      console.log('getting state list: ', list, updatedGuestList)
-      updatedGuestList[idx] = value
-      return {[list]: updatedGuestList}
-    }, () => console.log('updated state', this.state[list]))
+      let eventDataToUpdate = Object.assign({}, prevState.eventDataToUpdate)
+      eventDataToUpdate[eventPropToUpdate] = value
+      return {eventDataToUpdate: eventDataToUpdate}
+    }, () => console.log(this.state))
   }
+  handleTitleChange({ target }){
+    this.setState({eventName: target.value})
+    this.updatePutObj.call(this, 'eventName', target.value)  
+  }
+  handleInputMoment(dateTime) {
+    this.setState({voteCutOffDateTime: dateTime })
+    this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
+  }
+  // addGuestEmailPhone(list, value, idx){
+  //   //list determines whether we need to update the guestemail list or phone guest list
+  //   this.setState(prevState => {
+  //     let updatedGuestList = prevState[list].slice();
+  //     console.log('getting state list: ', list, updatedGuestList)
+  //     updatedGuestList[idx] = value
+  //     return {[list]: updatedGuestList}
+  //   }, () => console.log('updated state', this.state[list]))
+  // }
   
-  addGuestEmailInputField(){
-  //adds a new element to guest email state. The re-render will add a new guest email input field. 
-    this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
+  // addGuestEmailInputField(){
+  // //adds a new element to guest email state. The re-render will add a new guest email input field. 
+  //   this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
+  // }
+
+  submitForm() {
+    let payload = {eid: this.state.eid, fieldsToUpdate: this.state.eventDataToUpdate}
+    Axios.put('/editEvent', payload)
+      .then((res) => console.log('edit event form res[] data: ', resp))
+      .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
+  ////END HTTP PUT AND PROCESS DATA
+
   deleteEvent(){
     let payload = { params: {
       eid: this.state.eid,
@@ -70,23 +93,12 @@ export default class InputForm extends React.Component {
       yelpresultsid: this.state.yelpSearchResultsKey
       }
     }
-    console.log(payload)
     Axios.delete('/deleteEvent', payload)
     .then(() => console.log('deleted: ', this.state.eid))
   }
-  submitForm(){
-    let sendObj = Object.assign({}, this.state);
-    let dummyNumber = this.state.dummyPhoneNumber;
-    sendObj.dateTime = sendObj.dateTime.format('llll');
-    sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
-    Axios.post('/editEvent', sendObj)
-      .then((response) => {
-        console.log('edit event form response data: ', response)
-      })
-      .catch(err => console.log('Edit Event Form Submission Error: ', err));  
-  }
-  
+
   render(){
+    const dateTime = this.state.eventDateTime;
     return (
       <div className="editEventForm parent">
       <div className="form-edit-event">
@@ -94,12 +106,12 @@ export default class InputForm extends React.Component {
         <div className="form-event-name inputs">
 
 	        <h1 className="editEventFormCurrentTitle">
-	        	Edit [Current Event Name]
+	        	Edit: {this.state.eventName}
 	        </h1>
 	        <h2 className="editEventFormCurrentDateTime">
-	        	[Current Event Date] - [Current Event Time]
+	        	{dateTime.format('MMM [the] Do [of] YYYY')} at {dateTime.format('h:mm a')}
 	        </h2>
-
+          <p className="edit-page-message">If you would like to change the event time please create a <Link to="/inputForm" style={{ textDecoration: 'underline', color: 'blue'}}>new event</Link>.</p>
 	        <label>
 	          New Name:
 	          <input 
@@ -107,10 +119,9 @@ export default class InputForm extends React.Component {
 	            name="eventName"
 	            placeholder="Name your outing!"
 	            value={this.state.eventName}
-	            onChange={this.handleInputChange.bind(this)}
+	            onChange={this.handleTitleChange.bind(this)}
 	          />
 	        </label>
-        
         </div>
         
         <div className="form-date-time-cutoff" className="inputs">
@@ -118,7 +129,7 @@ export default class InputForm extends React.Component {
             New Cutoff Time:
           <InputMoment
             moment={this.state.voteCutOffDateTime}
-            onChange={m => this.handleInputMoment.call(this, m, true)}
+            onChange={m => this.handleInputMoment.call(this, m)}
             minStep={10}
             />
           </label>
@@ -133,7 +144,7 @@ export default class InputForm extends React.Component {
         </div>
           
         <div className="editFormSaveChanges">
-        	<button className="editFormSaveChangesButton">Save Changes</button>
+        	<button className="editFormSaveChangesButton" onClick={this.submitForm.bind(this)}>Save Changes</button>
         </div>
 
         <div className="editFormDeleteEvent">
