@@ -2,13 +2,25 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 
 const UsersRef = dbRef.child('users');
 
-const getUserDetails  = (req, res) => {
+const getUserDetails = (req, res) => {
   UsersRef.child(req.query.uid).once('value')
   .then(user => {
     userObj = user.val()
     delete userObj.hostEvents, userObj.invitedEvents
     res.send(userObj)
   })
+}
+
+const getGroupInvitedUsersDetails = (req, res) => {
+  Promise.all(req.query.eventInvitees.map(uid => {
+    return UsersRef.child(uid).once('value')
+          .then(user => {
+            let {name, email} = user.val()
+            console.log(name, email)
+            return {uid: uid, name: name || '', email: email}
+          })
+  }))
+  .then(eventInviteesUsersDetails => res.send(eventInviteesUsersDetails))
 }
 
 //Creates user on signup using firebase auth 
@@ -54,6 +66,7 @@ const createGuestEmailUser = (guestEmails, newEventKey, isHost) => {
   return Promise.all(anonUsersPromise)
 }
  
+exports.getGroupInvitedUsersDetails = getGroupInvitedUsersDetails;
 exports.createGuestEmailUser = createGuestEmailUser;
 exports.createAnonUsers = createAnonUsers;
 exports.createAuthUser = createAuthUser;

@@ -16,10 +16,19 @@ export default class InputForm extends React.Component {
       eventDateTime: moment(),
       eventHost: '',
       voteCutOffDateTime: moment(),
-      eventDataToUpdate: {}
+      eventDataToUpdate: {},
+      inviteesDetails: [],
+      eventInvitees: []
     }
   }
   //// START FETCH AND PROCESS DATA
+  getEventUsers(eventInviteeUids) {
+    let payload = {
+      params: {eventInvitees: eventInviteeUids}
+    }
+    console.log('fetching user data for:', payload)
+    return Axios.get('/getGroupInvitedUsersDetails', payload).then(resp => resp.data)
+  }
   getEventDetail(eid) {
     return Axios.get(`/getSingleEvent?eid=${eid}`).then(resp => resp.data)
   }
@@ -36,8 +45,11 @@ export default class InputForm extends React.Component {
   processFetchedData(event) {
     event.voteCutOffDateTime = this.makeMoment(event.voteCutOffDateTime)
     event.eventDateTime = this.makeMoment(event.eventDateTime)
-    console.log(event)
-    this.setState(event, () => console.log('state', this.state))
+    this.getEventUsers(Object.keys(event.eventInvitees))
+    .then(inviteesDetails => {
+      event.inviteesDetails = inviteesDetails
+      this.setState(event, () => console.log('state', this.state))
+    }) 
   }
   componentDidMount(){
     let parsedEid = queryString.parse(location.search).eventKey
