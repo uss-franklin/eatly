@@ -80,7 +80,7 @@ export default class InputForm extends React.Component {
   submitForm() {
     let payload = {eid: this.state.eid, fieldsToUpdate: this.state.eventDataToUpdate}
     Axios.put('/editEvent', payload)
-      .then((res) => console.log('edit event form res[] data: ', resp))
+      .then((resp) => console.log(resp.data))
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   ////END HTTP PUT AND PROCESS DATA

@@ -20,7 +20,7 @@ exports.editEvent = function(req, res) {
 					.then(() => console.log('successfully updated: ', {[field]: req.body.fieldsToUpdate[field]}))
 					.catch((err) => console.log('error in updating event: ', req.body.eid,  err))
 	}))
-	.then(() => res.end())
+	.then(() => res.send(`Successfully Updated ${req.body.eid}`))
 }
 
 const deleteUserEvent = (uid, eid, isHost) => {
