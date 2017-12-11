@@ -63,13 +63,16 @@ export default class InputForm extends React.Component {
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
   }
   deleteEvent(){
-    let eventHostId = Object.keys(this.state.eventHost)[0]
-    let inviteesIds = Object.keys(this.state.eventInvitees)
-    let payload = {params: {eid: this.state.eid, uid: eventHostId, inviteeuids: inviteesIds}}
+    let payload = { params: {
+      eid: this.state.eid,
+      uid: Object.keys(this.state.eventHost)[0], 
+      inviteeuids: Object.keys(this.state.eventInvitees),
+      yelpresultsid: this.state.yelpSearchResultsKey
+      }
+    }
     console.log(payload)
     Axios.delete('/deleteEvent', payload)
     .then(() => console.log('deleted: ', this.state.eid))
-
   }
   submitForm(){
     let sendObj = Object.assign({}, this.state);
