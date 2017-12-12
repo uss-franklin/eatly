@@ -4,7 +4,7 @@ const EventGuest = ( {details}) => {
 
   return (
     <tr>
-      {/* <td>{details.name}</td> */}
+      <td>{details.name}</td>
       <td>{details.email}</td>
       <td><input type="checkbox" /></td>
     </tr>

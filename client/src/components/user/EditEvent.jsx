@@ -141,7 +141,7 @@ export default class InputForm extends React.Component {
           <table> 
           <tbody>
             <tr>
-              {/* <th>Name</th> */}
+              <th>Name</th>
               <th>Email</th>
               <th>Remove</th>
             </tr>
