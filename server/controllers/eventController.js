@@ -259,8 +259,8 @@ exports.createEvent = function(req, res){
     //need to create the ref to new event so that we can add it to the each user
     let newEvent = eventsRef.push()
     Promise.all([
-        createAnonUsers(req.body.hostEmail, newEvent.key, true),
-        createGuestEmailUser(req.body.guestEmails, newEvent.key, false),
+        createAnonUsers(req.body.hostEmail, req.body.hostName, newEvent.key, true),
+        createGuestEmailUser(req.body.guestEmails, req.body.guestNames, newEvent.key, false),
         createYelpResults(searchRequestParams, new Date(eventDate)),
     ])
     //var resultsarr unpacks to hostId, guestIds, yelpResults

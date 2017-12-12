@@ -4,11 +4,12 @@ export default class GuestEmailForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: ''
+      email: '',
+      name: ''
     }
   }
   handleInputChange({ target }) {
-    this.setState({value: target.value })
+    this.setState({[target.name]: target.value })
   }
   render() {
   const { handleGuestEmailPhoneChange, idx } = this.props;
@@ -17,11 +18,23 @@ export default class GuestEmailForm extends React.Component {
       <label>
         Guest Email:
         <input 
-          type="text" 
+          type="text"
+          name="email"
           placeholder="Lookingforfoodtoo@something.com"
-          value={this.state.value}
+          value={this.state.email}
           onChange={this.handleInputChange.bind(this)}
           onBlur={e => handleGuestEmailPhoneChange('guestEmails', e.target.value, idx)}
+        />
+      </label>
+      <label>
+        Guest Name:
+        <input 
+          type="text" 
+          name="name"
+          placeholder="Guest Name"
+          value={this.state.name}
+          onChange={this.handleInputChange.bind(this)}
+          onBlur={e => handleGuestEmailPhoneChange('guestNames', e.target.value, idx)}
         />
       </label>
     </div>
