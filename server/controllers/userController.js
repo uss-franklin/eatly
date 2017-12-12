@@ -34,17 +34,17 @@ const createAuthUser = (req, res) => {
 
 //Creates user on filling out the input form
 //Return a promise with the firebase user id
-const createAnonUsers = (emailAddress, newEventKey, isHost) => {
+const createAnonUsers = (emailAddress, name, newEventKey, isHost) => {
   return UsersRef.orderByChild('email').equalTo(emailAddress).once('value')
     .then(user => {
-      // pass in the property to write the new event key hosting vs invitedEvents list
+      // Create a new user if the user doesn't exist
       let hosting = isHost ? 'hostEvents' : 'invitedEvents'
       if (user.val() === null) {
         let newUserId = UsersRef.push()
-        newUserId.set({email: emailAddress, [hosting]: [newEventKey]})
+        newUserId.set({email: emailAddress, [hosting]: [newEventKey], name: name})
         return newUserId.key
       } else  {
-        //turning the firebase snapshot into plan js object to modify it
+        //If the user exists then add the new event to thier firebaser object
         console.log(user.val())
         let userId = Object.keys(user.val())[0]
         let userObj = user.val()[userId]
@@ -58,10 +58,10 @@ const createAnonUsers = (emailAddress, newEventKey, isHost) => {
     })
 } 
 
-const createGuestEmailUser = (guestEmails, newEventKey, isHost) => {
+const createGuestEmailUser = (guestEmails, guestNames, newEventKey, isHost) => {
   let anonUsersPromise = []
-  guestEmails.forEach((email) => {
-      anonUsersPromise.push(createAnonUsers(email, newEventKey, isHost))
+  guestEmails.forEach((email, idx) => {
+      anonUsersPromise.push(createAnonUsers(email, guestNames[idx], newEventKey, isHost))
   })
   return Promise.all(anonUsersPromise)
 }

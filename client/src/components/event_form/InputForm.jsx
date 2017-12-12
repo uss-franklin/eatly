@@ -50,7 +50,6 @@ export default class InputForm extends React.Component {
   submitForm(){
     // console.log('submit form state:', this.state)
     let sendObj = Object.assign({}, this.state);
-    let dummyNumber = this.state.dummyPhoneNumber;
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
