@@ -2,7 +2,7 @@ import React from 'react'
 import NavBar from './NavBar'
 import Axios from 'axios'
 import queryString from 'query-string'
-
+import RevisitSwipe from './RevisitSwipe'
 export default class Swipe extends React.Component {
   constructor(props) {
     super(props)
@@ -168,6 +168,8 @@ export default class Swipe extends React.Component {
             <div className="loadingtext"> our minions are finding restaurants... </div>
             <img className="trex" src="./images/pasta.gif" />
           </div>
+      } else if (Object.keys(this.state.data.data.yelpSearchResultForEvent)[0] !== "0") {
+        view = <RevisitSwipe eventinfo={this.state}/>
       } else if (this.votingExpired(new Date(), this.state.data.data.voteCutOffDateTime) === true) {
           view = 
             <div> 
