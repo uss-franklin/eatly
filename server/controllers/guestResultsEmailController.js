@@ -183,9 +183,9 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendGuestResultsEmail = function(email, hostName, eventDate, eventName, eventLocation) { 
-  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName, eventLocation), function(err, info){
-  	console.log(hostName)
+const sendGuestResultsEmail = function(email, hostName, eventDate, eventName, eventLocation, userId, eventId) { 
+  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName, eventLocation, userId, eventId), function(err, info){
+  	console.log('sending results email to guest at : ' +email)
     if(err)
   		console.log(err)
   	else
