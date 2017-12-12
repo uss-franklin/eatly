@@ -20,6 +20,7 @@ export default class InputForm extends React.Component {
       cutOffDateTime: moment().add(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''], //same as above comment
+      guestNames: [''],
       firebaseId: this.props.firebaseId // needed to check whether we need to create the user
     }
   }
