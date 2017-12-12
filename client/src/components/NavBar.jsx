@@ -15,7 +15,6 @@ export default class NavBar extends React.Component {
   }
   render() {
     let loggedIn = this.props.loggedIn
-
     let logoutButton = <button className="login" onClick={this.handleSignOut.bind(this)} key="logout">Log out</button>
     let loginButton =  <button className="login" key="login">
                          <Link to="/loginForm" style={{ textDecoration: 'none'}}>login or sign up</Link>
