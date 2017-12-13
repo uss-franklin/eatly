@@ -19,7 +19,7 @@ export default class InputForm extends React.Component {
       hostName: this.props.displayName || '',
       eventName: '',
       dateTime: moment(),
-      cutOffDateTime: moment().add(1, 'hour'),
+      cutOffDateTime: moment().subtract(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''], //same as above comment
       guestNames: [''],
