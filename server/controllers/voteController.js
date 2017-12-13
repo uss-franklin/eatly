@@ -1,7 +1,9 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 var cron = require('node-cron');
+var sendGuestResultsEmail = require('./guestResultsEmailController.js')
 
 let eventsRef = dbRef.child('events');
+let usersRef = dbRef.child('users');
 let yelpRef = dbRef.child('yelpSearchResults');
 
 exports.getConsensusOnEventsPastCutOff = function() {
@@ -82,9 +84,34 @@ exports.calculateConsensus = function(req, res){
     let {eventId} = req.body;
     votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
 
+
     checkForConsensus(eventId, 'vote').then((consensus) => {
         if(consensus){
             votingResultRef.set(consensus).then(() => {
+
+                console.log("CALCULATE CONSENSUS FUNC! CONSENSUS = " +consensus)
+
+                // let guestUsersEmailsArray = [];
+                // for(let i = 0; i < eventsRef.child('eventInvitees').length; i++){
+                //     guestUsersEmailsArray.push(eventsRef.child('eventInvitees')[i])
+                //     guestUsersEmailsArray[i] = usersRef.child(guestUsersEmailsArray[i]).child('email')
+                // }
+
+                // let hostName = usersRef.child(eventsRef.child(eventId).child('eventHost'))
+                // let eventDate = eventsRef.child(eventId).child('eventDateTime')
+                // let eventName = eventsRef.child(eventId).child('eventName')
+                // let eventLocation = consensus;
+                // let userId = eventsRef.child(eventId).child('eventHost')
+                
+                console.log("CALCULATE CONSENSUS FUNC! HOSTNAME = " +hostName)
+
+                // guestUsersEmailsArray.forEach(function(email){
+                //     let userId = usersRef.orderByChild('email').equalTo(email)
+                //     sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
+                //     console.log('sent email results to guests!')
+                // })
+
+
                 res.send(consensus);
             });
         } else {

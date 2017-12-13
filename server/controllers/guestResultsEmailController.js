@@ -193,5 +193,5 @@ const sendGuestResultsEmail = function(email, hostName, eventDate, eventName, ev
   })
 }
 
-exports.sendResultsEmail = sendResultsEmail
+exports.sendGuestResultsEmail = sendGuestResultsEmail
 exports.mailOptions = mailOptions

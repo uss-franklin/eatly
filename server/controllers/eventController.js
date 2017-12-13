@@ -242,8 +242,6 @@ exports.createEvent = function(req, res){
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
 
-    sendHostResultsEmail(hostEmail, hostName, eventName);
-
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,
