@@ -35,6 +35,7 @@ const createAuthUser = (req, res) => {
 //Creates user on filling out the input form
 //Return a promise with the firebase user id
 const createAnonUsers = (emailAddress, name, newEventKey, isHost) => {
+  console.log('trying to create: ', emailAddress)
   return UsersRef.orderByChild('email').equalTo(emailAddress).once('value')
     .then(user => {
       // Create a new user if the user doesn't exist
