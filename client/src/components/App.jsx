@@ -19,8 +19,6 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       firebaseAuthenticatedUser: {uid: null},
-      eventid: '',
-      userEvents: []
     }
   }
   componentDidMount() {
@@ -65,9 +63,7 @@ export default class App extends React.Component {
           />
         } 
       /> 
-      <Route path="/swipe" render={() => (
-        <Swipe />)}  
-      />
+      <Route path="/swipe" component={Swipe}/>
       <Route path="/edit" component={EditEvent}/>
     
     </div>
