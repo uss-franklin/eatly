@@ -27,25 +27,27 @@ export default class InputForm extends React.Component {
       longitude: null,
       latitude: null
     }
-
   }
   updateLatLng(lat, lng){
     this.setState({latitude: lat, longitude: lng});
   }
-
   updateAddress(address){
-    this.setState({address:address});
+    this.setState({address: address});
   }
-
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
   handleInputMoment(dateTime, isCutOff) {
-    //a boolean is passed to this function to tell set state if the dateTime object is for cutoff date or eventDate
-    let stateProp = isCutOff ? 'cutOffDateTime' : 'dateTime'
   //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
   //see https://momentjs.com/docs/#/displaying/format/
-    this.setState({[stateProp]: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
+    if (!isCutOff) {
+      console.log(isCutOff)
+      let newCutOffTime = moment(dateTime).subtract(1, 'hour')
+      console.log(dateTime.format('llll'), newCutOffTime.format('llll'))
+      this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
+    }
+    //todo cutoffdatetime limit to be at most 1 hour before event 
+    else this.setState({'cutOffDateTime': dateTime })
   }
   addGuestEmailPhone(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list
@@ -90,7 +92,6 @@ export default class InputForm extends React.Component {
             />
         </div>
     }
-
     return (
       <div className="wholeForm">
       <div className="form-create-event">
@@ -154,7 +155,7 @@ export default class InputForm extends React.Component {
             <InputMoment
               moment={this.state.dateTime}
               onChange={m => this.handleInputMoment.call(this, m, false)}
-              minStep={10}
+              minStep={30}
               />
           </label>
         </div>
@@ -164,7 +165,7 @@ export default class InputForm extends React.Component {
           <InputMoment
             moment={this.state.cutOffDateTime}
             onChange={m => this.handleInputMoment.call(this, m, true)}
-            minStep={10}
+            minStep={30}
             />
           </label>
         </div>
