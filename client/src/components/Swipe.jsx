@@ -78,12 +78,23 @@ export default class Swipe extends React.Component {
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
+  getEventDetails(eid) {
+    console.log('eid', eid)
+    Axios.get(`/getSingleEvent?eid=${eid}`).then((resp) => {
+      if (resp.data.groupConsensusRestaurant) {
+        this.setState({consensus: true}, () => {
+          console.log('eventdetailsresp', resp)
+        })
+      }
+      })  
+      .catch(err => console.log('event details error', err))
+  }
   //checks if the cutoff time for voting has passed
   votingExpired(current, cutoff) {
     cutoff = new Date(cutoff)
     return (current.valueOf() > cutoff.valueOf())
   }
-  componentDidMount() {
+  componentWillMount() {
       this.parseUser();
   }
   //gets the event data from the info in the url
@@ -95,12 +106,18 @@ export default class Swipe extends React.Component {
       .then((response) => {
         // console.log('get req response', response)
         let arr = Object.keys(response.data.yelpSearchResultForEvent)
+        if (arr.length > 0) {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
           current: Number(Object.keys(response.data.yelpSearchResultForEvent)[0]),
           totalRestaurants: Number(arr[arr.length - 1])
         }, () => {
         console.log('state', this.state)
         })
+      } else {
+        this.setState({eventKey: parsedqs.eventKey, data: response, 
+        current: 2, totalRestaurants: 1})
+      }
+      this.getEventDetails(this.state.eventKey)
       })
       .catch((err) => console.log(err))
   }
@@ -119,23 +136,28 @@ export default class Swipe extends React.Component {
       }
       //if past cutoff time, there will be a result
       else if (this.votingExpired(new Date(), this.state.data.data.voteCutOffDateTime) === true) {
+        console.log('else if one')
         view = <Results eventData={this.state}/>
       } 
       //if curr > end && result exists, then show results page, below can be left as is
       else if (this.state.current > this.state.totalRestaurants && this.state.consensus === true) {
+        console.log('else if two')
         view = <Results eventData={this.state}/>
       } 
-      else if (Object.keys(this.state.data.data.yelpSearchResultForEvent).length === 0 ) {
+      else if (Object.keys(this.state.data.data.yelpSearchResultForEvent).length === 0 && this.state.consensus === true) {
+        console.log('else if three')
         view = <Results eventData={this.state}/>
       }
       else if (this.state.current > this.state.totalRestaurants) {
+        console.log('else if four')
           view = 
             <div> 
               <div className="endtext"> Thanks for voting, this page will display results for your event when everyone has voted </div>
               <img className="endphoto" src="./images/done.png" />
             </div> 
-      }
+      } 
       else {
+        console.log('ekey', this.state.eventKey)
         let restaurant = this.state.data.data.yelpSearchResultForEvent[this.state.current]
         let event = this.state.data.data
         let totalRestaurants = this.state.totalRestaurants + 1
