@@ -1,8 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import InputMoment from 'input-moment'
-// import GuestEmailInput from './event_form/GuestEmailForm'
-// import GuestPhoneInput from './event_form/GuestPhoneForm'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
 import queryString from  'query-string'
@@ -21,7 +19,8 @@ export default class InputForm extends React.Component {
       eventDataToUpdate: {},
       inviteesDetails: [],
       eventInvitees: [],
-      newGuests: ['']
+      newGuestsEmails: [null],
+      newGuestsNames: [null]
     }
   }
 
@@ -71,14 +70,16 @@ export default class InputForm extends React.Component {
     }, () => console.log(this.state))
   }
   addAnotherGuestForm() {
-    this.setState(prevState => ({newGuests: [...prevState.newGuests, '']}), () => console.log(this.state.newGuests))
+    this.setState(prevState => ({newGuestsEmails: [...prevState.newGuestsEmails, null]}))
   }
   addNewGuestToState(email, name, idx) {
     this.setState(prevState => {
-      let updatedGuests = prevState.newGuests.slice()
-      updatedGuests[idx] = {email: email, name: name}
-      console.log(updatedGuests, idx)
-      return {newGuests: updatedGuests}
+      let updatedGuestsEmails = prevState.newGuestsEmails.slice()
+      let updatedGuestsNames = prevState.newGuestsNames.slice()
+      updatedGuestsEmails[idx] = email
+      updatedGuestsNames[idx] = name
+      console.log(updatedGuestsEmails, updatedGuestsNames, idx)
+      return {newGuestsEmails: updatedGuestsEmails, newGuestsNames: updatedGuestsNames}
     })
   }
   handleTitleChange({ target }){
@@ -90,7 +91,16 @@ export default class InputForm extends React.Component {
     this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
   }
   submitForm() {
-    let payload = {eid: this.state.eid, fieldsToUpdate: this.state.eventDataToUpdate}
+    let fieldsToUpdate = Object.assign({}, this.state.eventDataToUpdate)
+    if (this.state.newGuestsEmails[0] !== null) {
+      fieldsToUpdate.yelpResultsCount = this.state.eventHost[Object.keys(this.state.eventHost)[0]].length
+      //if the user left an empty field, we remove it from our payload
+      if (this.state.newGuestsEmails[this.state.newGuestsEmails.length - 1] === null) {
+        this.state.newGuestsEmails.pop()
+      }
+      fieldsToUpdate.newGuests = [this.state.newGuestsEmails, this.state.newGuestsNames]
+    }
+    let payload = {eid: this.state.eid, fieldsToUpdate: fieldsToUpdate}
     Axios.put('/editEvent', payload)
       .then((resp) => console.log(resp.data))
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
@@ -164,7 +174,7 @@ export default class InputForm extends React.Component {
         	<button className="editFormRemoveGuestsButton">Remove Select</button>
         </div>
         <div className="editFormAddGuests">
-            {this.state.newGuests.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}
+            {this.state.newGuestsEmails.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}
         </div>
         <button onClick={this.addAnotherGuestForm.bind(this)} >Add Another </button>
 
