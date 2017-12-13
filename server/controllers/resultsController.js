@@ -1,5 +1,5 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef
-let eventsRef = dbref.child('events')
+let eventsRef = dbRef.child('events')
 
 exports.getFinalResults = function() {
   req.body = {eventId}
