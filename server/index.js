@@ -41,6 +41,7 @@ app.get('/finalYelpResult', finalResults.FinalYelpResult)
 
 
 
+
 //Catch-all to allow refreshing of react-router created pages
 app.get('/*', frontEndCatchAllRouter);
 
