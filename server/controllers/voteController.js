@@ -1,6 +1,7 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 var cron = require('node-cron');
 var sendGuestResultsEmail = require('./guestResultsEmailController.js')
+var sendHostResultsEmail = require('./hostResultsEmailController.js')
 
 let eventsRef = dbRef.child('events');
 let usersRef = dbRef.child('users');
@@ -90,42 +91,66 @@ exports.calculateConsensus = function(req, res){
         if(consensus){
             votingResultRef.set(consensus).then(() => {
 
+                let hostName, eventDate, eventName, eventLocation, hostId, guestUserIdArray, hostEmail;
 
-                let hostName = eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+
+
+                Promise.all([
+
+                hostName = eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
                     let hostId = Object.keys(result.val())
                     console.log("HOST ID" + hostId)
-                    usersRef.child(hostId).child('name').once("hostessName").then((nameResult) => nameResult.val())
+                    return (usersRef.child(hostId).child('name').once("hostessName").then((nameResult) => nameResult.val())
+                    ).catch((err) => console.log("ERRRRRORRRR " + err))
+                }),
+
+                eventDate = eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  (dateResult.val())
+                    .catch((err) => console.log("ERRRRRORRRR " + err))),
+
+                eventName = eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
+                .catch((err) => console.log("ERRRRRORRRR " + err)),
+
+                eventLocation = consensus,
+
+                hostId = eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
+                    return (resultId.val())
                 })
-
-                let eventDate = eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) => dateResult.val())
-
-                let eventName = eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => eventNameResult.val())
-
-                let eventLocation = consensus
-
-                let userId = eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
-                    resultId.val()
-                })
+                .catch((err) => console.log("ERRRRRORRRR " + err)),
                 
-                let guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
-                    resultInvitees.val()
+                hostEmail = usersRef.child(hostId).child('email').once('value').then((result) => {
+                    return (result.val())
+                }),
+                
+                guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
+                     return (resultInvitees.val())
                 }))
+                .catch((err) => console.log("ERRRRRORRRR " + err))
 
-                let guestUserEmailsArray = [];
+                ]).then(() => {
+                    let guestUserEmailsArray = [];
 
-                for(let i = 0; i < guestUsersIdArray.length; i++){
-                    let email = ''
+                    for(let i = 0; i < guestUsersIdArray.length; i++){
+                        let email = ''
 
-                    usersRef.child(guestUsersIdArray[i]).child("email").once('value').then((result) => {
-                        email = result.val()
-                        guestUserEmailsArray.push(email)   
+                        usersRef.child(guestUsersIdArray[i]).child("email").once('value').then((result) => {
+                            email = result.val()
+                            guestUserEmailsArray.push(email)   
+                        })
+                    }
+
+
+                    guestUserEmailsArray.forEach(function(email){
+                        //TO DO : snatch the user Id each time by traversing thru the DB using email and/or eventId keys
+                        let userId = usersRef.child()
+                        
+                        //pass in that userId into the invocation of the func with its matching email address
+                        sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
                     })
-                }
 
-
-                guestUserEmailsArray.forEach(function(email){
-                    sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
                 })
+
+                    sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
+
 
 
                 res.send(consensus);
