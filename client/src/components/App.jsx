@@ -30,7 +30,7 @@ export default class App extends React.Component {
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
 				console.log('authenticateUser():true')
-				//sets the state on the app to a logged in
+				console.log(user)
 				this.setState({firebaseAuthenticatedUser: user}) 
 			} else {
 				console.log('authenticateUser(): false')
@@ -60,6 +60,7 @@ export default class App extends React.Component {
           <InputForm 
             userAccountEmail={this.state.firebaseAuthenticatedUser.email}
             firebaseId={this.state.firebaseAuthenticatedUser.uid}
+            displayName={this.state.firebaseAuthenticatedUser.displayName}
           />
         } 
       /> 

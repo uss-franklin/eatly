@@ -16,7 +16,7 @@ export default class InputForm extends React.Component {
       address: '',
       searchTerm: '',
       hostEmail: this.props.userAccountEmail || '',
-      hostName: '',
+      hostName: this.props.displayName || '',
       eventName: '',
       dateTime: moment(),
       cutOffDateTime: moment().add(1, 'hour'),

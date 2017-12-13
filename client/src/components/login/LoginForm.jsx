@@ -41,9 +41,10 @@ export default class LoginForm extends React.Component {
 		let { txtEmail, txtPassword } = this.state
 		//all users created this way are visible on the online firebase console
 		this.firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
-			.then((data) => {
-				this.postNewUser(data.email, data.uid, this.state.name)
-				console.log('new user: ', data, this.state.name)
+			.then((user) => {
+				user.updateProfile({displayName : this.state.name})
+				this.postNewUser(user.email, user.uid, this.state.name)
+				console.log('new user: ', user, this.state.name)
 			})
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
