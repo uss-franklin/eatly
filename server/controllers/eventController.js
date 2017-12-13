@@ -241,16 +241,20 @@ exports.createEvent = function(req, res){
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
 
+    console.log('LATITUDE: ', req.body.latitude, 'LONGITUDE: ', req.body.longitude);
+
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,
         sort_by: 'best_match',
-        location: req.body.address,
+        //location: req.body.address,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
         locale: 'en_US',
         radius: 6437,//This value corresponds with 4 miles (in meters). The default value is 10000 meters(6.2 miles)
         term: req.body.searchTerm
-        //longitude
-        //latitude
+        //longitude:
+        //latitude:
         //categories:
     };
     //need to create the ref to new event so that we can add it to the each user
