@@ -6,6 +6,8 @@ import GuestPhoneInput from './GuestPhoneForm'
 import Axios from 'axios'
 import NavBar from '../NavBar'
 import { Link } from 'react-router-dom'
+import AutoCompleteFrame from './AutoCompleteFrame.jsx'
+import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -22,8 +24,19 @@ export default class InputForm extends React.Component {
       guestPhones: [''], //same as above comment
       guestNames: [''],
       firebaseId: this.props.firebaseId // needed to check whether we need to create the user
+      longitude: null,
+      latitude: null
     }
+
   }
+  updateLatLng(lat, lng){
+    this.setState({latitude: lat, longitude: lng});
+  }
+
+  updateAddress(address){
+    this.setState({address:address});
+  }
+
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
@@ -65,20 +78,27 @@ export default class InputForm extends React.Component {
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
+    let mapView = <div></div>;
+    if(this.state.latitude && this.state.longitude) {
+        mapView = <div>
+            <MapWithAMarker
+                lat={this.state.latitude}
+                lng={this.state.longitude}
+                defaultZoom={16}
+                containerElement={<div style={{height: `400px`}}/>}
+                mapElement={<div style={{height: `100%`}}/>}
+            />
+        </div>
+    }
+
     return (
       <div className="wholeForm">
       <div className="form-create-event">
         <div className="form-location" className="inputs">
         <label>
           Restaurants Around:
-          <input 
-            type="text" 
-            name="address"
-            placeholder="Enter an Address" 
-            value={this.state.address} 
-            onChange={this.handleInputChange.bind(this)}
-          />
-          </label>
+          <AutoCompleteFrame updateLatLng={this.updateLatLng.bind(this)} updateAddress={this.updateAddress.bind(this)}/>
+        </label>
         </div>
         <div className="form-food-search" className="inputs">
         <label>
@@ -166,6 +186,9 @@ export default class InputForm extends React.Component {
           <button className="add-guests" onClick={this.addGuestEmailInputField.bind(this)}>
             Add Another
           </button>
+        </div>
+        <div>
+          {mapView}
         </div>
         <div className="form-create-event" className="inputs">
           <button onClick={this.submitForm.bind(this)}>
