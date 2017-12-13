@@ -30,16 +30,16 @@ export default class Swipe extends React.Component {
         console.log('noVote res', response)
         let num = ++this.state.current
         this.setState({current: num}, () => {
-          
           if (this.state.current  > this.state.totalRestaurants ) {
               this.lastClickFalse()
-            }
+          }
         })
       })
       .catch((err) => { console.log(err)})
   }
   yesVote() {
-    let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, vote: true}
+    let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
+      vote: true}
     Axios.post('/vote', voteObj)
       .then((response) => {
         console.log('yesVote res', response)
@@ -54,7 +54,6 @@ export default class Swipe extends React.Component {
   }
   //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant
   lastClickTrue(){
-    console.log('lastclick is working')
     console.log('last click eventid', this.state.eventKey )
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.eventId, 
@@ -67,7 +66,7 @@ export default class Swipe extends React.Component {
       .catch((err) => {console.log('lastClick error', err)})
   }
   lastClickFalse(){
-    console.log('lastclick is working')
+    // console.log('lastclick is working')
     console.log('last click eventid', this.state.eventKey )
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.userId, 
@@ -94,7 +93,7 @@ export default class Swipe extends React.Component {
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
-        console.log('get req response', response)
+        // console.log('get req response', response)
         let arr = Object.keys(response.data.yelpSearchResultForEvent)
         this.setState({eventKey: parsedqs.eventKey, data: response, 
           current: Number(Object.keys(response.data.yelpSearchResultForEvent)[0]),
@@ -120,14 +119,14 @@ export default class Swipe extends React.Component {
       }
       //if past cutoff time, there will be a result
       else if (this.votingExpired(new Date(), this.state.data.data.voteCutOffDateTime) === true) {
-        view = <Results />
+        view = <Results eventData={this.state}/>
       } 
       //if curr > end && result exists, then show results page, below can be left as is
       else if (this.state.current > this.state.totalRestaurants && this.state.consensus === true) {
-        view = <Results />
+        view = <Results eventData={this.state}/>
       } 
       else if (Object.keys(this.state.data.data.yelpSearchResultForEvent).length === 0 ) {
-        view = <Results />
+        view = <Results eventData={this.state}/>
       }
       else if (this.state.current > this.state.totalRestaurants) {
           view = 

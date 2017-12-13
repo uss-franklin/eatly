@@ -1,7 +1,16 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef
-let eventsRef = dbref.child('events')
+let YelpRef = dbRef.child('yelpSearchResults')
 
-exports.getFinalResults = function() {
-  req.body = {eventId}
-  const eventRef = dbref.orderByChild(event.key).equalTo(`${request.body.eventId}`)
+const getFinalResults = (yelpResultsKey, res) => {
+  if (yelpResultsKey === undefined) return
+  return  YelpRef.child(yelpResultsKey).once('value')
+    .then(yelp => {
+      let restaurantDetails = yelp.val()
+      // console.log('restdetails', restaurantDetails)
+      res.send(restaurantDetails)
+    })
+}
+
+exports.FinalYelpResult = (req, res) => {
+  getFinalResults(req.query.yelpKey, res)
 }

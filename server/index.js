@@ -37,7 +37,7 @@ app.get('/getUserDetails', getUserDetails);
 app.get('/getGroupInvitedUsersDetails', getGroupInvitedUsersDetails);
 app.get('/getSingleEvent', getSingleEvent);
 app.delete('/deleteEvent', deleteEvent);
-app.get('/finalResults', )
+app.get('/finalYelpResult', finalResults.FinalYelpResult)
 
 
 
