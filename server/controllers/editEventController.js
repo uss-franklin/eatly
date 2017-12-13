@@ -9,10 +9,30 @@ const EventsRef = dbRef.child('events')
 const UsersRef = dbRef.child('users')
 const YelpRef = dbRef.child('yelpSearchResults')
 
+const createUsersAndAddUsersToEvent = (eid, guestEmails, guestNames, yelpResultsCount) => {
+	let yelpResultsVoteList = {}
+		for (let i = 0; i < yelpResultsCount; i++) {
+			yelpResultsVoteList[i] = '-'
+	}
+	return createGuestEmailUser(guestEmails, guestNames, eid, false)
+	.then(userIds => {
+		return Promise.all(userIds.map(uid => {
+				console.log('Trying to update event: ', eid, 'with user: ',uid )
+				return EventsRef.child(eid).child('eventInvitees').update({[uid]: yelpResultsVoteList})
+		}))
+	})
+}
+
 exports.editEvent = function(req, res) {
 	console.log('updating event: ', req.body.eid)
 	Promise.all(Object.keys(req.body.fieldsToUpdate).map(field => {
 		console.log('trying to update field: ',field)
+		if (field === 'yelpResultsCount') return
+		if (field === 'newGuests') {
+			let yelpResultsCount = req.body.fieldsToUpdate['yelpResultsCount']
+			let newGuests = req.body.fieldsToUpdate['newGuests']
+			return createUsersAndAddUsersToEvent(req.body.eid, newGuests[0], newGuests[1], yelpResultsCount)
+		}
 		if (field === 'voteCutOffDateTime') {
 			req.body.fieldsToUpdate[field] = new Date(req.body.fieldsToUpdate[field]).toString()
 		}
@@ -21,6 +41,7 @@ exports.editEvent = function(req, res) {
 					.catch((err) => console.log('error in updating event: ', req.body.eid,  err))
 	}))
 	.then(() => res.send(`Successfully Updated ${req.body.eid}`))
+	.catch(err => 'Could not update event: ', req.body.eid)
 }
 
 const deleteUserEvent = (uid, eid, isHost) => {
