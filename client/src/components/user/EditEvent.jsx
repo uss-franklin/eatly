@@ -124,7 +124,6 @@ export default class InputForm extends React.Component {
     return (
       <div className="editEventForm parent">
       <div className="form-edit-event">
-
         <div className="form-event-name inputs">
 
 	        <h1 className="editEventFormCurrentTitle">

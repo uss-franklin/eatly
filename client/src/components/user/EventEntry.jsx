@@ -1,18 +1,21 @@
 import React from 'react'
 import moment from 'moment'
 
-const EventEntry = ({event, vote, uid, buttonAction}) => {
-  let clickActionRedirectLocation = vote ? 'swipe' : 'edit'
+const EventEntry = ({event, canEdit, uid, buttonAction}) => {
+  
   let buttons = [
     <button key={'edit'} className="EditOrVoteEventButton" onClick={()=> buttonAction('edit', event.eid, uid)}>edit</button>,
     <button key={'swipe'} className="EditOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>
   ]
-  if (vote) {
+  if (!canEdit) {
     buttons = <button className="EditOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>
+  }
+  if (event.groupConsensusRestaurant) {
+    buttons = <button className="EditOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>
   }
   let isExpired = event.voteCutOffDateTimeMoment.isBefore(moment())
   let timeLeft = event.voteCutOffDateTimeMoment.fromNow()
-  if (isExpired || event.groupConsensusRestaurant) buttons = null
+  if (isExpired) buttons = null
   return (
     <tr>
       <td className="usersEventItemTitle">{event.eventName}</td>

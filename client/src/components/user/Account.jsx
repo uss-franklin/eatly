@@ -66,7 +66,7 @@ export default class Account extends React.Component {
       (event, idx) => 
         <EventEntry 
           event={event} 
-          vote={false} 
+          canEdit={true} 
           key={idx} 
           uid={this.props.user.uid} 
           buttonAction={this.handleVoteOrEditButton}
@@ -78,7 +78,7 @@ export default class Account extends React.Component {
       (event, idx) => 
         <EventEntry 
           event={event} 
-          vote={true} 
+          canEdit={false} 
           key={idx} 
           uid={this.props.user.uid} 
           buttonAction={this.handleVoteOrEditButton}
