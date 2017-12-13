@@ -43,7 +43,7 @@ export default class InputForm extends React.Component {
     if (!isCutOff) {
       console.log(isCutOff)
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      console.log(dateTime.format('llll'), newCutOffTime.format('llll'))
+      // console.log(dateTime.format('llll'), newCutOffTime.format('llll'))
       this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
     }
     //todo cutoffdatetime limit to be at most 1 hour before event 
