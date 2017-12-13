@@ -9,6 +9,7 @@ const voteController = require('./controllers/voteController.js');
 const {editEvent, deleteEvent}= require('./controllers/editEventController.js');
 const {getAuthUserCreatedEvents, getSingleEvent} = require('./controllers/getEventsController');
 const {getUserDetails, createAuthUser, getGroupInvitedUsersDetails} = require('./controllers/userController.js');
+const finalResults = require('./controllers/resultsController.js')
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -28,7 +29,6 @@ app.post('/messages', eventController.sendInviteSMS);
 app.get('/getRestaurants', eventController.getEventRestaurants);
 app.get('/authcode', gmailAuthenticationController.handleAuthorizationCallBack);
 app.post('/vote', voteController.voteOnRestaurant);
-//app.post('/voteAndGetConsensus', voteController.voteAndCheckForConsensus);
 app.post('/calculateConsensus', voteController.calculateConsensus);
 app.post('/createAuthUser', createAuthUser);
 app.put('/editEvent', editEvent);
@@ -37,6 +37,7 @@ app.get('/getUserDetails', getUserDetails);
 app.get('/getGroupInvitedUsersDetails', getGroupInvitedUsersDetails);
 app.get('/getSingleEvent', getSingleEvent);
 app.delete('/deleteEvent', deleteEvent);
+app.get('/finalResults', )
 
 
 

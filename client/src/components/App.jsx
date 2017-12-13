@@ -41,16 +41,6 @@ export default class App extends React.Component {
 			}
 		})
 	}
-  getEventId(eventid) {
-    this.setState({eventid: eventid})
-  }
-  getYelpData(eventid, userid){
-    Axios.get('/getRestaurants?eventKey=' + eventid + '&userId=' + userid)
-      .then((response) => {
-        this.setState({data: response})
-      })
-      .catch((err) => {console.log('getYelpDataError: ', err)})
-  }
 
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser.uid !== null
@@ -70,15 +60,13 @@ export default class App extends React.Component {
       />
       <Route exact path="/inputForm" render={() => 
           <InputForm 
-            getEventId={this.getEventId.bind(this)} 
-            getYelpData={this.getYelpData.bind(this)}
             userAccountEmail={this.state.firebaseAuthenticatedUser.email}
             firebaseId={this.state.firebaseAuthenticatedUser.uid}
           />
         } 
       /> 
       <Route path="/swipe" render={() => (
-        <Swipe eventid={this.state.eventid} eventData={this.state.data} />)}  
+        <Swipe />)}  
       />
       <Route path="/edit" component={EditEvent}/>
     
