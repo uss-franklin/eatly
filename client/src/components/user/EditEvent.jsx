@@ -7,6 +7,7 @@ import Axios from 'axios'
 import { Link } from 'react-router-dom'
 import queryString from  'query-string'
 import EventGuest from './EventGuest'
+import AddGuestForm from './AddGuestForm'
 
 export default class InputForm extends React.Component {
   constructor() {
@@ -19,9 +20,11 @@ export default class InputForm extends React.Component {
       voteCutOffDateTime: moment(),
       eventDataToUpdate: {},
       inviteesDetails: [],
-      eventInvitees: []
+      eventInvitees: [],
+      newGuests: ['']
     }
   }
+
   //// START FETCH AND PROCESS DATA
   getEventUsers(eventInviteeUids) {
     let payload = {
@@ -67,6 +70,17 @@ export default class InputForm extends React.Component {
       return {eventDataToUpdate: eventDataToUpdate}
     }, () => console.log(this.state))
   }
+  addAnotherGuestForm() {
+    this.setState(prevState => ({newGuests: [...prevState.newGuests, '']}), () => console.log(this.state.newGuests))
+  }
+  addNewGuestToState(email, name, idx) {
+    this.setState(prevState => {
+      let updatedGuests = prevState.newGuests.slice()
+      updatedGuests[idx] = {email: email, name: name}
+      console.log(updatedGuests, idx)
+      return {newGuests: updatedGuests}
+    })
+  }
   handleTitleChange({ target }){
     this.setState({eventName: target.value})
     this.updatePutObj.call(this, 'eventName', target.value)  
@@ -75,7 +89,6 @@ export default class InputForm extends React.Component {
     this.setState({voteCutOffDateTime: dateTime })
     this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
   }
-
   submitForm() {
     let payload = {eid: this.state.eid, fieldsToUpdate: this.state.eventDataToUpdate}
     Axios.put('/editEvent', payload)
@@ -150,7 +163,12 @@ export default class InputForm extends React.Component {
           </table>
         	<button className="editFormRemoveGuestsButton">Remove Select</button>
         </div>
-          
+        <div className="editFormAddGuests">
+            {this.state.newGuests.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}
+        </div>
+        <button onClick={this.addAnotherGuestForm.bind(this)} >Add Another </button>
+
+
         <div className="editFormSaveChanges">
         	<button className="editFormSaveChangesButton" onClick={this.submitForm.bind(this)}>Save Changes</button>
         </div>
