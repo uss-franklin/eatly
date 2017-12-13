@@ -55,8 +55,9 @@ export default class InputForm extends React.Component {
     Axios.post('/createEvent', sendObj)
       .then((response) => {
         console.log('submit form response data: ', response)
-        this.props.getEventId(response.data.eventId)
-        this.props.getYelpData(response.data.eventId, response.data.hostId) //add userid here
+        let eventId = response.data.eventId
+        let userId = response.data.hostId
+        window.location = `/swipe?eventKey=${eventId}&userId=${userId}`
       })
       .catch(err => console.log('Form Submission Error: ', err));
     //activates the twilio function to send SMS out to all guests user inputs into form
@@ -168,7 +169,7 @@ export default class InputForm extends React.Component {
         </div>
         <div className="form-create-event" className="inputs">
           <button onClick={this.submitForm.bind(this)}>
-            <Link to="/swipe" Find Restaurants style={{textDecoration: 'none'}}> Find Restaurants </Link>
+            Find Restaurants
           </button>
         </div>
       </div>

@@ -15,7 +15,6 @@ export default class Results extends React.Component {
 	render() {
 		return (
 			<div className="parent resultsComponent">
-				<NavBar />
 					<h1 className="resultsTitle">
 						<div className="congratsText">
 							Congrats!
