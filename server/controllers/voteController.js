@@ -83,7 +83,6 @@ var getUserRestaurantVoteRef = function(eventId, userId, restaurantId, resolvedH
 exports.calculateConsensus = function(req, res){
     let {eventId} = req.body;
 
-    console.log("EVENT ID IN CALCULATE CONSENSUS:  " + eventId)
     votingResultRef = eventsRef.child(eventId).child('groupConsensusRestaurant');
 
 
@@ -91,32 +90,42 @@ exports.calculateConsensus = function(req, res){
         if(consensus){
             votingResultRef.set(consensus).then(() => {
 
-                let guestIds = eventsRef.child(eventId).orderByChild("eventInvitees")
 
-                console.log("guest Ids = " + guestIds)
+                let hostName = eventsRef.child(eventId).child('eventHost').once("value").then((result) => {
+                    let hostId = Object.keys(result.val())
+                    console.log("HOST ID" + hostId)
+                    usersRef.child(hostId).child('name').once("hostessName").then((nameResult) => nameResult.val())
+                })
 
+                let eventDate = eventsRef.child(eventId).child('eventDateTime').once("yesPlz").then((dateResult) => dateResult.val())
 
-                // console.log("EVENTS REF . CHILD EVENT INVITEEEEEEES :" + eventsRef.child('eventInvitees'))
-                // for(let i = 0; i < eventsRef.child('eventInvitees').length; i++){
-                //     guestUsersEmailsArray.push(eventsRef.child('eventInvitees')[i])
-                //     guestUsersEmailsArray[i] = usersRef.child(guestUsersEmailsArray[i]).child('email')
-                // }
+                let eventName = eventsRef.child(eventId).child('eventName').once('yesssPlz').then((eventNameResult) => eventNameResult.val())
 
+                let eventLocation = consensus
 
-
-                // let hostName = usersRef.child(eventsRef.child(eventId).child('eventHost'))
-                // let eventDate = eventsRef.child(eventId).child('eventDateTime')
-                // let eventName = eventsRef.child(eventId).child('eventName')
-                // let eventLocation = consensus;
-                // let userId = eventsRef.child(eventId).child('eventHost')
+                let userId = eventsRef.child(eventId).child('eventHost').once("value").then((resultId) => {
+                    resultId.val()
+                })
                 
-                // console.log("CALCULATE CONSENSUS FUNC! HOSTNAME = " +hostName)
+                let guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once("invitees").then((resultInvitees) => {
+                    resultInvitees.val()
+                }))
 
-                // guestUsersEmailsArray.forEach(function(email){
-                //     let userId = usersRef.orderByChild('email').equalTo(email)
-                //     sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
-                //     console.log('sent email results to guests!')
-                // })
+                let guestUserEmailsArray = [];
+
+                for(let i = 0; i < guestUsersIdArray.length; i++){
+                    let email = ''
+
+                    usersRef.child(guestUsersIdArray[i]).child("email").once("result").then((result) => {
+                        email = result.val()
+                        guestUserEmailsArray.push(email)   
+                    })
+                }
+
+
+                guestUserEmailsArray.forEach(function(email){
+                    sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
+                })
 
 
                 res.send(consensus);
