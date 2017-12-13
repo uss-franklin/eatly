@@ -2,6 +2,7 @@ import React from 'react'
 import NavBar from './NavBar'
 import Axios from 'axios'
 import QueryString from 'query-string'
+import MapWithAMarker from './location_form/MapWithAMarker.jsx'
 
 export default class Results extends React.Component {
 	constructor(props) {
@@ -73,6 +74,15 @@ export default class Results extends React.Component {
           <h3 className="resultsDateAndTime">
             {this.state.data.data.eventDateTime.slice(0,15)} @ {this.state.data.data.eventDateTime.slice(16,24)}
           </h3>
+          <div>
+              <MapWithAMarker
+                  lat={this.state.results.coordinates.latitude}
+                  lng={this.state.results.coordinates.longitude}
+                  defaultZoom={18}
+                  containerElement={<div style={{height: `400px`}}/>}
+                  mapElement={<div style={{height: `100%`}}/>}
+              />
+          </div>
           <p className="viewInviteeVotesText">
             Want to see who you're gonna be dining with, and how they voted?
           </p>

@@ -3,6 +3,7 @@ import NavBar from './NavBar'
 import Axios from 'axios'
 import QueryString from 'query-string'
 import Results from './Results'
+import MapWithAMarker from './location_form/MapWithAMarker.jsx'
 
 export default class Swipe extends React.Component {
   constructor(props) {
@@ -160,6 +161,15 @@ export default class Swipe extends React.Component {
             <div className="descriptions"> Price: {restaurant.price} </div>
             <div className="descriptions"> Rating: {restaurant.rating}/5 </div>
             <div className="descriptions"> Number of Reviews: {restaurant.review_count} </div>
+            <div>
+              <MapWithAMarker
+                  lat={restaurant.coordinates.latitude}
+                  lng={restaurant.coordinates.longitude}
+                  defaultZoom={16}
+                  containerElement={<div style={{height: `400px`}}/>}
+                  mapElement={<div style={{height: `100%`}}/>}
+              />
+            </div>
             <div> Voting ends at: {event.voteCutOffDateTime.slice(0,21)}</div>
           </div>
       }
