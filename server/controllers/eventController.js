@@ -238,6 +238,14 @@ exports.createEvent = function(req, res){
         sendInviteEmail(email, hostName, eventDate, eventName)
     })
 
+    let eventId = "-L0Fq77ABvJl_qvy9t6O"
+    let eventsRef = dbRef.child('events')
+    let guestIds = eventsRef.child(eventId).orderByChild("eventInvitees")
+
+    console.log("GUEST IDS!!!!! = " + guestIds)
+
+
+
     //sends different email to host with information regarding their event
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
