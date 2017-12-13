@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     its rendered as a function so that data can be passed in dynamically from front
     all data is generated from the create event component the user fills in
 */
-const mailOptions = function(hostEmail, hostName, eventName) {
+const mailOptions = function(hostEmail, hostName, eventName, eventLocation, hostId, eventId) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: hostEmail,
@@ -148,7 +148,7 @@ const mailOptions = function(hostEmail, hostName, eventName) {
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://memory-alpha.wikia.com/wiki/USS_Franklin" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="localhost:3000/swipe?eventKey=`+ eventId +`&userId=`+hostId+`" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -187,8 +187,8 @@ const mailOptions = function(hostEmail, hostName, eventName) {
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendHostResultsEmail = function(hostEmail, hostName, eventName) { 
-  transporter.sendMail(mailOptions(hostEmail, hostName, eventName), function(err, info){
+const sendHostResultsEmail = function(hostEmail, hostName, eventName, eventLocation, hostId, eventId) { 
+  transporter.sendMail(mailOptions(hostEmail, hostName, eventName, eventLocation, hostId, eventId), function(err, info){
     if(err)
   		console.log(err)
   	else

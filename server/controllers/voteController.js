@@ -91,23 +91,23 @@ exports.calculateConsensus = function(req, res){
             votingResultRef.set(consensus).then(() => {
 
 
-                let hostName = eventsRef.child(eventId).child('eventHost').once("value").then((result) => {
+                let hostName = eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
                     let hostId = Object.keys(result.val())
                     console.log("HOST ID" + hostId)
                     usersRef.child(hostId).child('name').once("hostessName").then((nameResult) => nameResult.val())
                 })
 
-                let eventDate = eventsRef.child(eventId).child('eventDateTime').once("yesPlz").then((dateResult) => dateResult.val())
+                let eventDate = eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) => dateResult.val())
 
-                let eventName = eventsRef.child(eventId).child('eventName').once('yesssPlz').then((eventNameResult) => eventNameResult.val())
+                let eventName = eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => eventNameResult.val())
 
                 let eventLocation = consensus
 
-                let userId = eventsRef.child(eventId).child('eventHost').once("value").then((resultId) => {
+                let userId = eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
                     resultId.val()
                 })
                 
-                let guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once("invitees").then((resultInvitees) => {
+                let guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
                     resultInvitees.val()
                 }))
 
@@ -116,7 +116,7 @@ exports.calculateConsensus = function(req, res){
                 for(let i = 0; i < guestUsersIdArray.length; i++){
                     let email = ''
 
-                    usersRef.child(guestUsersIdArray[i]).child("email").once("result").then((result) => {
+                    usersRef.child(guestUsersIdArray[i]).child("email").once('value').then((result) => {
                         email = result.val()
                         guestUserEmailsArray.push(email)   
                     })
