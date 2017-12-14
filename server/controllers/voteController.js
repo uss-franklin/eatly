@@ -93,40 +93,62 @@ exports.calculateConsensus = function(req, res){
 
                 let hostName, eventDate, eventName, eventLocation, hostId, guestUserIdArray, hostEmail;
 
-
-
                 Promise.all([
 
-                hostName = eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
-                    let hostId = Object.keys(result.val())
+                eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+                    let hostId = Object.keys(result.val())[0]
                     console.log("HOST ID" + hostId)
-                    return (usersRef.child(hostId).child('name').once("hostessName").then((nameResult) => nameResult.val())
+                    return (usersRef.child(hostId).child('name').once('value').then((nameResult) => nameResult.val())
                     ).catch((err) => console.log("ERRRRRORRRR " + err))
                 }),
 
-                eventDate = eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  (dateResult.val())
-                    .catch((err) => console.log("ERRRRRORRRR " + err))),
+                eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  (dateResult.val()))
+                    .catch((err) => console.log("ERRRRRORRRR " + err)),
 
-                eventName = eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
+                eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
                 .catch((err) => console.log("ERRRRRORRRR " + err)),
 
-                eventLocation = consensus,
+                // eventsRef.child(eventId).child('yelpSearchResultsKey').once('value').then((yelpKey) => 
+                //     return yelpRef.child(yelpKey).child(consensus.toString()).once('value').then((locationName) => (locationName.val())
+                // )),
 
-                hostId = eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
+
+                eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
                     return (resultId.val())
                 })
                 .catch((err) => console.log("ERRRRRORRRR " + err)),
                 
-                hostEmail = usersRef.child(hostId).child('email').once('value').then((result) => {
+                eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+                    let hostId = Object.keys(result.val())[0]
+                    return hostId
+                }).then((hostId) => {
+                usersRef.child(hostId).child('email').once('value').then((result) => {
                     return (result.val())
+                })
+                .catch((err) => console.log("EERRRRORRR" + err))
                 }),
                 
-                guestUsersIdArray = Object.keys(eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
-                     return (resultInvitees.val())
-                }))
+                eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
+                     return (Object.keys(resultInvitees.val()))
+                })
                 .catch((err) => console.log("ERRRRRORRRR " + err))
 
-                ]).then(() => {
+                ])
+                .then((resolvedArray) => {
+
+                    console.log("CONSENSUS !!! :::: " + consensus)
+
+                    hostName = resolvedArray[0]
+                    eventDate = resolvedArray[1]
+                    eventName = resolvedArray[2]
+                    eventLocation = resolvedArray[3]
+                    hostId = resolvedArray[4]
+                    hostEmail = resolvedArray[5]
+                    guestUsersIdArray = resolvedArray[6]
+
+                    console.log("RESOLVED ARRAY :::: " + resolvedArray)
+                    console.log("HOST NAME ::::: " + hostName)
+
                     let guestUserEmailsArray = [];
 
                     for(let i = 0; i < guestUsersIdArray.length; i++){
@@ -144,14 +166,11 @@ exports.calculateConsensus = function(req, res){
                         let userId = usersRef.child()
                         
                         //pass in that userId into the invocation of the func with its matching email address
-                        sendGuestResultsEmail(email, hostName, eventDate, eventName, consensus, userId, eventId)
+                        sendGuestResultsEmail(email, hostName, eventDate, eventName, "FUCK YOU", userId, eventId)
                     })
+                        sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
 
-                })
-
-                    sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
-
-
+                }).catch((err) => console.log("ERRRRRORRRR" + err))
 
                 res.send(consensus);
             });
