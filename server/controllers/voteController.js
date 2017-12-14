@@ -104,28 +104,46 @@ exports.calculateConsensus = function(req, res){
                 }),
 
                 //plucks event date&time from the DB
-                eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  (dateResult.val()))
+                eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  {
+                    dateResult = dateResult.val()
+                    console.log("DATE RESULT " + dateResult)
+                    return dateResult
+                    })
                     .catch((err) => console.log("Error in checkForConsensus results date arg decorator " + err)),
 
                 //plucks the event name from the DB
-                eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
+                eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  {
+                   eventNameResult = eventNameResult.val()
+                   console.log("EVENT NAME RESULT " + eventNameResult)
+                   return eventNameResult
+                })
                 .catch((err) => console.log("Error in checkForConsensus results name decorator " + err)),
 
                 //plucks the restaurant name from the DB
                 eventsRef.child(eventId).child('yelpSearchResulsKey').once('value').then((yelpKey) => {
                     yelpKey = yelpKey.val()
+                    console.log("YELP KEY " + yelpKey)
                     yelpRef.child(yelpKey).child(consensus).child('name').once('value')
-                    .then((locationName) => (locationName.val()))
+                    .then((locationName) => {
+                        locationName = locationName.val()
+                        console.log("LOCATION NAME " + locationName)
+                        return locationName
+                    })
                     .catch((err) => console.log('error retrieving consensus location name : ', err))
                 }).catch((err) => console.log('error retrieving consensus location name: ', err)),
 
                 //plucks the host firebase ID from the DB
-                eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => (resultId.val()))
+                eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
+                    resultId = resultId.val()
+                    console.log("HOST ID " + resultId)
+                })
                 .catch((err) => console.log("Error in checkForConsensus results eventHost ID decorator " + err)),
                 
                 //plucks the guest firebase Id's from the DB
                 eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
-                     return (Object.keys(resultInvitees.val()))
+                    resultInvitees = resultInvitees.val()
+                    console.log("RESULT INVITEES " + resultInvitees)
+                    return resultInvitees
                 })
                 .catch((err) => console.log("Error in checkForConsensus results event Guests ID's decorator " + err))
 
@@ -135,7 +153,9 @@ exports.calculateConsensus = function(req, res){
                 eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
                     result = result.val()
                     usersRef.child(result).child('email').once('value').then((resultEmail) => {
-                        return (resultEmail.val())
+                        resultEmail = resultEmail.val()
+                        console.log("HOST EMAIL " + resultEmail)
+                        return resultEmail
                     })
                     .catch((err) => console.log('Error in checkForConsensus results host email decorator ' + err))
                 })
