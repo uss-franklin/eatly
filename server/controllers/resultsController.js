@@ -1,6 +1,5 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef
 let YelpRef = dbRef.child('yelpSearchResults')
-let eventsRef = dbRef.child('events')
 
 const getFinalResults = (yelpResultsKey, res) => {
   if (yelpResultsKey === undefined) return

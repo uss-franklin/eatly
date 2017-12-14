@@ -29,7 +29,7 @@ export default class Swipe extends React.Component {
       vote: false}
     Axios.post('/vote', voteObj)
       .then((response) => {
-        console.log('noVote res', response)
+        // console.log('noVote res', response)
         let num = ++this.state.current
         this.setState({current: num}, () => {
           if (this.state.current  > this.state.totalRestaurants ) {
@@ -44,7 +44,7 @@ export default class Swipe extends React.Component {
       vote: true}
     Axios.post('/vote', voteObj)
       .then((response) => {
-        console.log('yesVote res', response)
+        // console.log('yesVote res', response)
         let num = ++this.state.current;
         this.setState({current: num}, () => {
           if (this.state.current > this.state.totalRestaurants) {
@@ -62,7 +62,7 @@ export default class Swipe extends React.Component {
       restaurantId:this.state.current, vote: true 
     })
       .then((response) => {
-        console.log('lastClick res', response)
+        // console.log('lastClick res', response)
         this.setState({consensus: true})
       })
       .catch((err) => {console.log('lastClick error', err)})
@@ -70,6 +70,7 @@ export default class Swipe extends React.Component {
   lastClickFalse(){
     // console.log('lastclick is working')
     console.log('last click eventid', this.state.eventKey )
+
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.userId, 
       restaurantId: this.state.current, vote: false 
@@ -102,7 +103,7 @@ export default class Swipe extends React.Component {
   //gets the event data from the info in the url
   parseUser() {
     let parsedqs = QueryString.parse(location.search)
-    console.log('parse', parsedqs)
+    console.log('parse user')
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
@@ -113,7 +114,7 @@ export default class Swipe extends React.Component {
           current: Number(Object.keys(response.data.yelpSearchResultForEvent)[0]),
           totalRestaurants: Number(arr[arr.length - 1])
         }, () => {
-        console.log('state', this.state)
+        // console.log('state', this.state)
         })
       } else {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
@@ -125,8 +126,8 @@ export default class Swipe extends React.Component {
   }
 
   render() {
-    console.log('new state', this.state)
-    console.log('new props', this.props)
+    // console.log('new state', this.state)
+    // console.log('new props', this.props)
     //view is used to display different views of the page: loading, swiping, and finished voting (from completion or cutoff time) 
     let view = null
       if (this.state.data === undefined) {

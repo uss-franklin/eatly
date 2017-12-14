@@ -5,6 +5,7 @@ const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
 let sendHostEmail = require('./hostEmailController.js').sendHostEmail;
+let sendHostResultsEmail = require('./hostResultsEmailController.js').sendHostResultsEmail;
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
@@ -237,6 +238,9 @@ exports.createEvent = function(req, res){
         sendInviteEmail(email, hostName, eventDate, eventName)
     })
 
+    let usersRef = dbRef.child('users')
+    let eventsRef = dbRef.child('events')
+
     //sends different email to host with information regarding their event
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
@@ -270,7 +274,7 @@ exports.createEvent = function(req, res){
     .then(eventDetails => {
         newEvent.set(eventDetails); //set the event details in firebase
         let returnObj = {eventId: newEvent.key, hostId: Object.keys(eventDetails.eventHost)[0]};
-        console.log('ending the request, sending back', returnObj);
+        console.log('ending the request, sending back return obj');
 
         res.send(returnObj);
     }).catch(err => console.log('man down', err))
