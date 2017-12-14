@@ -19,8 +19,8 @@ export default class InputForm extends React.Component {
       hostEmail: this.props.userAccountEmail || '',
       hostName: this.props.displayName || '',
       eventName: '',
-      dateTime: moment(),
-      cutOffDateTime: moment().subtract(1, 'hour'),
+      dateTime: moment().add(2, 'hour'),
+      cutOffDateTime: moment().add(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''], //same as above comment
       guestNames: [''],
@@ -127,7 +127,7 @@ export default class InputForm extends React.Component {
                             </label>
                             </div>
                           </div>
-    if (this.props.userAccountEmail) emailNameInputs = null
+    if (!!this.props.userAccountEmail) emailNameInputs = null
     return (
       <div className="wholeForm">
       <div className="form-create-event">
