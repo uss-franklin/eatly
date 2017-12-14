@@ -38,10 +38,10 @@ export default class InputForm extends React.Component {
     //list determines whether we need to update the guestemail list or phone guest list
     this.setState(prevState => {
       let updatedGuestList = prevState[list].slice();
-      console.log('getting state list: ', list, updatedGuestList)
+      // console.log('getting state list: ', list, updatedGuestList)
       updatedGuestList[idx] = value
       return {[list]: updatedGuestList}
-    }, () => console.log('updated state', this.state[list]))
+    }, () => console.log('updated state'))
   }
   addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
@@ -54,7 +54,7 @@ export default class InputForm extends React.Component {
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
       .then((response) => {
-        console.log('submit form response data: ', response)
+        console.log('submit form response data')
         let eventId = response.data.eventId
         let userId = response.data.hostId
         window.location = `/swipe?eventKey=${eventId}&userId=${userId}`

@@ -61,14 +61,14 @@ export default class Swipe extends React.Component {
       restaurantId:this.state.current, vote: true 
     })
       .then((response) => {
-        console.log('lastClick res', response)
+        // console.log('lastClick res', response)
         this.setState({consensus: true})
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
   lastClickFalse(){
-    console.log('lastclick is working')
-    console.log('last click eventid', this.state.eventKey )
+    // console.log('lastclick is working')
+    // console.log('last click eventid', this.state.eventKey )
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.userId, 
       restaurantId: this.state.current, vote: false 
@@ -94,21 +94,21 @@ export default class Swipe extends React.Component {
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
-        console.log('get req response', response)
+        // console.log('get req response', response)
         let arr = Object.keys(response.data.yelpSearchResultForEvent)
         this.setState({eventKey: parsedqs.eventKey, data: response, 
           current: Number(Object.keys(response.data.yelpSearchResultForEvent)[0]),
           totalRestaurants: Number(arr[arr.length - 1])
         }, () => {
-        console.log('state', this.state)
+        // console.log('state', this.state)
         })
       })
       .catch((err) => console.log(err))
   }
 
   render() {
-    console.log('new state', this.state)
-    console.log('new props', this.props)
+    // console.log('new state', this.state)
+    // console.log('new props', this.props)
     //view is used to display different views of the page: loading, swiping, and finished voting (from completion or cutoff time) 
     let view = null
       if (this.state.data === undefined) {

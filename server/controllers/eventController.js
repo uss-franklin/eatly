@@ -269,7 +269,7 @@ exports.createEvent = function(req, res){
     .then(eventDetails => {
         newEvent.set(eventDetails); //set the event details in firebase
         let returnObj = {eventId: newEvent.key, hostId: Object.keys(eventDetails.eventHost)[0]};
-        console.log('ending the request, sending back', returnObj);
+        console.log('ending the request, sending back return obj');
 
         res.send(returnObj);
     })

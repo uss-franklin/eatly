@@ -108,10 +108,11 @@ exports.calculateConsensus = function(req, res){
                 eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
                 .catch((err) => console.log("ERRRRRORRRR " + err)),
 
-                // eventsRef.child(eventId).child('yelpSearchResultsKey').once('value').then((yelpKey) => 
-                //     return yelpRef.child(yelpKey).child(consensus.toString()).once('value').then((locationName) => (locationName.val())
-                // )),
-
+                eventsRef.child(eventId).child('yelpSearchResultsKey').once('value').then((yelpKey) => {
+                    return (yelpRef.child(yelpKey).child(consensus).child('name').once('value').then((locationName) => {
+                        (locationName.val())
+                    }))
+                }),
 
                 eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
                     return (resultId.val())
@@ -149,7 +150,7 @@ exports.calculateConsensus = function(req, res){
                     console.log("RESOLVED ARRAY :::: " + resolvedArray)
                     console.log("HOST NAME ::::: " + hostName)
 
-                    let guestUserEmailsArray = [];
+                    let guestUserEmailsArray = ["team.eatly@gmail.com"];
 
                     for(let i = 0; i < guestUsersIdArray.length; i++){
                         let email = ''
@@ -166,7 +167,7 @@ exports.calculateConsensus = function(req, res){
                         let userId = usersRef.child()
                         
                         //pass in that userId into the invocation of the func with its matching email address
-                        sendGuestResultsEmail(email, hostName, eventDate, eventName, "FUCK YOU", userId, eventId)
+                        sendGuestResultsEmail(email, hostName, eventDate, eventName, eventLocation, userId, eventId)
                     })
                         sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
 
