@@ -18,6 +18,8 @@ const transporter = nodemailer.createTransport({
     all data is generated from the create event component the user fills in
 */
 const mailOptions = function(hostEmail, hostName, eventName, eventLocation, hostId, eventId) {
+
+  console.log("EMAIL LINK IS :::: localhost:3000/swipe?eventKey="+eventId+"&userId="+hostId)
  return {
 	from: 'team.eatly@gmail.com',
 	to: hostEmail,
@@ -119,12 +121,12 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation, host
                             Hey there ` +hostName+`!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                              Guess what? We've collected the votes, made the calculations, and the results are in for `+eventName+`!
+                              Guess what? We've collected the votes, made the calculations, and the results are in for your meal,  <p style="font-size: 28px; font-weight: bold">` +eventName+ `!</p>
                                <br>
                                You and your friends will be eating at
 
                                <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            
+                            ` + eventLocation +`
 
                             !</p>
                          
@@ -148,7 +150,7 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation, host
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="localhost:3000/swipe?eventKey=`+ eventId +`&userId=`+hostId+`" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/swipe?eventKey=`+eventId+`&userId=`+hostId+`" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>

@@ -20,7 +20,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
  return {
 	from: 'team.eatly@gmail.com',
 	to: email,
-	subject: `The Eatly results for`+ eventName +` are in!`,
+	subject: `The Eatly results for `+ eventName +` are in!`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -132,8 +132,8 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
                                 ` +eventDate+ `
                               </div> at ... <br><br>
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              ` +hostName+ `</div>
+                              <div style="font-size: 40px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
+                              ` +eventLocation+ `</div>
 
                               
                           </p>
@@ -145,7 +145,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="localhost:3000/swipe?eventKey=`+ eventId +`&userId=`+userId+`" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Get Started!</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="localhost:3000/swipe?eventKey=`+eventId+`&userId=`+userId+`" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Get Started!</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
