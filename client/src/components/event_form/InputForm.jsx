@@ -32,7 +32,7 @@ export default class InputForm extends React.Component {
     let stateProp = isCutOff ? 'cutOffDateTime' : 'dateTime'
   //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
   //see https://momentjs.com/docs/#/displaying/format/
-    this.setState({[stateProp]: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
+    this.setState({[stateProp]: dateTime }, () => console.log("input form state changed"))
   }
   addGuestEmailPhone(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list

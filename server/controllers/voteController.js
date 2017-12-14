@@ -95,46 +95,50 @@ exports.calculateConsensus = function(req, res){
 
                 Promise.all([
 
+                //plucks hostname from the DB
                 eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
                     let hostId = Object.keys(result.val())[0]
                     console.log("HOST ID" + hostId)
-                    return (usersRef.child(hostId).child('name').once('value').then((nameResult) => nameResult.val())
-                    ).catch((err) => console.log("Error in checkForConsensus hostName arg decorator, line 102 " + err))
+                    (usersRef.child(hostId).child('name').once('value').then((nameResult) => nameResult.val()))
+                    .catch((err) => console.log("Error in checkForConsensus hostName arg decorator, line 102 " + err))
                 }),
 
+                //plucks event date&time from the DB
                 eventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) =>  (dateResult.val()))
                     .catch((err) => console.log("Error in checkForConsensus results date arg decorator " + err)),
 
+                //plucks the event name from the DB
                 eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) =>  (eventNameResult.val()))
                 .catch((err) => console.log("Error in checkForConsensus results name decorator " + err)),
 
-                eventsRef.child(eventId).child('yelpSearchResultsKey').once('value').then((yelpKey) => {
-                    return (yelpRef.child(yelpKey).child(consensus).child('name').once('value').then((locationName) => {
-                        (locationName.val())
-                    }))
-                }).catch((err) => console.log("Error in checkForConsensus results restaurant name decorator " + err )),
+                //plucks the restaurant name from the DB
+                eventsRef.child(eventId).child('yelpSearchResulsKey').once('value').then((yelpKey) => {
+                    yelpKey = yelpKey.val()
+                    yelpRef.child(yelpKey).child(consensus).child('name').once('value')
+                    .then((locationName) => (locationName.val()))
+                    .catch((err) => console.log('error retrieving consensus location name : ', err))
+                }).catch((err) => console.log('error retrieving consensus location name: ', err)),
 
-                eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
-                    return (resultId.val())
-                })
+                //plucks the host firebase ID from the DB
+                eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => (resultId.val()))
                 .catch((err) => console.log("Error in checkForConsensus results eventHost ID decorator " + err)),
                 
-                eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
-                    let hostId = Object.keys(result.val())[0]
-                    return hostId
-                }).then((hostId) => {
-                usersRef.child(hostId).child('email').once('value').then((result) => {
-                    return (result.val())
-                })
-                .catch((err) => console.log("Error in checkForConsensus results host email decorator" + err))
-                }),
-                
+                //plucks the guest firebase Id's from the DB
                 eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
                      return (Object.keys(resultInvitees.val()))
                 })
                 .catch((err) => console.log("Error in checkForConsensus results event Guests ID's decorator " + err))
 
-                ])
+                ]),
+
+                //plucks the host email from the DB
+                eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+                    result = result.val()
+                    usersRef.child(result).child('email').once('value').then((resultEmail) => {
+                        return (resultEmail.val())
+                    })
+                    .catch((err) => console.log('Error in checkForConsensus results host email decorator ' + err))
+                })
                 .then((resolvedArray) => {
 
                     console.log("CONSENSUS !!! :::: " + consensus)
@@ -144,11 +148,10 @@ exports.calculateConsensus = function(req, res){
                     eventName = resolvedArray[2]
                     eventLocation = resolvedArray[3]
                     hostId = resolvedArray[4]
-                    hostEmail = resolvedArray[5]
-                    guestUsersIdArray = resolvedArray[6]
+                    guestUsersIdArray = resolvedArray[5]
+                    hostEmail = resolvedArray[6]
 
                     console.log("RESOLVED ARRAY :::: " + resolvedArray)
-                    console.log("HOST NAME ::::: " + hostName)
 
                     let guestUserEmailsArray = ["team.eatly@gmail.com"];
 

@@ -27,7 +27,7 @@ export default class Swipe extends React.Component {
       vote: false}
     Axios.post('/vote', voteObj)
       .then((response) => {
-        console.log('noVote res', response)
+        // console.log('noVote res', response)
         let num = ++this.state.current
         this.setState({current: num}, () => {
           
@@ -42,7 +42,7 @@ export default class Swipe extends React.Component {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, vote: true}
     Axios.post('/vote', voteObj)
       .then((response) => {
-        console.log('yesVote res', response)
+        // console.log('yesVote res', response)
         let num = ++this.state.current;
         this.setState({current: num}, () => {
           if (this.state.current > this.state.totalRestaurants) {
@@ -90,7 +90,7 @@ export default class Swipe extends React.Component {
   //gets the event data from the info in the url
   parseUser() {
     let parsedqs = QueryString.parse(location.search)
-    console.log('parse', parsedqs)
+    console.log('parse user')
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
