@@ -8,6 +8,7 @@ import NavBar from '../NavBar'
 import { Link } from 'react-router-dom'
 import AutoCompleteFrame from './AutoCompleteFrame.jsx'
 import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
+import authenticateUser from '../login/AuthenticateUserHelper'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -38,16 +39,22 @@ export default class InputForm extends React.Component {
     this.setState({[target.name]: target.value});  
   }
   handleInputMoment(dateTime, isCutOff) {
-  //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
+  //InputMoment returns a moment object which should not be accessed directly. To extract the values, use the format method. 
   //see https://momentjs.com/docs/#/displaying/format/
-    if (!isCutOff) {
+    if(dateTime.unix() < moment().unix()) {
+      alert('You can\'t live in the past')
+    } else {
+      if (!isCutOff) {
       console.log(isCutOff)
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      // console.log(dateTime.format('llll'), newCutOffTime.format('llll'))
       this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
+      } else {
+      if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
+        alert('Please select a cut off time that\'s at least an hour before the event time')
+      }
+      this.setState({'cutOffDateTime': dateTime })
+      }
     }
-    //todo cutoffdatetime limit to be at most 1 hour before event 
-    else this.setState({'cutOffDateTime': dateTime })
   }
   addGuestEmailPhone(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list
@@ -92,6 +99,35 @@ export default class InputForm extends React.Component {
             />
         </div>
     }
+    let emailNameInputs = <div>
+                            <div className="form-email" className="inputs">
+                            <label>
+                              Your Email:
+                              <input
+                                readOnly={this.props.userAccountEmail ? true : false}
+                                type="text"
+                                name="hostEmail"
+                                placeholder="Lookingforfood@something.com"
+                                value={this.state.hostEmail}
+                                onChange={this.handleInputChange.bind(this)}
+                              />
+                            </label>
+                            </div>
+                            <div className="form-host-name" className="inputs">
+                            <label>
+                              Your Name:
+                              <input
+                                readOnly={this.props.displayName? true : false}
+                                type="text"
+                                name="hostName"
+                                placeholder="Your Name"
+                                value={this.state.hostName}
+                                onChange={this.handleInputChange.bind(this)}
+                              />
+                            </label>
+                            </div>
+                          </div>
+    if (this.props.userAccountEmail) emailNameInputs = null
     return (
       <div className="wholeForm">
       <div className="form-create-event">
@@ -113,30 +149,7 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-email" className="inputs">
-        <label>
-          Your Email:
-          <input 
-            type="text"
-            name="hostEmail"
-            placeholder="Lookingforfood@something.com"
-            value={this.state.hostEmail}
-            onChange={this.handleInputChange.bind(this)}
-          />
-        </label>
-        </div>
-        <div className="form-host-name" className="inputs">
-        <label>
-          Your Name:
-          <input 
-            type="text"
-            name="hostName"
-            placeholder="Your Name"
-            value={this.state.hostName}
-            onChange={this.handleInputChange.bind(this)}
-          />
-        </label>
-        </div>
+        {emailNameInputs}
         <div className="form-event-name" className="inputs">
         <label>
           Event Name:

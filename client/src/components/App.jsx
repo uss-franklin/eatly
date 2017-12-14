@@ -11,7 +11,9 @@ import NavBar from './NavBar'
 import Account from './user/Account'
 import EditEvent from './user/EditEvent'
 import firebase from './login/FirebaseAuth'
+import authenticateUser from './login/AuthenticateUserHelper'
 import queryString from 'query-string'
+
 
 
 export default class App extends React.Component {
@@ -23,23 +25,8 @@ export default class App extends React.Component {
   }
   componentDidMount() {
     //listen for firebase logged in state
-    this.authenticateUser.call(this)
+    authenticateUser.call(this, false)
   }
-  
-  authenticateUser(){
-		firebase.auth().onAuthStateChanged(user => {
-			if (user) {
-				console.log('authenticateUser():true')
-				console.log(user)
-				this.setState({firebaseAuthenticatedUser: user}) 
-			} else {
-				console.log('authenticateUser(): false')
-				//sets the state on the app to a logged outed
-				this.setState({firebaseAuthenticatedUser: {uid: null}})
-			}
-		})
-	}
-
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser.uid !== null
     return (
