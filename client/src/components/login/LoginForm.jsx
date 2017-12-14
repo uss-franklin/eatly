@@ -23,7 +23,12 @@ export default class LoginForm extends React.Component {
 		this.setState({[target.name]: target.value})
 	}
 	//intitiates oAuth
-	signInWithProvider(provider) {
+	signInWithProvider(providerName) {
+		let provider;
+		if (providerName === 'google') {
+			provider = this.state.googleProvider
+			provider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+		}
 		firebase.auth().signInWithRedirect(provider).then(function(result) {
 			// This gives you a Google Access Token. You can use it to access the Google API.
 			let token = result.credential.accessToken;
@@ -78,7 +83,7 @@ export default class LoginForm extends React.Component {
 					
 			</div>
 			<div className="signInWithOAuth">
-				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, this.state.googleProvider)}>Sign On With Google</button>
+				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
 			</div>
 		</div>
 		)
