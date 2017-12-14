@@ -91,10 +91,15 @@ exports.calculateConsensus = function(req, res){
         if(consensus){
             votingResultRef.set(consensus).then(() => {
 
-                console.log("eventid ISSSSS :::: ", eventId)
-
+                /* 
+                    Hooked into this checkForConsensus function is the send results emails to guest and hosts.
+                    the parameters for each are declared below, populated, then passed into send email functions
+                    because each is populated differently and with different data, it all runs async.
+                */
                 let hostName, eventDate, eventName, eventLocation, hostId, guestUserIdArray, hostEmail;
 
+                //Everything in this promise all block is what populates the above variables with necessary data
+                // for the emails functions.
                 Promise.all([
 
                 //plucks hostname from the DB
@@ -141,15 +146,6 @@ exports.calculateConsensus = function(req, res){
                     .catch((err) => console.log('error retrieving consensus location name : ', err))
                 }).catch((err) => console.log('error retrieving consensus location name: ', err)),
 
-
-                /* 
-                eventsRef.child(eventId).child()
-
-
-
-                */
-
-
                 //plucks the host firebase ID from the DB
                 eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
                     resultId = Object.keys(resultId.val())[0]
@@ -179,6 +175,7 @@ exports.calculateConsensus = function(req, res){
                 })
 
                 ])
+                //the resolvedArray is what we will use for each necessary argument in the following send emails functions
                 .then((resolvedArray) => {
 
                     console.log("RESOLVED ARRAY ", resolvedArray)
@@ -194,7 +191,9 @@ exports.calculateConsensus = function(req, res){
 
                     console.log("RESOLVED ARRAY :::: " + resolvedArray)
 
-
+                    //logic here is to make sure every user results email is sent with their special user link
+                    //even tho it is all async, the endless hell of promises was so that every user gets their
+                    //own email with their own link, populated with all their user specific data
                     for(let i = 0; i < guestUsersIdArray.length; i++){
                         let email = ''
 
@@ -204,15 +203,6 @@ exports.calculateConsensus = function(req, res){
                             return ('email successfully sent to ' + email)  
                         })
                     }
-
-
-                    // guestUserEmailsArray.forEach(function(email){
-                    //     //TO DO : snatch the user Id each time by traversing thru the DB using email and/or eventId keys
-                    //     let userId = usersRef.child()
-                        
-                    //     //pass in that userId into the invocation of the func with its matching email address
-                    //     sendGuestResultsEmail(email, hostName, eventDate, eventName, eventLocation, userId, eventId)
-                    // })
                     
                     sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
 
