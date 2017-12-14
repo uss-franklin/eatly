@@ -4,6 +4,7 @@ import Axios from 'axios'
 import QueryString from 'query-string'
 import Results from './Results'
 import MapWithAMarker from './location_form/MapWithAMarker.jsx'
+import Loading from './Loading'
 
 export default class Swipe extends React.Component {
   constructor(props) {
@@ -129,11 +130,7 @@ export default class Swipe extends React.Component {
     //view is used to display different views of the page: loading, swiping, and finished voting (from completion or cutoff time) 
     let view = null
       if (this.state.data === undefined) {
-        view = 
-          <div>
-            <div className="loadingtext"> our minions are finding restaurants... </div>
-            <img className="trex" src="./images/pasta.gif" />
-          </div>
+        <Loading />
       }
       //if past cutoff time, there will be a result
       else if (this.votingExpired(new Date(), this.state.data.data.voteCutOffDateTime) === true) {
