@@ -44,7 +44,25 @@ export default class Results extends React.Component {
   componentWillMount() {
     this.parseUser()
   }
+  convertTime24to12(time24){
+    var tmpArr = time24.split(':'), time12;
+    if ( +tmpArr[0] === 12 ) {
+      time12 = tmpArr[0] + ':' + tmpArr[1] + ' pm';
+    } else {
+        if ( +tmpArr[0] === 0 + 0 ) {
+          time12 = '12:' + tmpArr[1] + ' am';
+      } else {
+          if ( +tmpArr[0] > 12 ) {
+            time12 = (+tmpArr[0]-12) + ':' + tmpArr[1] + ' pm';
+        } else {
+            time12 = (+tmpArr[0]) + ':' + tmpArr[1] + ' am';
+          }
+        }
+      }
+    return time12;
+  }
 	render() {
+    let address = ''
     let view = null
     if (this.state.data === undefined || this.state.yelpLoaded === false) {
       view = 
@@ -69,10 +87,15 @@ export default class Results extends React.Component {
             {this.state.results.name}
           </h2>
           <h2 className="resultsDateAndTime">
-          {this.state.results.location.address1}
+          {this.state.results.location.display_address.forEach((x) => {
+            address += x + ' '
+            return address
+          })}
+          {address}
           </h2>
           <h3 className="resultsDateAndTime">
-            {this.state.data.data.eventDateTime.slice(0,15)} @ {this.state.data.data.eventDateTime.slice(16,24)}
+            {this.state.data.data.eventDateTime.slice(0,15)} @ 
+            {this.convertTime24to12(this.state.data.data.eventDateTime.slice(16,24))}
           </h3>
           <div>
               <MapWithAMarker

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import AutoCompleteFrame from './AutoCompleteFrame.jsx'
 import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
 import authenticateUser from '../login/AuthenticateUserHelper'
+import Loading from '../Loading'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -26,7 +27,8 @@ export default class InputForm extends React.Component {
       guestNames: [''],
       firebaseId: this.props.firebaseId, // needed to check whether we need to create the user
       longitude: null,
-      latitude: null
+      latitude: null,
+      submitClick: false
     }
   }
   updateLatLng(lat, lng){
@@ -70,7 +72,7 @@ export default class InputForm extends React.Component {
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
   }
   submitForm(){
-    // console.log('submit form state:', this.state)
+    this.setState({submitClick: true})
     let sendObj = Object.assign({}, this.state);
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
@@ -129,6 +131,7 @@ export default class InputForm extends React.Component {
                           </div>
     if (this.props.userAccountEmail) emailNameInputs = null
     return (
+      this.state.submitClick ? <Loading /> :
       <div className="wholeForm">
       <div className="form-create-event">
         <div className="form-location" className="inputs">
