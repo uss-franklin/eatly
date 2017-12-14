@@ -85,7 +85,7 @@ export default class InputForm extends React.Component {
       })
       .catch(err => console.log('Form Submission Error: ', err));
     //activates the twilio function to send SMS out to all guests user inputs into form
-    Axios.post('/messages', dummyNumber)
+    Axios.post('/messages')
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){

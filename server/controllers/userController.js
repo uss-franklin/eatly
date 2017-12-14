@@ -27,9 +27,19 @@ const getGroupInvitedUsersDetails = (req, res) => {
 const createAuthUser = (req, res) => {
   let {emailAddress, id, name} = req.body
   let userRef = UsersRef.child(id)
-  userRef.set({email: emailAddress, name: name})
-    .then(() => console.log('Successfully created Auth user', id))
-    .catch(err => console.log('Error creating auth user: ', err))
+  userRef.once('value', user => {
+    if (user.val() === null) {
+      userRef.set({email: emailAddress, name: name})
+      .then(() => {
+        console.log('Successfully created Auth user', id)
+        res.end()
+      })
+      .catch(err => console.log('Error creating auth user: ', err))
+    } else {
+      //user exists -- go home
+      res.end()
+    }
+  })
 }
 
 //Creates user on filling out the input form

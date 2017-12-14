@@ -26,11 +26,11 @@ export default class LoginForm extends React.Component {
 	signInWithProvider(provider) {
 		firebase.auth().signInWithRedirect(provider).then(function(result) {
 			// This gives you a Google Access Token. You can use it to access the Google API.
-			var token = result.credential.accessToken;
+			let token = result.credential.accessToken;
 			// The signed-in user info.
-			var user = result.user;
-			console.log(user)
-			// ...
+			let user = result.user;
+			let name = user.displayName || '-'
+			console.log('here: ', user)
 		}).catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -50,12 +50,7 @@ export default class LoginForm extends React.Component {
 			.then((data) => console.log('logged in with: ', data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
-	// Sends the newly created user to be written to firebase users "table" via userController
-	postNewUser(email, uid, name) {
-		console.log('posting user')
-		Axios.post('/createAuthUser', {id: uid, emailAddress: email, name: name})
-			.catch(err => console.log(err))
-	}
+
 
 	//handles sign up event, bound to the sign up button
 	handleSignUp() {

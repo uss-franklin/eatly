@@ -14,8 +14,6 @@ import firebase from './login/FirebaseAuth'
 import authenticateUser from './login/AuthenticateUserHelper'
 import queryString from 'query-string'
 
-
-
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -25,7 +23,7 @@ export default class App extends React.Component {
   }
   componentDidMount() {
     //listen for firebase logged in state
-    authenticateUser.call(this, false)
+    authenticateUser.call(this)
   }
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser.uid !== null
@@ -36,7 +34,7 @@ export default class App extends React.Component {
       <NavBar firebase={firebase} loggedIn={loggedIn}/>
       <Route exact path="/" component={Home} />
       <Route exact path="/loginForm" render={() => (
-          loggedIn ?  <Redirect to="/account" /> : <LoginForm firebase={firebase}/>
+          loggedIn ?  <Redirect to="/" /> : <LoginForm firebase={firebase}/>
         )} 
       />
       <Route exact path="/account" render={() => (
