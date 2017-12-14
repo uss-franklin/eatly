@@ -1,7 +1,7 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 var cron = require('node-cron');
-var sendGuestResultsEmail = require('./guestResultsEmailController.js')
-var sendHostResultsEmail = require('./hostResultsEmailController.js')
+var sendGuestResultsEmail = require('./guestResultsEmailController.js').sendGuestResultsEmail
+var sendHostResultsEmail = require('./hostResultsEmailController.js').sendHostResultsEmail
 
 let eventsRef = dbRef.child('events');
 let usersRef = dbRef.child('users');
@@ -91,16 +91,24 @@ exports.calculateConsensus = function(req, res){
         if(consensus){
             votingResultRef.set(consensus).then(() => {
 
+                console.log("eventid ISSSSS :::: ", eventId)
+
                 let hostName, eventDate, eventName, eventLocation, hostId, guestUserIdArray, hostEmail;
 
                 Promise.all([
 
                 //plucks hostname from the DB
                 eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
-                    let hostId = Object.keys(result.val())[0]
-                    console.log("HOST ID" + hostId)
-                    (usersRef.child(hostId).child('name').once('value').then((nameResult) => nameResult.val()))
-                    .catch((err) => console.log("Error in checkForConsensus hostName arg decorator, line 102 " + err))
+                    // let hostId = Object.keys(result.val())[0]
+                    result = Object.keys(result.val())[0]
+                    console.log("HOST ID FOR HOSTNAME", result)
+                    var innerPromise = usersRef.child(result).child('name').once('value').then((nameResult) => {
+                        nameResult = nameResult.val()
+                        console.log("HOSTNAME IS :::: ", nameResult )
+                        return nameResult;
+                    })
+
+                    return innerPromise;
                 }),
 
                 //plucks event date&time from the DB
@@ -120,10 +128,11 @@ exports.calculateConsensus = function(req, res){
                 .catch((err) => console.log("Error in checkForConsensus results name decorator " + err)),
 
                 //plucks the restaurant name from the DB
-                eventsRef.child(eventId).child('yelpSearchResulsKey').once('value').then((yelpKey) => {
+                eventsRef.child(eventId).child('yelpSearchResultsKey').once('value').then((yelpKey) => {
                     yelpKey = yelpKey.val()
-                    console.log("YELP KEY " + yelpKey)
-                    yelpRef.child(yelpKey).child(consensus).child('name').once('value')
+                    console.log("YELP KEY ", yelpKey)
+                    console.log("CONSENSUS IN REST NAME QUERY FUNC " , consensus)
+                    return yelpRef.child(yelpKey).child(consensus).child('name').once('value')
                     .then((locationName) => {
                         locationName = locationName.val()
                         console.log("LOCATION NAME " + locationName)
@@ -132,35 +141,47 @@ exports.calculateConsensus = function(req, res){
                     .catch((err) => console.log('error retrieving consensus location name : ', err))
                 }).catch((err) => console.log('error retrieving consensus location name: ', err)),
 
+
+                /* 
+                eventsRef.child(eventId).child()
+
+
+
+                */
+
+
                 //plucks the host firebase ID from the DB
                 eventsRef.child(eventId).child('eventHost').once('value').then((resultId) => {
-                    resultId = resultId.val()
-                    console.log("HOST ID " + resultId)
+                    resultId = Object.keys(resultId.val())[0]
+                    console.log("HOST ID ", resultId)
+                    return resultId
                 })
                 .catch((err) => console.log("Error in checkForConsensus results eventHost ID decorator " + err)),
                 
                 //plucks the guest firebase Id's from the DB
                 eventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
-                    resultInvitees = resultInvitees.val()
-                    console.log("RESULT INVITEES " + resultInvitees)
+                    resultInvitees = Object.keys(resultInvitees.val())
+                    console.log("RESULT INVITEES ", resultInvitees)
                     return resultInvitees
                 })
-                .catch((err) => console.log("Error in checkForConsensus results event Guests ID's decorator " + err))
-
-                ]),
+                .catch((err) => console.log("Error in checkForConsensus results event Guests ID's decorator " + err)),
 
                 //plucks the host email from the DB
                 eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
-                    result = result.val()
-                    usersRef.child(result).child('email').once('value').then((resultEmail) => {
+                    result = Object.keys(result.val())[0]
+                    console.log("hostID in host email func issss :::", result)
+                    return usersRef.child(result).child('email').once('value').then((resultEmail) => {
                         resultEmail = resultEmail.val()
                         console.log("HOST EMAIL " + resultEmail)
                         return resultEmail
                     })
                     .catch((err) => console.log('Error in checkForConsensus results host email decorator ' + err))
                 })
+
+                ])
                 .then((resolvedArray) => {
 
+                    console.log("RESOLVED ARRAY ", resolvedArray)
                     console.log("CONSENSUS !!! :::: " + consensus)
 
                     hostName = resolvedArray[0]
@@ -173,26 +194,27 @@ exports.calculateConsensus = function(req, res){
 
                     console.log("RESOLVED ARRAY :::: " + resolvedArray)
 
-                    let guestUserEmailsArray = ["team.eatly@gmail.com"];
 
                     for(let i = 0; i < guestUsersIdArray.length; i++){
                         let email = ''
 
                         usersRef.child(guestUsersIdArray[i]).child("email").once('value').then((result) => {
                             email = result.val()
-                            guestUserEmailsArray.push(email)   
+                            sendGuestResultsEmail(email, hostName, eventDate, eventName, eventLocation, guestUsersIdArray[i], eventId)
+                            return ('email successfully sent to ' + email)  
                         })
                     }
 
 
-                    guestUserEmailsArray.forEach(function(email){
-                        //TO DO : snatch the user Id each time by traversing thru the DB using email and/or eventId keys
-                        let userId = usersRef.child()
+                    // guestUserEmailsArray.forEach(function(email){
+                    //     //TO DO : snatch the user Id each time by traversing thru the DB using email and/or eventId keys
+                    //     let userId = usersRef.child()
                         
-                        //pass in that userId into the invocation of the func with its matching email address
-                        sendGuestResultsEmail(email, hostName, eventDate, eventName, eventLocation, userId, eventId)
-                    })
-                        sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
+                    //     //pass in that userId into the invocation of the func with its matching email address
+                    //     sendGuestResultsEmail(email, hostName, eventDate, eventName, eventLocation, userId, eventId)
+                    // })
+                    
+                    sendHostResultsEmail(hostEmail, hostName, eventName, eventLocation, hostId, eventId)
 
                 }).catch((err) => console.log("Error in resolved promise email array just before consensus send  : " + err))
 
