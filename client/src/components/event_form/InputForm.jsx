@@ -20,8 +20,8 @@ export default class InputForm extends React.Component {
       hostEmail: this.props.userAccountEmail || '',
       hostName: this.props.displayName || '',
       eventName: '',
-      dateTime: moment(),
-      cutOffDateTime: moment().subtract(1, 'hour'),
+      dateTime: moment().add(2, 'hour'),
+      cutOffDateTime: moment().add(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''], //same as above comment
       guestNames: [''],
@@ -85,7 +85,7 @@ export default class InputForm extends React.Component {
       })
       .catch(err => console.log('Form Submission Error: ', err));
     //activates the twilio function to send SMS out to all guests user inputs into form
-    Axios.post('/messages', dummyNumber)
+    Axios.post('/messages')
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
@@ -129,7 +129,7 @@ export default class InputForm extends React.Component {
                             </label>
                             </div>
                           </div>
-    if (this.props.userAccountEmail) emailNameInputs = null
+    if (!!this.props.userAccountEmail) emailNameInputs = null
     return (
       this.state.submitClick ? <Loading /> :
       <div className="wholeForm">

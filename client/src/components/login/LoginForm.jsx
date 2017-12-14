@@ -15,13 +15,34 @@ export default class LoginForm extends React.Component {
 			txtEmail: '',
 			txtPassword: '',
 			loggedIn: 'false',
+			googleProvider: new firebase.auth.GoogleAuthProvider(),
 		}
 		this.firebase = this.props.firebase
 	}
 	handleInputChange({ target }) {
 		this.setState({[target.name]: target.value})
 	}
-//handles log in event, bound to the log in button
+	//intitiates oAuth
+	signInWithProvider(provider) {
+		firebase.auth().signInWithRedirect(provider).then(function(result) {
+			// This gives you a Google Access Token. You can use it to access the Google API.
+			let token = result.credential.accessToken;
+			// The signed-in user info.
+			let user = result.user;
+			let name = user.displayName || '-'
+			console.log('here: ', user)
+		}).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// The email of the user's account used.
+			var email = error.email;
+			// The firebase.auth.AuthCredential type that was used.
+			var credential = error.credential;
+			// ...
+		});
+	}
+  //handles log in event, bound to the log in button
 	handleLogIn() {
 		let { txtEmail, txtPassword } = this.state
 		//firebase does the heavy lifting of valid email input verification
@@ -29,14 +50,9 @@ export default class LoginForm extends React.Component {
 			.then((data) => console.log('logged in with: ', data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
-// Sends the newly created user to be written to firebase users "table" via userController
-	postNewUser(email, uid, name) {
-		console.log('posting user')
-		Axios.post('/createAuthUser', {id: uid, emailAddress: email, name: name})
-			.catch(err => console.log(err))
-	}
 
-//handles sign up event, bound to the sign up button
+
+	//handles sign up event, bound to the sign up button
 	handleSignUp() {
 		let { txtEmail, txtPassword } = this.state
 		//all users created this way are visible on the online firebase console
@@ -49,8 +65,6 @@ export default class LoginForm extends React.Component {
 			.catch((error) => console.log('error in user sign up: ' +error.code+ +"--"+ error.message))
 	}
 
-//real-time listener for any authentication state change, toggles state logged-in property accordingly
-
 	render() {
 		return (
 			<div className="loginSignUpForm">
@@ -62,6 +76,9 @@ export default class LoginForm extends React.Component {
 					<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
 					<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
 					
+			</div>
+			<div className="signInWithOAuth">
+				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, this.state.googleProvider)}>Sign On With Google</button>
 			</div>
 		</div>
 		)

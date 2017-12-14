@@ -266,11 +266,12 @@ exports.createEvent = function(req, res){
     ])
     //var resultsarr unpacks to hostId, guestIds, yelpResults
     .then(resultsArr => createEventDetail(req.body, ...resultsArr))
+
     .then(eventDetails => {
         newEvent.set(eventDetails); //set the event details in firebase
         let returnObj = {eventId: newEvent.key, hostId: Object.keys(eventDetails.eventHost)[0]};
         console.log('ending the request, sending back', returnObj);
 
         res.send(returnObj);
-    })
+    }).catch(err => console.log('man down', err))
 };
