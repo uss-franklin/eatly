@@ -106,7 +106,6 @@ export default class InputForm extends React.Component {
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   ////END HTTP PUT AND PROCESS DATA
-
   deleteEvent(){
     let payload = { params: {
       eid: this.state.eid,
@@ -116,7 +115,7 @@ export default class InputForm extends React.Component {
       }
     }
     Axios.delete('/deleteEvent', payload)
-    .then(() => console.log('deleted: ', this.state.eid))
+    .then(() => {this.props.history.push('/account')})
   }
 
   render(){
