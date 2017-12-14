@@ -8,6 +8,7 @@ import NavBar from '../NavBar'
 import { Link } from 'react-router-dom'
 import AutoCompleteFrame from './AutoCompleteFrame.jsx'
 import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
+import authenticateUser from '../login/AuthenticateUserHelper'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -16,10 +17,10 @@ export default class InputForm extends React.Component {
       address: '',
       searchTerm: '',
       hostEmail: this.props.userAccountEmail || '',
-      hostName: '',
+      hostName: this.props.displayName || '',
       eventName: '',
       dateTime: moment(),
-      cutOffDateTime: moment().add(1, 'hour'),
+      cutOffDateTime: moment().subtract(1, 'hour'),
       guestEmails: [''], //requires intial value to render the first guest email form
       guestPhones: [''], //same as above comment
       guestNames: [''],
@@ -27,25 +28,33 @@ export default class InputForm extends React.Component {
       longitude: null,
       latitude: null
     }
-
   }
   updateLatLng(lat, lng){
     this.setState({latitude: lat, longitude: lng});
   }
-
   updateAddress(address){
-    this.setState({address:address});
+    this.setState({address: address});
   }
-
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
   handleInputMoment(dateTime, isCutOff) {
-    //a boolean is passed to this function to tell set state if the dateTime object is for cutoff date or eventDate
-    let stateProp = isCutOff ? 'cutOffDateTime' : 'dateTime'
-  //InputMoment returns a moment object which should not be accessed directly. To extract //the values, use the format method method. 
+  //InputMoment returns a moment object which should not be accessed directly. To extract the values, use the format method. 
   //see https://momentjs.com/docs/#/displaying/format/
-    this.setState({[stateProp]: dateTime }, () => console.log(stateProp, this.state[stateProp].format('llll')))
+    if(dateTime.unix() < moment().unix()) {
+      alert('You can\'t live in the past')
+    } else {
+      if (!isCutOff) {
+      console.log(isCutOff)
+      let newCutOffTime = moment(dateTime).subtract(1, 'hour')
+      this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
+      } else {
+      if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
+        alert('Please select a cut off time that\'s at least an hour before the event time')
+      }
+      this.setState({'cutOffDateTime': dateTime })
+      }
+    }
   }
   addGuestEmailPhone(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list
@@ -90,7 +99,35 @@ export default class InputForm extends React.Component {
             />
         </div>
     }
-
+    let emailNameInputs = <div>
+                            <div className="form-email" className="inputs">
+                            <label>
+                              Your Email:
+                              <input
+                                readOnly={this.props.userAccountEmail ? true : false}
+                                type="text"
+                                name="hostEmail"
+                                placeholder="Lookingforfood@something.com"
+                                value={this.state.hostEmail}
+                                onChange={this.handleInputChange.bind(this)}
+                              />
+                            </label>
+                            </div>
+                            <div className="form-host-name" className="inputs">
+                            <label>
+                              Your Name:
+                              <input
+                                readOnly={this.props.displayName? true : false}
+                                type="text"
+                                name="hostName"
+                                placeholder="Your Name"
+                                value={this.state.hostName}
+                                onChange={this.handleInputChange.bind(this)}
+                              />
+                            </label>
+                            </div>
+                          </div>
+    if (this.props.userAccountEmail) emailNameInputs = null
     return (
       <div className="wholeForm">
       <div className="form-create-event">
@@ -112,30 +149,7 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div className="form-email" className="inputs">
-        <label>
-          Your Email:
-          <input 
-            type="text"
-            name="hostEmail"
-            placeholder="Lookingforfood@something.com"
-            value={this.state.hostEmail}
-            onChange={this.handleInputChange.bind(this)}
-          />
-        </label>
-        </div>
-        <div className="form-host-name" className="inputs">
-        <label>
-          Your Name:
-          <input 
-            type="text"
-            name="hostName"
-            placeholder="Your Name"
-            value={this.state.hostName}
-            onChange={this.handleInputChange.bind(this)}
-          />
-        </label>
-        </div>
+        {emailNameInputs}
         <div className="form-event-name" className="inputs">
         <label>
           Event Name:
@@ -154,7 +168,7 @@ export default class InputForm extends React.Component {
             <InputMoment
               moment={this.state.dateTime}
               onChange={m => this.handleInputMoment.call(this, m, false)}
-              minStep={10}
+              minStep={30}
               />
           </label>
         </div>
@@ -164,7 +178,7 @@ export default class InputForm extends React.Component {
           <InputMoment
             moment={this.state.cutOffDateTime}
             onChange={m => this.handleInputMoment.call(this, m, true)}
-            minStep={10}
+            minStep={30}
             />
           </label>
         </div>
