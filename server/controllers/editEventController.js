@@ -4,6 +4,9 @@ const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
 const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 
+//for sending invites to added guests
+const sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
+
 //Targets all entries in DB under events tree
 const EventsRef = dbRef.child('events')
 const UsersRef = dbRef.child('users')
