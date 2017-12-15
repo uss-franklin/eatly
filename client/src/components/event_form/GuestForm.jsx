@@ -12,9 +12,9 @@ export default class GuestEmailForm extends React.Component {
     this.setState({[target.name]: target.value })
   }
   render() {
-  const { handleGuestEmailPhoneChange, idx } = this.props;
+  const { addGuest, removeGuest, idx } = this.props;
   return (
-    <div className="guest-email">
+    <div className="guestForm">
       <label>
         Guest Email:
         <input 
@@ -23,7 +23,7 @@ export default class GuestEmailForm extends React.Component {
           placeholder="Lookingforfoodtoo@something.com"
           value={this.state.email}
           onChange={this.handleInputChange.bind(this)}
-          onBlur={e => handleGuestEmailPhoneChange('guestEmails', e.target.value, idx)}
+          onBlur={e => addGuest('guestEmails', e.target.value, idx)}
         />
       </label>
       <label>
@@ -34,12 +34,24 @@ export default class GuestEmailForm extends React.Component {
           placeholder="Guest Name"
           value={this.state.name}
           onChange={this.handleInputChange.bind(this)}
-          onBlur={e => handleGuestEmailPhoneChange('guestNames', e.target.value, idx)}
+          onBlur={e => addGuest('guestNames', e.target.value, idx)}
         />
       </label>
+      <label>
+        Guest Phone Number:
+        <input
+          type="text"
+          name="phone"
+          placeholder="(optional) +12123994045"
+          value={this.state.value}
+          onChange={this.handleInputChange.bind(this)}
+          onBlur={e => addGuest('guestPhones', e.target.value, idx)}
+        />
+      </label>
+      {idx === 0 ? null : <button onClick={() => removeGuest(idx)} >X</button> }
     </div>
-  )
 
+  )
   }
 }
 
