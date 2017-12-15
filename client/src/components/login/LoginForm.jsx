@@ -16,6 +16,7 @@ export default class LoginForm extends React.Component {
 			txtPassword: '',
 			loggedIn: 'false',
 			googleProvider: new firebase.auth.GoogleAuthProvider(),
+			facebookProvider: new firebase.auth.FacebookAuthProvider(),
 		}
 		this.firebase = this.props.firebase
 	}
@@ -28,6 +29,9 @@ export default class LoginForm extends React.Component {
 		if (providerName === 'google') {
 			provider = this.state.googleProvider
 			provider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+		}
+		if (providerName === 'facebook') {
+			provider = this.state.facebookProvider
 		}
 		firebase.auth().signInWithRedirect(provider).then(function(result) {
 			// This gives you a Google Access Token. You can use it to access the Google API.
@@ -84,6 +88,7 @@ export default class LoginForm extends React.Component {
 			</div>
 			<div className="signInWithOAuth">
 				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
+				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
 			</div>
 		</div>
 		)
