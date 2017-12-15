@@ -11,7 +11,9 @@ const authenticateUser = function() {
       console.log('authenticateUser():true')
       console.log(user)
       //this route will always check if the user has already been created
-      postNewUser(user.email, user.uid, user.displayName)
+      if (user.providerData[0].providerId !== "password") {
+        postNewUser(user.email, user.uid, user.displayName)
+      }
       this.setState({firebaseAuthenticatedUser: user}) 
     } else {
       console.log('authenticateUser(): false')

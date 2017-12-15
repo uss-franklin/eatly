@@ -59,7 +59,10 @@ export default class LoginForm extends React.Component {
 			.then((data) => console.log('logged in with: ', data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
-
+	postNewUser (email, uid, name) {
+		Axios.post('/createAuthUser', {id: uid, emailAddress: email, name: name})
+			.catch(err => console.log(err))
+	}
 
 	//handles sign up event, bound to the sign up button
 	handleSignUp() {
@@ -77,19 +80,18 @@ export default class LoginForm extends React.Component {
 	render() {
 		return (
 			<div className="loginSignUpForm">
-			<input name="name" type="text" placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
-			<input name="txtEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
-			<input name="txtPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
-            	
-			<div className="buttons">
-					<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
-					<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
-					
-			</div>
-			<div className="signInWithOAuth">
-				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
-				<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
-			</div>
+				<input name="name" type="text" placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
+				<input name="txtEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+				<input name="txtPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
+								
+				<div className="buttons">
+						<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
+						<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
+				</div>
+				<div className="signInWithOAuth">
+					<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
+					<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
+				</div>
 		</div>
 		)
 	}
