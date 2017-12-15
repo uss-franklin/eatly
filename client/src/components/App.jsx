@@ -10,6 +10,7 @@ import Location from './location_form/Location'
 import NavBar from './NavBar'
 import Account from './user/Account'
 import EditEvent from './user/EditEvent'
+import DeclineEvent from './DeclineEvent'
 import firebase from './login/FirebaseAuth'
 import authenticateUser from './login/AuthenticateUserHelper'
 import queryString from 'query-string'
@@ -51,6 +52,7 @@ export default class App extends React.Component {
       /> 
       <Route path="/swipe" component={Swipe}/>
       <Route path="/edit" component={EditEvent}/>
+      <Route path="/decline" component={DeclineEvent}/>
     
     </div>
   </Router>

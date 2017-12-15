@@ -6,10 +6,34 @@ const createGuestEmailUser = require('./userController.js').createGuestEmailUser
 let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
 let sendHostEmail = require('./hostEmailController.js').sendHostEmail;
 let sendHostResultsEmail = require('./hostResultsEmailController.js').sendHostResultsEmail;
+let dbUtilFunctions = require('..//db/db_utility_functions/utilityFunctions.js');
 
 const eventsRef = dbRef.child('events');
 const yelpSearchResultsRef = dbRef.child('yelpSearchResults');
 
+exports.validateEventUser = function(req, res){
+    let {eventId, userId} = req.query;
+    dbUtilFunctions.inviteeBelongsToEvent(userId, eventId)
+    .then((bool) => res.send(bool))
+    .catch((err) => console.log('Error while validating a user against an event', err))
+};
+
+exports.declineInvite = function(req, res){
+    let {eventId, userId} = req.query;
+
+    Promise.all([dbUtilFunctions.deleteUserEvent(userId, eventId, false), dbUtilFunctions.deleteInviteeFromEvent(userId, eventId)])
+    .then(() => dbUtilFunctions.eventHasInvitees(eventId))
+    .then((eventHasInviteesBool) => {
+        if(eventHasInviteesBool){
+            res.send();
+        } else {
+            dbUtilFunctions.getHostId(eventId)
+            .then((hostId) => Promise.all([dbUtilFunctions.deleteUserEvent(hostId, eventId, true), dbUtilFunctions.deleteEvent(eventId)]))
+            .then(() => res.send())
+        }
+    })
+    .catch((err) => console.log('Error while declining invite', err))
+};
 
 
 /********
@@ -245,20 +269,15 @@ exports.createEvent = function(req, res){
     //ref: logic in hostEmailController
     sendHostEmail(hostEmail, hostName, eventName);
 
-    console.log('LATITUDE: ', req.body.latitude, 'LONGITUDE: ', req.body.longitude);
-
     //object to be constructed from request object
     let searchRequestParams = {
         limit: 20,
         sort_by: 'best_match',
-        //location: req.body.address,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         locale: 'en_US',
         radius: 6437,//This value corresponds with 4 miles (in meters). The default value is 10000 meters(6.2 miles)
-        term: req.body.searchTerm
-        //longitude:
-        //latitude:
+        term: req.body.searchTerm || 'restaurant'
         //categories:
     };
     //need to create the ref to new event so that we can add it to the each user
