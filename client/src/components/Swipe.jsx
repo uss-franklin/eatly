@@ -12,18 +12,26 @@ export default class Swipe extends React.Component {
     this.state = {
       current: null,
       totalRestaurants: null,
-      consensus: false
+      consensus: false,
+      superLike: true,
+      veto: true,
+      guests: [],
     }
 
     this.noVote = this.noVote.bind(this)
     this.yesVote = this.yesVote.bind(this)
+    this.superLike = this.superLike.bind(this)
+    this.veto = this.veto.bind(this)
     this.lastClickTrue = this.lastClickTrue.bind(this)
     this.lastClickFalse = this.lastClickFalse.bind(this)
+    this.getEventDetails = this.getEventDetails.bind(this)
+    this.getInviteeinfo = this.getInviteeinfo.bind(this)
     this.votingExpired = this.votingExpired.bind(this)
     this.parseUser = this.parseUser.bind(this)
     
   }
   //records a no vote on a restaurant 
+  //VOTING 0,1,2,3
   noVote() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
       vote: false}
@@ -54,6 +62,34 @@ export default class Swipe extends React.Component {
       })
       .catch((err) => { console.log(err)})
   }
+  superLike() {
+    let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
+      vote: 2}
+      Axios.post('/vote', voteObj)
+        .then((response) => {
+          let num = ++this.state.current
+          this.setState({current: num}, () => {
+            this.setState({superLike: false})
+            if (this.state.current > this.state.totalRestaurants) {
+              this.lastClickTrue()
+            }
+          })
+        })
+  }
+  veto() {
+    let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
+      vote: -1}
+      Axios.post('/vote', voteObj)
+        .then((response) => {
+          let num = ++this.state.current
+          this.setState({current: num}, () => {
+            this.setState({veto: false})
+            if (this.state.current > this.state.totalRestaurants) {
+              this.lastClickFalse()
+            }
+          })
+        })
+  }
   //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant
   lastClickTrue(){
     console.log('last click eventid', this.state.eventKey )
@@ -81,15 +117,34 @@ export default class Swipe extends React.Component {
       .catch((err) => {console.log('lastClick error', err)})
   }
   getEventDetails(eid) {
-    console.log('eid', eid)
     Axios.get(`/getSingleEvent?eid=${eid}`).then((resp) => {
       if (resp.data.groupConsensusRestaurant) {
         this.setState({consensus: true}, () => {
-          console.log('eventdetailsresp', resp)
+          //to get userkeys, and then user info objects
+          let userkeys = []
+          if (QueryString.parse(location.search).userId !== this.state.data.data.eventHost) {
+            userkeys = [this.state.data.data.eventHost]
+          } 
+          let names = []
+          for (var key in resp.data.eventInvitees) {
+            if (key !== QueryString.parse(location.search).userId)
+            userkeys.push(key)
+          }
+          console.log('userkeys', userkeys)
+          userkeys.map((key) => {
+            names.push(this.getInviteeinfo(key))
+          })
         })
       }
-      })  
+    })  
       .catch(err => console.log('event details error', err))
+  }
+  getInviteeinfo(inviteeId) {
+    Axios.get('/getInvitee?inviteeId=' + inviteeId)
+      .then((response) => {
+        this.state.guests.push(response)
+      })
+      .catch(err => console.log('invitee error', err))
   }
   //checks if the cutoff time for voting has passed
   votingExpired(current, cutoff) {
@@ -106,7 +161,6 @@ export default class Swipe extends React.Component {
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
-        // console.log('get req response', response)
         let arr = Object.keys(response.data.yelpSearchResultForEvent)
         if (arr.length > 0) {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
@@ -168,13 +222,22 @@ export default class Swipe extends React.Component {
                 Restaurant: {this.state.current + 1} of {totalRestaurants}
               </div>
             </div> 
-            <div>
-              <button className="noButton" onClick={() => {this.noVote() }}>
+            <div> 
+              <button className="noButton" onClick={() => console.log('veto')}>
+              <img src="./images/ld.jpg" />
+                Veto
+              </button>
+              <button className="noButton" onClick={() => this.noVote() }>
                 <img src="./images/redx.png"/>
               </button>
-              <button className="yesButton" onClick={() => {this.yesVote() }}>
+              <button className="yesButton" onClick={() => console.log('superlike')}>
+                <img src="./images/fire.png" />
+                SuperLike
+              </button>
+              <button className="yesButton" onClick={() => this.yesVote() }>
                 <img src="./images/checkmark.png"/>
               </button>
+              
             </div>
             <div className="descriptions"> {restaurant.name} </div>
             <div className="descriptions"> Price: {restaurant.price} </div>
