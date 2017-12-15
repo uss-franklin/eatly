@@ -1,8 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import InputMoment from 'input-moment'
-import GuestEmailInput from './GuestEmailForm'
-import GuestPhoneInput from './GuestPhoneForm'
+import GuestForm from './GuestForm'
 import Axios from 'axios'
 import NavBar from '../NavBar'
 import { Link } from 'react-router-dom'
@@ -58,18 +57,26 @@ export default class InputForm extends React.Component {
       }
     }
   }
-  addGuestEmailPhone(list, value, idx){
+  addGuest(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list
     this.setState(prevState => {
       let updatedGuestList = prevState[list].slice();
       // console.log('getting state list: ', list, updatedGuestList)
       updatedGuestList[idx] = value
       return {[list]: updatedGuestList}
-    }, () => console.log('updated state'))
+    }, () => console.log(this.state[list]))
   }
   addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
     this.setState(prevState => ({guestEmails: [...prevState.guestEmails, '']}))
+  }
+  removeGuest(idx) {
+    this.setState(prevState => {
+      let guestEmails = prevState.guestEmails.slice().splice(idx, 1)
+      let guestPhones = prevState.guestPhones.slice().splice(idx, 1)
+      let guestNames = prevState.guestNames.slice().splice(idx, 1)
+      return {guestEmails: guestEmails, guestPhones: guestPhones, guestNames: guestNames}
+    }, () => console.log('removed guests at idx: ', idx, this.state))
   }
   submitForm(){
     this.setState({submitClick: true})
@@ -188,15 +195,13 @@ export default class InputForm extends React.Component {
         <div className="form-add-guests" className="inputs">
           {this.state.guestEmails
             .map((guest, idx) => {
-              let emailKey = 'email' + idx
-              let phoneKey = 'phone' + idx
                return (
-                 <div>
-                  <GuestEmailInput idx={idx} key={emailKey} 
-                  handleGuestEmailPhoneChange={this.addGuestEmailPhone.bind(this)}/>
-                  <GuestPhoneInput idx={idx} key={phoneKey}
-                  handleGuestEmailPhoneChange={this.addGuestEmailPhone.bind(this)}/>
-                </div>
+                  <GuestForm 
+                  idx={idx} 
+                  key={idx} 
+                  addGuest={this.addGuest.bind(this)}
+                  removeGuest={this.removeGuest.bind(this)}
+                  />
               )
             })
           }
