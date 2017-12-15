@@ -4,22 +4,26 @@ import Axios from 'axios'
 import QueryString from 'query-string'
 import MapWithAMarker from './location_form/MapWithAMarker.jsx'
 
+
 export default class Results extends React.Component {
 	constructor(props) {
     super(props)
     this.state = {
-      yelpLoaded: false
+      yelpLoaded: false,
     }
 
     this.parseUser = this.parseUser.bind(this)
     this.getEventDetails = this.getEventDetails.bind(this)
     this.getYelpDetails = this.getYelpDetails.bind(this)
     this.componentWillMount = this.componentWillMount.bind(this)
+    this.convertTime24to12 = this.convertTime24to12.bind(this)
+    this.InputForm = this.InputForm.bind(this)
     
 	}
  
   parseUser() {
     let parsedqs = QueryString.parse(location.search)
+    console.log('parsetest', typeof QueryString.parse(location.search).userId)
     this.setState({eventId: parsedqs.eventKey}, () => {
       this.getEventDetails(this.state.eventId)
     })
@@ -61,6 +65,9 @@ export default class Results extends React.Component {
       }
     return time12;
   }
+  InputForm() {
+    window.location = `/InputForm`
+  }
 	render() {
     let address = ''
     let view = null
@@ -87,15 +94,13 @@ export default class Results extends React.Component {
             {this.state.results.name}
           </h2>
           <h2 className="resultsDateAndTime">
-          {this.state.results.location.display_address.forEach((x) => {
-            address += x + ' '
-            return address
+          {this.state.results.location.display_address.forEach((piece) => {
+            address += piece + ' '
           })}
           {address}
           </h2>
           <h3 className="resultsDateAndTime">
-            {this.state.data.data.eventDateTime.slice(0,15)} @ 
-            {this.convertTime24to12(this.state.data.data.eventDateTime.slice(16,24))}
+            {this.state.data.data.eventDateTime.slice(0,15)} @ {this.convertTime24to12(this.state.data.data.eventDateTime.slice(16,24))}
           </h3>
           <div>
               <MapWithAMarker
@@ -107,17 +112,17 @@ export default class Results extends React.Component {
               />
           </div>
           <p className="viewInviteeVotesText">
-            Want to see who you're gonna be dining with, and how they voted?
+          You'll be dining with: 
+          {this.props.eventData.guests.map((x)=>{
+            return <li>{x.data.name} </li>
+          })} 
           </p>
-          <button className="viewInviteesVotesButton">
-            Guests
-          </button>
           <p className="startNewMealTextResultsComponent">
             <br />
             <br />
             Get started planning another evening of fun!
           </p>
-          <button className="startNewMealButtonResultsComponent">
+          <button className="startNewMealButtonResultsComponent" onClick={() => this.InputForm()}>
             Plan Event
           </button>
         </div>
