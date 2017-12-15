@@ -37,15 +37,10 @@ app.get('/getUserDetails', getUserDetails);
 app.get('/getGroupInvitedUsersDetails', getGroupInvitedUsersDetails);
 app.get('/getSingleEvent', getSingleEvent);
 app.delete('/deleteEvent', deleteEvent);
-<<<<<<< HEAD
 app.get('/finalYelpResult', finalResults.FinalYelpResult);
 app.get('/declineInvite', eventController.declineInvite);
 app.get('/validateURL', eventController.validateEventUser);
-
-=======
-app.get('/finalYelpResult', finalResults.FinalYelpResult)
 app.get('/getInvitee', finalResults.getInvitee)
->>>>>>> superlike
 
 
 
