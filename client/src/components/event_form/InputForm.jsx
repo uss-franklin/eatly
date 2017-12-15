@@ -46,7 +46,6 @@ export default class InputForm extends React.Component {
       alert('You can\'t live in the past')
     } else {
       if (!isCutOff) {
-      console.log(isCutOff)
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
       this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
       } else {
@@ -64,7 +63,7 @@ export default class InputForm extends React.Component {
       // console.log('getting state list: ', list, updatedGuestList)
       updatedGuestList[idx] = value
       return {[list]: updatedGuestList}
-    }, () => console.log(this.state[list]))
+    })
   }
   addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
@@ -76,7 +75,7 @@ export default class InputForm extends React.Component {
       let guestPhones = prevState.guestPhones.slice().splice(idx, 1)
       let guestNames = prevState.guestNames.slice().splice(idx, 1)
       return {guestEmails: guestEmails, guestPhones: guestPhones, guestNames: guestNames}
-    }, () => console.log('removed guests at idx: ', idx, this.state))
+    },)
   }
   submitForm(){
     this.setState({submitClick: true})
@@ -85,7 +84,6 @@ export default class InputForm extends React.Component {
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
       .then((response) => {
-        console.log('submit form response data')
         let eventId = response.data.eventId
         let userId = response.data.hostId
         window.location = `/swipe?eventKey=${eventId}&userId=${userId}`

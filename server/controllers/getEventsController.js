@@ -8,6 +8,17 @@ const getBothEventTypes = (uid, eventType) => {
     .then(events =>  events.val())
 }
 
+const getInvitedUsersDetails = (event) => {
+  return Promise.all(guestIds.map(uid => {
+    return UsersRef.child(uid).once('value')
+          .then(user => {
+            let {name, email} = user.val()
+            console.log(name, email)
+            return {uid: uid, name: name || '', email: email}
+      })
+  }))
+}
+
 const getEventDetails = (eventId) => {
   //pre-emptive return for passing an empty [] if the person has 
   //either no hosted or invited events
@@ -19,6 +30,7 @@ const getEventDetails = (eventId) => {
       return eventDetails
     })
 }
+
 exports.getSingleEvent = (req, res) => {
   getEventDetails(req.query.eid)
   .then(event => res.send(event))
@@ -40,7 +52,9 @@ exports.getAuthUserCreatedEvents = (req, res) => {
         hostEvents: magic.slice(0, allEvents[0].length),
         invitedEvents: magic.slice(allEvents[0].length)
       }
-      // console.log('**** Returning events obj *****' , eventsObj)
+      // console.log('**** Hosted Events***** \n' , eventsObj.hostEvents)
+      // console.log('**** Invited Events***** \n' , eventsObj.invitedEvents)
+
       res.send(eventsObj)
     })
     
