@@ -226,24 +226,15 @@ const createYelpResults = function(searchRequestParams, eventDate) {
 exports.createEvent = function(req, res){
     console.log('create event request started')
 
-    //sets data for sending emails to convenient variables
-    let hostName = req.body.hostName
-    let eventDate = req.body.dateTime
-    let eventName = req.body.eventName
-    let hostEmail = req.body.hostEmail
-
-    //iterates through every email passed in by user and sends email invite notification
-    //ref: logic in inviteEmailController
-    req.body.guestEmails.forEach(function(email){
-        sendInviteEmail(email, hostName, eventDate, eventName)
-    })
-
     let usersRef = dbRef.child('users')
     let eventsRef = dbRef.child('events')
 
-    //sends different email to host with information regarding their event
-    //ref: logic in hostEmailController
-    sendHostEmail(hostEmail, hostName, eventName);
+
+        //sets data for sending emails to convenient variables
+        
+        let eventDate = req.body.dateTime
+        let eventName = req.body.eventName
+        let hostEmail = req.body.hostEmail
 
     console.log('LATITUDE: ', req.body.latitude, 'LONGITUDE: ', req.body.longitude);
 
@@ -275,6 +266,55 @@ exports.createEvent = function(req, res){
         newEvent.set(eventDetails); //set the event details in firebase
         let returnObj = {eventId: newEvent.key, hostId: Object.keys(eventDetails.eventHost)[0]};
         console.log('ending the request, sending back return obj');
+
+
+        //these two are declared now and assigned after the following promises run
+        let hostId, guestUserIds, hostName
+
+        //retrieving newly set event specific details from DB for emails
+        Promise.all([
+            //plucks hostId from the DB
+            eventsRef.child(returnObj.eventId).child('eventHost').once('value').then((resultId) => {
+                    resultId = Object.keys(resultId.val())[0]
+                    console.log("HOST ID ", resultId)
+                    return resultId
+                })
+                .catch((err) => console.log("Error retrieving hostId from DB in create event eventController : ", err)),
+
+            //plucks the guest firebase Id's from the DB
+                eventsRef.child(returnObj.eventId).child('eventInvitees').once('value').then((resultInvitees) => {
+                    resultInvitees = Object.keys(resultInvitees.val())
+                    console.log("RESULT INVITEES ", resultInvitees)
+                    return resultInvitees
+                })
+                .catch((err) => console.log("Error in checkForConsensus results event Guests ID's decorator " + err)),
+
+                //plucks hostname from the DB
+                eventsRef.child(returnObj.eventId).child('eventHost').once('value').then((result) => {
+                    result = Object.keys(result.val())[0]
+                    var innerPromise = usersRef.child(result).child('name').once('value').then((nameResult) => {
+                        nameResult = nameResult.val()
+                        return nameResult;
+                    })
+                    return innerPromise;
+                })
+        ]).then((resolvedArray) => {
+            hostId = resolvedArray[0]
+            guestUserIds = resolvedArray[1]
+            hostName = resolvedArray[2]
+
+            guestUserIds.forEach((userId) => {
+                usersRef.child(userId).child('email').once('value').then((result) => {
+                    let guestEmail = result.val()
+                    sendInviteEmail(guestEmail, hostName, eventDate, eventName, userId, returnObj.eventId)
+                    return ('email invitation successfully sent to ' + guestEmail)
+                })
+            })
+
+            sendHostEmail(hostEmail, hostName, eventName, returnObj.eventId, hostId)
+
+        })
+
 
         res.send(returnObj);
     }).catch(err => console.log('man down', err))
