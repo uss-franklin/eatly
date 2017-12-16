@@ -103,18 +103,7 @@ export default class EditEvent extends React.Component {
     let payload = {eid: this.state.eid, fieldsToUpdate: fieldsToUpdate}
     Axios.put('/editEvent', payload)
       .then((resp) => console.log(resp.data))
-      .catch(err => console.log('Edit Event Form Submission Error: ', err));
-
-    let inviteEmailParamsObject = {
-      emails: this.state.newGuestsEmails,
-      hostName: this.state.eventHost,
-      eventDate: this.state.eventDateTime,
-      eventName: this.state.eventName,
-      eventId: this.state.eid
-    }
-    Axios.post('/sendInviteEmailEditEvent', inviteEmailParamsObject)
-      .then((response) => console.log("sending invite email to new guests :", response))
-      .catch((err) => console.log("error in sending invite emails to new guests :", err))  
+      .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   ////END HTTP PUT AND PROCESS DATA
   deleteEvent(){
