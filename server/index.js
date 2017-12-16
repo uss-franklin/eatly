@@ -44,7 +44,6 @@ app.get('/validateURL', eventController.validateEventUser);
 app.get('/getInvitee', finalResults.getInvitee)
 
 
-
 //Catch-all to allow refreshing of react-router created pages
 app.get('/*', frontEndCatchAllRouter);
 
