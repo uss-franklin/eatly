@@ -26,23 +26,22 @@ exports.getConsensusOnEventsPastCutOff = function() {
         events = events.val();
         for (eventKey in events) {
             if (events.hasOwnProperty(eventKey)) {
-                let voteCutOffDateTime = new Date(events[eventKey].voteCutOffDateTime);
                 let groupConsensusRestaurant = events[eventKey].groupConsensusRestaurant;
+                let voteCutOffDateTime = new Date(events[eventKey].voteCutOffDateTime);
                 let currentDate = new Date();
-                //console.log('Event Key: ', eventKey, ' Cutoff Time: ', voteCutOffDateTime.toString(), ' GroupConsensusRestaurant: ', groupConsensusRestaurant);
-                //console.log('voteCutOffDateTime <= currentDate =  ', voteCutOffDateTime <= currentDate, ' !groupConsensusRestaurant = ', !groupConsensusRestaurant);
                 if (voteCutOffDateTime <= currentDate && !groupConsensusRestaurant) {
+                    console.log('')
+                    console.log('Event Key: ', eventKey, ' Cutoff Time: ', voteCutOffDateTime.toString(), 'Current Date/Time: ', currentDate.toString(), 'GroupConsensusRestaurant: ', groupConsensusRestaurant);
                     votingResultRef = eventsRef.child(eventKey).child('groupConsensusRestaurant');
                     checkForConsensus(eventKey, 'date').then((consensus) => {
                         if(consensus){
                             votingResultRef.set(consensus).then(() => {
                                 //this needs to be fixed
-                                console.log(`${eventKey} is passed it's current cutoff of ${voteCutOffDateTime} and consensus restaurant of ${consensus} was selected`);
+                                console.log(`consensus restaurant of ${consensus} was selected`);
                             });
                         } else {
                             //this needs to be fixed
-                            console.error(`${eventKey} is passed it's current cutoff of ${voteCutOffDateTime} and consensus restaurant couldn't be selected`);
-                            res.sendStatus(500);
+                            console.error(`consensus restaurant couldn't be selected`);
                         }
                     });
                 }
@@ -235,6 +234,7 @@ let checkForConsensus = function(eventId, consensusType){
         let vetoedRestaurants = resolvedPromiseArr[2];
 
         let completeVotes = arrOfVoteObjs.filter((voteObj) => Object.keys(voteObj).length !== 0);
+
         if(consensusType === 'vote') {
             if (arrOfVoteObjs.length === 0 || completeVotes.length !== arrOfVoteObjs.length) {
                 return;
@@ -243,13 +243,27 @@ let checkForConsensus = function(eventId, consensusType){
             }
         }
         if(consensusType === 'date'){
-            if(completeVotes.length === 0){//NEEDS TO INCORPORATE VETOES
+            console.log(isNoVotes(completeVotes));
+            if(completeVotes.length === 0 || isNoVotes(completeVotes) ){
                 return getRandomConsensus(eventId);
             } else {
                 return determineConsensus(arrOfVoteObjs, vetoedRestaurants);
             }
         }
     }).catch((err) => console.error(err));
+};
+
+let isNoVotes = function(arrOfVoteObjs){
+    for(let i = 0; i < arrOfVoteObjs.length; i++){
+        let voteObj = arrOfVoteObjs[i];
+        for(restaurant in voteObj){
+            if(voteObj[restaurant] !== '-'){
+                return false;
+            }
+        }
+    }
+
+    return true;
 };
 
 let getRandomConsensus = function(eventId){
@@ -274,7 +288,7 @@ let gatherVotes = function(eventId, ref, consensusType){
             for(const id in entityObj){
                 if(entityObj.hasOwnProperty(id)) {
                     const votes = entityObj[id].votes;
-                    for(var i = 0; i < votes.length; i++) {
+                    for(let i = 0; i < votes.length; i++) {
                         vote = votes[i];
                         if(vote === '-'){
                             allRestaurantsVotedOn = false;

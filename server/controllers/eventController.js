@@ -77,33 +77,6 @@ const getUnVotedRestaurants = function(userId, eventId) {
 };
 
 /********
- Name: getUserRef
- Description: The purpose of this function is to obtain a firebase database reference for a user given their User ID. The function is
- required because the userID needs to be checked against the host and eventInvitees objects for the corresponding event.
- Expected Inputs: The function takes in three parameters:
-  - eventId - The event ID for which the database ref is required for
-  - userId - The user ID of the user for which the database ref is required for
-  - resolvedHostInviteeCheck - an array (containing two elements) of the firebase database return objects containing the host and eventInvitee objects for the corresponding
-    event and userID. If the user ID does not correspond with the host, then the first element of the array will be null. If the user ID does not correspond with an
-    eventInvitee then the second element of the array will be null.
- Expected Outputs:
- - Success: A firebase database ref will be returned. The ref will correspond with the eventHostObject database object if the userId corresponds with
- the Host or the eventInvitees if it corresponds with an invitee.
- - Failure: null
- *********/
-var getUserRef = function(eventId, userId, resolvedHostInviteeCheck) {
-    if(resolvedHostInviteeCheck[0].val() !== null && resolvedHostInviteeCheck[1].val() === null){
-        return(eventsRef.child(eventId).child('eventHost').child(userId));
-
-    } else if(resolvedHostInviteeCheck[0].val() === null && resolvedHostInviteeCheck[1].val() !== null){
-        return(eventsRef.child(eventId).child('eventInvitees').child(userId));
-
-    } else { //if both are the userID could not be found in the eventHost or eventInvitees object or if it was found in both objects. This indicates that there is a data integrity problem.
-        return null;
-    }
-};
-
-/********
 Name: getEventRestaurants
 Description: The purpose of this function is to return some basic event details and full details of restaurants associated with an event which have not yet
 been voted on by a given user.
