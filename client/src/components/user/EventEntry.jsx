@@ -20,7 +20,7 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
     buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
   }
 
-  let inviteGroupButton = <Link to={{pathname: './inputForm', state: {dummyData: 'dummayData'}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>
+  let inviteGroupButton = <Link key={event.eid} to={{pathname: './inputForm', state: {dummyData: 'dummayData'}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>
   buttons.push(inviteGroupButton)
 
   return (

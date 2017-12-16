@@ -79,7 +79,7 @@ export default class Account extends React.Component {
         <EventEntry 
           event={event} 
           canEdit={false} 
-          key={idx} 
+          key={'invited' + idx} 
           uid={this.props.user.uid} 
           buttonAction={this.handleVoteOrEditButton}
         />
