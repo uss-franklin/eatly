@@ -29,7 +29,6 @@ export default class EditEvent extends React.Component {
     let payload = {
       params: {eventInvitees: eventInviteeUids}
     }
-    console.log('fetching user data for:', payload)
     return Axios.get('/getGroupInvitedUsersDetails', payload).then(resp => resp.data)
   }
   getEventDetail(eid) {
@@ -51,12 +50,11 @@ export default class EditEvent extends React.Component {
     this.getEventUsers(Object.keys(event.eventInvitees))
     .then(inviteesDetails => {
       event.inviteesDetails = inviteesDetails
-      this.setState(event, () => console.log('state', this.state))
+      this.setState(event)
     }) 
   }
   componentDidMount(){
     let parsedEid = queryString.parse(location.search).eventKey
-    console.log('event id: ', parsedEid)
     this.getEventDetail(parsedEid)
     .then(eventDetails => this.processFetchedData(eventDetails))
   }
@@ -67,7 +65,7 @@ export default class EditEvent extends React.Component {
       let eventDataToUpdate = Object.assign({}, prevState.eventDataToUpdate)
       eventDataToUpdate[eventPropToUpdate] = value
       return {eventDataToUpdate: eventDataToUpdate}
-    }, () => console.log(this.state))
+    })
   }
   addAnotherGuestForm() {
     this.setState(prevState => ({newGuestsEmails: [...prevState.newGuestsEmails, null]}))
@@ -78,7 +76,6 @@ export default class EditEvent extends React.Component {
       let updatedGuestsNames = prevState.newGuestsNames.slice()
       updatedGuestsEmails[idx] = email
       updatedGuestsNames[idx] = name
-      console.log(updatedGuestsEmails, updatedGuestsNames, idx)
       return {newGuestsEmails: updatedGuestsEmails, newGuestsNames: updatedGuestsNames}
     })
   }
@@ -102,7 +99,7 @@ export default class EditEvent extends React.Component {
     }
     let payload = {eid: this.state.eid, fieldsToUpdate: fieldsToUpdate}
     Axios.put('/editEvent', payload)
-      .then((resp) => console.log(resp.data))
+      .then((resp) => alert(resp.data))
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   ////END HTTP PUT AND PROCESS DATA
@@ -155,8 +152,8 @@ export default class EditEvent extends React.Component {
           </label>
         </div>
 
-        <div className="editFormRemoveGuests">
-        	<h3 className="editFormRemoveGuestsText">
+        <div className="editFormGuests">
+        	<h3 className="editFormGuestsText">
         		Guests:
         	</h3>
           <table> 
@@ -164,12 +161,11 @@ export default class EditEvent extends React.Component {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Remove</th>
+              {/* <th>Remove</th> */}
             </tr>
               {this.state.inviteesDetails.map((userDetails, idx) => <EventGuest details={userDetails} key={idx}/>)}
             </tbody>
           </table>
-        	<button className="editFormRemoveGuestsButton">Remove Select</button>
         </div>
         <div className="editFormAddGuests">
             {this.state.newGuestsEmails.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}

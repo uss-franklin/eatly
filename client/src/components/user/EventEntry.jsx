@@ -29,7 +29,6 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
     buttons.push(<Link key={event.eid} to={{pathname: './inputForm', state: {usersToInvite: usersToinvite}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>)
   }
   
-  console.log(event)
   return (
     <tr>
       <td className="usersEventItemTitle">{event.eventName}</td>
