@@ -35,7 +35,7 @@ export default class Swipe extends React.Component {
   //VOTING 0,1,2,3
   noVote() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
-      vote: false}
+      vote: 1}
     Axios.post('/vote', voteObj)
       .then((response) => {
         // console.log('noVote res', response)
@@ -50,7 +50,7 @@ export default class Swipe extends React.Component {
   }
   yesVote() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
-      vote: true}
+      vote: 2}
     Axios.post('/vote', voteObj)
       .then((response) => {
         let num = ++this.state.current;
@@ -64,7 +64,7 @@ export default class Swipe extends React.Component {
   }
   superLike() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
-      vote: 2}
+      vote: 3}
       Axios.post('/vote', voteObj)
         .then((response) => {
           let num = ++this.state.current
@@ -78,7 +78,7 @@ export default class Swipe extends React.Component {
   }
   veto() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
-      vote: -1}
+      vote: 0}
       Axios.post('/vote', voteObj)
         .then((response) => {
           let num = ++this.state.current
@@ -209,6 +209,7 @@ export default class Swipe extends React.Component {
             </div> 
       } 
       else {
+        console.log('swipe state', this.state)
         let restaurant = this.state.data.data.yelpSearchResultForEvent[this.state.current]
         let event = this.state.data.data
         let totalRestaurants = this.state.totalRestaurants + 1
@@ -222,14 +223,14 @@ export default class Swipe extends React.Component {
               </div>
             </div> 
             <div> 
-              <button className="noButton" onClick={() => console.log('veto')}>
+              <button className="noButton" onClick={() => this.veto()}>
               <img src="./images/ld.jpg" />
                 Veto
               </button>
               <button className="noButton" onClick={() => this.noVote() }>
                 <img src="./images/redx.png"/>
               </button>
-              <button className="yesButton" onClick={() => console.log('superlike')}>
+              <button className="yesButton" onClick={() => this.superLike()}>
                 <img src="./images/fire.png" />
                 SuperLike
               </button>

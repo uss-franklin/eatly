@@ -76,6 +76,8 @@ export default class Results extends React.Component {
       <Loading />
     } else {
       console.log('test props', this.props)
+      console.log('event description: ', this.props.eventData.data.data.eventDescription)
+      console.log('result state', this.state.results.url)
         view = 
           <div className="parent resultsComponent">
           <h1 className="resultsTitle">
@@ -84,11 +86,15 @@ export default class Results extends React.Component {
             </div>
             You're Gonna Eat!
           </h1>
+          <div>
+            {this.props.eventData.data.data.eventName}<br /> 
+            {this.props.eventData.data.data.eventDescription}
+          </div>
           <p className="resultsHeader">
             Get ready to meet your party at:
           </p>
           <h2 className="resultsRestaurantTitle">
-            {this.state.results.name}
+            <a href={this.state.results.url}>{this.state.results.name} </a>
           </h2>
           <h2 className="resultsDateAndTime">
           {this.state.results.location.display_address.forEach((piece) => {
