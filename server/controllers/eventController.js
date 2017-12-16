@@ -130,6 +130,7 @@ exports.getEventRestaurants = function(req, res){
         returnObj.eventName = eventDetails.val().eventName;
         returnObj.eventDateTime = eventDetails.val().eventDateTime;
         returnObj.voteCutOffDateTime = eventDetails.val().voteCutOffDateTime;
+        returnObj.eventDescription = eventDetails.val().eventDescription
         returnObj.eventHost = Object.keys(eventDetails.val().eventHost)[0];
 
         //call to function to get a promise which resolves with restaurants that a given user has not yet voted on
@@ -227,6 +228,7 @@ const createEventDetail = function(details, hostId, guestIds, yelpResults) {
         eventCreationDateTime: new Date().toString(),
         voteCutOffDateTime: new Date(details.cutOffDateTime).toString(),
         eventName: details.eventName,
+        eventDescription: details.eventDescription,
         yelpSearchResultsKey: yelpSearchResultsKey
     };
     let eventInvitees = {}
