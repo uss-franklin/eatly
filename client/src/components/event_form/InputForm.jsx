@@ -21,10 +21,10 @@ export default class InputForm extends React.Component {
       eventName: '',
       dateTime: moment().add(2, 'hour'),
       cutOffDateTime: moment().add(1, 'hour'),
-      guestEmails: [''], //requires intial value to render the first guest email form
-      guestPhones: [''], //same as above comment
-      guestNames: [''],
-      firebaseId: this.props.firebaseId, // needed to check whether we need to create the user
+      guestEmails: this.props.routeProps.location.state !== undefined ? this.props.routeProps.location.state.usersToInvite.guestEmails : [''], //requires intial value to render the first guest email form
+      guestPhones: [''],
+      guestNames: this.props.routeProps.location.state !== undefined ? this.props.routeProps.location.state.usersToInvite.guestNames : [''],
+      firebaseId: this.props.firebaseId, 
       longitude: null,
       latitude: null,
       submitClick: false
@@ -46,7 +46,6 @@ export default class InputForm extends React.Component {
       alert('You can\'t live in the past')
     } else {
       if (!isCutOff) {
-      console.log(isCutOff)
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
       this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
       } else {
@@ -64,7 +63,7 @@ export default class InputForm extends React.Component {
       // console.log('getting state list: ', list, updatedGuestList)
       updatedGuestList[idx] = value
       return {[list]: updatedGuestList}
-    }, () => console.log(this.state[list]))
+    })
   }
   addGuestEmailInputField(){
   //adds a new element to guest email state. The re-render will add a new guest email input field. 
@@ -76,7 +75,7 @@ export default class InputForm extends React.Component {
       let guestPhones = prevState.guestPhones.slice().splice(idx, 1)
       let guestNames = prevState.guestNames.slice().splice(idx, 1)
       return {guestEmails: guestEmails, guestPhones: guestPhones, guestNames: guestNames}
-    }, () => console.log('removed guests at idx: ', idx, this.state))
+    },)
   }
   submitForm(){
     this.setState({submitClick: true})
@@ -85,7 +84,6 @@ export default class InputForm extends React.Component {
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
       .then((response) => {
-        console.log('submit form response data')
         let eventId = response.data.eventId
         let userId = response.data.hostId
         window.location = `/swipe?eventKey=${eventId}&userId=${userId}`
@@ -96,6 +94,7 @@ export default class InputForm extends React.Component {
       .catch(err => console.log('SMS sending error: ' + err))
   }
   render(){
+    // console.log('location state: ', this.props.routeProps.location.state.usersToInvite.guestNames)
     let mapView = <div></div>;
     if(this.state.latitude && this.state.longitude) {
         mapView = <div>
@@ -194,9 +193,12 @@ export default class InputForm extends React.Component {
         </div>
         <div className="form-add-guests" className="inputs">
           {this.state.guestEmails
-            .map((guest, idx) => {
+            .map((guestEmail, idx) => {
+              console.log('guestName: ', this.state.guestNames, idx)
                return (
-                  <GuestForm 
+                  <GuestForm
+                  email={guestEmail}
+                  name={this.state.guestNames[idx]}
                   idx={idx} 
                   key={idx} 
                   addGuest={this.addGuest.bind(this)}

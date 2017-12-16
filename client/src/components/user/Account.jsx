@@ -42,7 +42,8 @@ export default class Account extends React.Component {
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
-    this.setState(Object.assign(userData, eventsData, {dataFetched : true}), () => console.log(this.state))
+    console.log(eventsData)
+    this.setState(Object.assign(userData, eventsData, {dataFetched : true}))
   }
   componentDidMount() {
     Axios.all([
@@ -50,7 +51,6 @@ export default class Account extends React.Component {
       this.getUserEvents()
     ])
     .then(Axios.spread((userDetails, userEvents) => {
-      console.log(userEvents.data)
       this.processData(userDetails.data, userEvents.data)
     }))
   }
@@ -79,7 +79,7 @@ export default class Account extends React.Component {
         <EventEntry 
           event={event} 
           canEdit={false} 
-          key={idx} 
+          key={'invited' + idx} 
           uid={this.props.user.uid} 
           buttonAction={this.handleVoteOrEditButton}
         />

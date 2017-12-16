@@ -42,11 +42,12 @@ export default class App extends React.Component {
         loggedIn ? <Account user={this.state.firebaseAuthenticatedUser}/> : <Redirect to="/" />
         )} 
       />
-      <Route exact path="/inputForm" render={() => 
+      <Route exact path="/inputForm" render={routeProps => 
           <InputForm 
             userAccountEmail={this.state.firebaseAuthenticatedUser.email}
             firebaseId={this.state.firebaseAuthenticatedUser.uid}
             displayName={this.state.firebaseAuthenticatedUser.displayName}
+            routeProps={routeProps}
           />
         } 
       /> 
