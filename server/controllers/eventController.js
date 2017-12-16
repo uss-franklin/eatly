@@ -303,7 +303,7 @@ exports.createEvent = function(req, res){
         console.log('ending the request, sending back return obj');
 
 
-        //these two are declared now and assigned after the following promises run
+        //these are declared now and assigned after the following promises run
         let hostId, guestUserIds, hostName
 
         //retrieving newly set event specific details from DB for emails
