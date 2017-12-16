@@ -111,6 +111,8 @@ exports.editEvent = function(req, res) {
 							resultEmail = resultEmail.val()
 							console.log("result email for matching key : ", resultEmail)
 							if(resultEmail === email) {
+								console.log("email to match is : ", email)
+								console.log("email that is matching is: ", resultEmail)
 								sendInviteEmail(email, hostName, eventDate, eventName, key, eventId)
 							}
 						})
