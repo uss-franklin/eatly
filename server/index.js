@@ -10,6 +10,7 @@ const {editEvent, deleteEvent}= require('./controllers/editEventController.js');
 const {getAuthUserCreatedEvents, getSingleEvent} = require('./controllers/getEventsController');
 const {getUserDetails, createAuthUser, getGroupInvitedUsersDetails} = require('./controllers/userController.js');
 const finalResults = require('./controllers/resultsController.js')
+const inviteEmailController = require('./controllers/inviteEmailController.js')
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -41,7 +42,6 @@ app.get('/finalYelpResult', finalResults.FinalYelpResult);
 app.get('/declineInvite', eventController.declineInvite);
 app.get('/validateURL', eventController.validateEventUser);
 app.get('/getInvitee', finalResults.getInvitee)
-
 
 
 //Catch-all to allow refreshing of react-router created pages

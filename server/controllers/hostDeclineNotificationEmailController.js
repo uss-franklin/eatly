@@ -1,5 +1,10 @@
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
+const dbRef = require('../db/firebaseRealtimeDB.js').dbRef
+
+let usersRef = dbRef.child('users')
+let eventsRef = dbRef.child('events')
+
 
 
 //sets up connection with team's gmail account, passing in secret keys
@@ -13,11 +18,11 @@ const transporter = nodemailer.createTransport({
 
 
 /*  
-    this function inits all necessary fields for email message.
-    its rendered as a function so that data can be passed in dynamically from front
-    all data is generated from the create event component the user fills in
+  similar to other email templates, this passes in dynamic data based on the user and context
+  this specifically sends an email to the host notifying them that a user has decline the invite to the event
+  then gives the host the option to edit the event
 */
-const mailOptions = function(hostEmail, hostName, eventName) {
+const mailOptions = function(hostEmail, eventName, eventId) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: hostEmail,
@@ -116,14 +121,18 @@ const mailOptions = function(hostEmail, hostName, eventName) {
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
                           <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            Hi again ` +hostName+`!</p>
+                            Hi again!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                              We've got some unfortunate news regarding your meal ` +eventName+ ` with Eatly... One of your guests had to decline.
+                              We've got some unfortunate news regarding your meal ${eventName} with Eatly... One of your guests had to decline.
                                <br>
                               On their behalf, we extend apologies. Not to worry though, your event will still be taking place! View the details now,
                                including the guests who are attending :)
 
+                          </p>
+
+                          <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
+                            Why not add a new friend to join the meal? You can edit your event now and add as many new guests as you'd like!
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
@@ -133,7 +142,7 @@ const mailOptions = function(hostEmail, hostName, eventName) {
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://memory-alpha.wikia.com/wiki/USS_Franklin" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/edit?eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Edit ${eventName}</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -172,14 +181,40 @@ const mailOptions = function(hostEmail, hostName, eventName) {
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendHostEmail = function(hostEmail, hostName, eventName) { 
-  transporter.sendMail(mailOptions(hostEmail, hostName, eventName), function(err, info){
+const sendHostDeclineNotificationEmail = function(eventId, userId) {
+  let hostEmail, eventName
+
+  //grabs necessary argument details from the DB for send host notification email
+  Promise.all([
+    //plucks host email from the DB
+    eventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+      result = Object.keys(result.val())[0]
+      return usersRef.child(result).child('email').once('value').then((resultEmail) => {
+        resultEmail = resultEmail.val()
+        return resultEmail
+      })
+      .catch((err) => console.log('Error in retrieving host email for sendHostDeclineNotificationEmail : ', err))
+    }),
+
+    //plucks the event name from the DB
+    eventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => {
+      eventNameResult = eventNameResult.val()
+      return eventNameResult
+    })
+  ])
+  //sets resolved values to convenient variable names declared above
+  .then((resolvedArray) => {
+    hostEmail = resolvedArray[0]
+    eventName = resolvedArray[1]
+  }).catch((err) => console.log("Error in resolving promises retrieving data chunks for sendHostDeclineNotificationEmail : ", err))
+
+  //sends host notification email to host that someone has declined RSVP
+  transporter.sendMail(mailOptions(hostEmail, eventName, eventId), function(err, info){
     if(err)
   		console.log(err)
   	else
-  		console.log(info)
+  		console.log("Successfully sent host decline notification email")
   })
 }
 
-exports.sendHostEmail = sendHostEmail
-exports.mailOptions = mailOptions
+exports.sendHostDeclineNotificationEmail = sendHostDeclineNotificationEmail
