@@ -19,6 +19,7 @@ export default class InputForm extends React.Component {
       hostEmail: this.props.userAccountEmail || '',
       hostName: this.props.displayName || '',
       eventName: '',
+      eventDescription: '',
       dateTime: moment().add(2, 'hour'),
       cutOffDateTime: moment().add(1, 'hour'),
       //Need to use a ternary here otherwise we get a ref error when inputForm is loaded without location state
@@ -81,6 +82,7 @@ export default class InputForm extends React.Component {
   submitForm(){
     this.setState({submitClick: true})
     let sendObj = Object.assign({}, this.state);
+    console.log('sendobj', sendObj)
     sendObj.dateTime = sendObj.dateTime.format('llll');
     sendObj.cutOffDateTime = sendObj.cutOffDateTime.format('llll');
     Axios.post('/createEvent', sendObj)
@@ -170,6 +172,19 @@ export default class InputForm extends React.Component {
             onChange={this.handleInputChange.bind(this)}
           />
         </label>
+        </div>
+        <div className="inputs">
+          <label>
+            Event Description:
+            <input
+              type="text"
+              size="30"
+              name="eventDescription"
+              placeholder="Add a description for your guests"
+              value={this.state.eventDescription}
+              onChange={this.handleInputChange.bind(this)}
+            />
+          </label>
         </div>
         <div className="form-date-time" className="inputs">
           <label>
