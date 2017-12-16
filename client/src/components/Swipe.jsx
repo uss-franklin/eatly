@@ -24,7 +24,8 @@ export default class Swipe extends React.Component {
     this.veto = this.veto.bind(this)
     this.lastClickTrue = this.lastClickTrue.bind(this)
     this.lastClickFalse = this.lastClickFalse.bind(this)
-    this.getEventDetails = this.getEventDetails.bind(this)
+    this.checkifConsensus = this.checkifConsensus.bind(this)
+    this.setGuestList = this.setGuestList.bind(this)
     this.getInviteeinfo = this.getInviteeinfo.bind(this)
     this.votingExpired = this.votingExpired.bind(this)
     this.parseUser = this.parseUser.bind(this)
@@ -52,7 +53,6 @@ export default class Swipe extends React.Component {
       vote: true}
     Axios.post('/vote', voteObj)
       .then((response) => {
-        // console.log('yesVote res', response)
         let num = ++this.state.current;
         this.setState({current: num}, () => {
           if (this.state.current > this.state.totalRestaurants) {
@@ -92,53 +92,53 @@ export default class Swipe extends React.Component {
   }
   //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant
   lastClickTrue(){
-    console.log('last click eventid', this.state.eventKey )
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.eventId, 
       restaurantId:this.state.current, vote: true 
     })
       .then((response) => {
-        // console.log('lastClick res', response)
+        // console.log('lastClicktrue res', response)
         this.setState({consensus: true})
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
   lastClickFalse(){
-    // console.log('lastclick is working')
-    console.log('last click eventid', this.state.eventKey )
-
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.userId, 
       restaurantId: this.state.current, vote: false 
     })
       .then((response) => {
         this.setState({consensus: true})
-        console.log('lastClick res', response)
+        console.log('lastClick resfalse', response)
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
-  getEventDetails(eid) {
+  checkifConsensus(eid) {
     Axios.get(`/getSingleEvent?eid=${eid}`).then((resp) => {
       if (resp.data.groupConsensusRestaurant) {
         this.setState({consensus: true}, () => {
-          //to get userkeys, and then user info objects
-          let userkeys = []
-          if (QueryString.parse(location.search).userId !== this.state.data.data.eventHost) {
-            userkeys = [this.state.data.data.eventHost]
-          } 
-          let names = []
-          for (var key in resp.data.eventInvitees) {
-            if (key !== QueryString.parse(location.search).userId)
-            userkeys.push(key)
-          }
-          console.log('userkeys', userkeys)
-          userkeys.map((key) => {
-            names.push(this.getInviteeinfo(key))
-          })
+          console.log('consensus set')
         })
       }
     })  
       .catch(err => console.log('event details error', err))
+  }
+  setGuestList(eid) {
+    Axios.get(`/getSingleEvent?eid=${eid}`)
+      .then((response) => {
+        let userkeys = []
+        if (QueryString.parse(location.search).userId !== this.state.data.data.eventHost) {
+          userkeys = [this.state.data.data.eventHost]
+        } 
+        for (var key in response.data.eventInvitees) {
+          if (key !== QueryString.parse(location.search).userId)
+          userkeys.push(key)
+        }
+        console.log('setGuestList running', userkeys)
+        userkeys.map((key) => {
+          this.getInviteeinfo(key)
+        })
+      })
   }
   getInviteeinfo(inviteeId) {
     Axios.get('/getInvitee?inviteeId=' + inviteeId)
@@ -167,14 +167,13 @@ export default class Swipe extends React.Component {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
           current: Number(Object.keys(response.data.yelpSearchResultForEvent)[0]),
           totalRestaurants: Number(arr[arr.length - 1])
-        }, () => {
-        // console.log('state', this.state)
         })
       } else {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
         current: 2, totalRestaurants: 1})
       }
-      this.getEventDetails(this.state.eventKey)
+      this.setGuestList(this.state.eventKey)
+      this.checkifConsensus(this.state.eventKey)
       })
       .catch((err) => console.log(err))
   }
@@ -210,7 +209,6 @@ export default class Swipe extends React.Component {
             </div> 
       } 
       else {
-        console.log('ekey', this.state.eventKey)
         let restaurant = this.state.data.data.yelpSearchResultForEvent[this.state.current]
         let event = this.state.data.data
         let totalRestaurants = this.state.totalRestaurants + 1
