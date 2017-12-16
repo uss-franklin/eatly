@@ -220,4 +220,3 @@ const sendInviteEmail = function(email, hostName, eventDate, eventName, userId, 
 }
 
 exports.sendInviteEmail = sendInviteEmail
-exports.mailOptions = mailOptions

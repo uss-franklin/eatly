@@ -10,6 +10,9 @@ const EventsRef = dbRef.child('events')
 const UsersRef = dbRef.child('users')
 const YelpRef = dbRef.child('yelpSearchResults')
 
+//for sending invite emails to all new guests
+const sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail
+
 const createUsersAndAddUsersToEvent = (eid, guestEmails, guestNames, yelpResultsCount) => {
 	let yelpResultsVoteList = {}
 		for (let i = 0; i < yelpResultsCount; i++) {
@@ -48,6 +51,75 @@ exports.editEvent = function(req, res) {
 					.then(() => console.log('successfully updated: ', {[field]: req.body.fieldsToUpdate[field]}))
 					.catch((err) => console.log('error in updating event: ', req.body.eid,  err))
 	}))
+	.then(() => {
+		//sends invite emails to all new guests 
+		//declare variables
+		let hostName, eventDate, eventName
+		let eventId = req.body.eid
+		let newUsersEmails = []
+
+		console.log('beginning to send emails to new users')
+		
+		//populates array with all new users emails
+		if(req.body.fieldsToUpdate.newGuests){
+			req.body.fieldsToUpdate.newGuests[0].forEach((email) => {
+				newUsersEmails.push(email)
+			})
+			console.log('new users emails array : ', newUsersEmails)
+		}
+
+
+		//run promise chain to populate these with values
+		Promise.all([
+			//plucks hostName from the DB
+			EventsRef.child(eventId).child('eventHost').once('value').then((result) => {
+				result = Object.keys(result.val())[0]
+				var innerPromise = UsersRef.child(result).child('name').once('value').then((nameResult) => {
+					nameResult = nameResult.val()
+					return nameResult
+				})
+				return innerPromise
+			}).catch((err) => console.log('error in retrieving hostname for sending new guests email invites : ', err)),
+
+			//plucks event date and time from the DB
+			EventsRef.child(eventId).child('eventDateTime').once('value').then((dateResult) => {
+				dateResult = dateResult.val()
+				return dateResult
+			}).catch((err) => console.log('error in retrieving event date and time for sending new guests email invites: ', err)),
+
+			//plucks the event name from the DB
+			EventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => {
+				eventNameResult = eventNameResult.val()
+				return eventNameResult
+			}).catch((err) => console.log('error in retrieving event name for sending new guests email invites : ', err))
+		]).then((resolvedArrayEventChunks) => {
+			hostName = resolvedArrayEventChunks[0]
+			eventDate = resolvedArrayEventChunks[1]
+			eventName = resolvedArrayEventChunks[2]
+
+			console.log("after the promise chain, gonna start looping through emails")
+
+			//loop through each of the new users emails
+			newUsersEmails.forEach((email) => {
+				//check event invitees keys in event on DB
+				EventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
+					resultInvitees = Object.keys(resultInvitees.val())
+					console.log("resultInvitees inside newUsersEmails looping :", resultInvitees)
+					resultInvitees.forEach((key) => {
+						console.log("specific user key on instance of loop :", key)
+						UsersRef.child(key).child('email').once('value').then((resultEmail) => {
+							resultEmail = resultEmail.val()
+							console.log("result email for matching key : ", resultEmail)
+							if(resultEmail === email) {
+								sendInviteEmail(email, hostName, eventDate, eventName, key, eventId)
+							}
+						})
+					})
+				})
+			})
+
+		})
+	})
 	.then(() => res.send(`Successfully Updated ${req.body.eid}`))
 	.catch(err => 'Could not update event: ', req.body.eid)
 }
