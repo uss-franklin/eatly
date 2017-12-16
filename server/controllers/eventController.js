@@ -5,6 +5,7 @@ const createAnonUsers = require('./userController.js').createAnonUsers;
 const createGuestEmailUser = require('./userController.js').createGuestEmailUser;
 let sendInviteEmail = require('./inviteEmailController.js').sendInviteEmail;
 let sendHostEmail = require('./hostEmailController.js').sendHostEmail;
+let sendHostDeclineNotificationEmail = require('./hostDeclineNotificationEmailController.js').sendHostDeclineNotificationEmail
 let sendHostResultsEmail = require('./hostResultsEmailController.js').sendHostResultsEmail;
 let dbUtilFunctions = require('..//db/db_utility_functions/utilityFunctions.js');
 
@@ -20,6 +21,8 @@ exports.validateEventUser = function(req, res){
 
 exports.declineInvite = function(req, res){
     let {eventId, userId} = req.query;
+
+    sendHostDeclineNotificationEmail("-L0V9-qNirq1VfMD7pYH", "-L0UhMryQ_ob5FT42VWu")
 
     Promise.all([dbUtilFunctions.deleteUserEvent(userId, eventId, false), dbUtilFunctions.deleteInviteeFromEvent(userId, eventId)])
     .then(() => dbUtilFunctions.eventHasInvitees(eventId))
