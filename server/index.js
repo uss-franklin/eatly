@@ -41,7 +41,7 @@ app.delete('/deleteEvent', deleteEvent);
 app.get('/finalYelpResult', finalResults.FinalYelpResult);
 app.get('/declineInvite', eventController.declineInvite);
 app.get('/validateURL', eventController.validateEventUser);
-app.get('/getInvitee', finalResults.getInvitee)
+app.get('/getInvitee', finalResults.getInvitee);
 app.get('/getUserSpecialVoteStatus', voteController.getUserSpecialVoteStatus);
 
 
@@ -52,13 +52,14 @@ app.get('/*', frontEndCatchAllRouter);
     console.log(oauth2Credentials.credentials);
 });*/
 
-/*cron.schedule('* * * * *', () => {
+cron.schedule('* * * * *', () => {
     console.log('>>>>>>>>>>>>>>>');
     console.log('running cron.... (Every minute)');
     voteController.getConsensusOnEventsPastCutOff();
     console.log('cron complete...');
     console.log('>>>>>>>>>>>>>>>');
-});*/
+});
+
 
 
 
