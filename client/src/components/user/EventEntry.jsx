@@ -11,13 +11,14 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
   if (!canEdit) {
     buttons = [<button className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>]
   }
-  if (event.groupConsensusRestaurant) {
-    buttons = [<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>]
-  }
+
   let isExpired = event.voteCutOffDateTimeMoment.isBefore(moment())
   let timeLeft = event.voteCutOffDateTimeMoment.fromNow()
   if (isExpired) buttons = [null]
 
+  if (event.groupConsensusRestaurant) {
+    buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
+  }
 
   let inviteGroupButton = <Link to={{pathname: './inputForm', state: {dummyData: 'dummayData'}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>
   buttons.push(inviteGroupButton)

@@ -44,8 +44,8 @@ exports.getAuthUserCreatedEvents = (req, res) => {
   .then(allEvents => {
     if (allEvents[0] === null) allEvents[0] = []
     if (allEvents[1] === null) allEvents[1] = []
-    let hostEventsDetailsPromises = allEvents[0].map(getEventDetails)
-    let invitedEventsDetailsPromises = allEvents[1].map(getEventDetails)
+    let hostEventsDetailsPromises = allEvents[0].map(event => getEventDetails(event, true))
+    let invitedEventsDetailsPromises = allEvents[1].map(event => getEventDetails(event, false))
     Promise.all([...hostEventsDetailsPromises, ...invitedEventsDetailsPromises])
     .then(magic => {
       let eventsObj = {
