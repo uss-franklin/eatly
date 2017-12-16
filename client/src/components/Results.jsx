@@ -3,6 +3,7 @@ import NavBar from './NavBar'
 import Axios from 'axios'
 import QueryString from 'query-string'
 import MapWithAMarker from './location_form/MapWithAMarker.jsx'
+import Loading from './Loading'
 
 
 export default class Results extends React.Component {
@@ -71,14 +72,10 @@ export default class Results extends React.Component {
 	render() {
     let address = ''
     let view = null
-    if (this.state.data === undefined || this.state.yelpLoaded === false) {
-      view = 
-        <div>
-          <div className="loadingtext"> our minions are finding restaurants... </div>
-          <img className="trex" src="./images/pasta.gif" />
-      </div>
+    if (this.state.yelpLoaded === false) {
+      <Loading />
     } else {
-      console.log('new result test', this.state.results)
+      console.log('test props', this.props)
         view = 
           <div className="parent resultsComponent">
           <h1 className="resultsTitle">
@@ -112,6 +109,7 @@ export default class Results extends React.Component {
               />
           </div>
           <p className="viewInviteeVotesText">
+          {console.log('this.props guest test', this.props)}
           You'll be dining with: 
           {this.props.eventData.guests.map((x)=>{
             return <li>{x.data.name} </li>
