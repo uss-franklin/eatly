@@ -19,10 +19,17 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
   if (event.groupConsensusRestaurant) {
     buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
   }
+  if (event.invitedUserDetails) {
+    let usersToinvite = event.invitedUserDetails.reduce((acc, guest) => {
+      acc.guestEmails.push(guest.email)
+      acc.guestNames.push(guest.name)
+      return acc
+    },{guestEmails: [], guestNames: []})
 
-  let inviteGroupButton = <Link key={event.eid} to={{pathname: './inputForm', state: {dummyData: 'dummayData'}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>
-  buttons.push(inviteGroupButton)
-
+    buttons.push(<Link key={event.eid} to={{pathname: './inputForm', state: {usersToInvite: usersToinvite}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>)
+  }
+  
+  console.log(event)
   return (
     <tr>
       <td className="usersEventItemTitle">{event.eventName}</td>

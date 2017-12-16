@@ -9,17 +9,20 @@ const getBothEventTypes = (uid, eventType) => {
 }
 
 const getInvitedUsersDetails = (event) => {
-  return Promise.all(guestIds.map(uid => {
+  return Promise.all(Object.keys(event.eventInvitees).map(uid => {
     return UsersRef.child(uid).once('value')
           .then(user => {
             let {name, email} = user.val()
             console.log(name, email)
             return {uid: uid, name: name || '', email: email}
       })
-  }))
+  })).then(userDetails => {
+    event.invitedUserDetails = userDetails
+    return event
+  })
 }
 
-const getEventDetails = (eventId) => {
+const getEventDetails = (eventId, isHost) => {
   //pre-emptive return for passing an empty [] if the person has 
   //either no hosted or invited events
   if (eventId === undefined) return 
@@ -27,7 +30,8 @@ const getEventDetails = (eventId) => {
     .then(event => {
       let eventDetails = event.val()
       eventDetails.eid = eventId
-      return eventDetails
+      if (!isHost) return eventDetails
+      return getInvitedUsersDetails(eventDetails)
     })
 }
 
