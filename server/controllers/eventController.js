@@ -50,32 +50,30 @@ exports.declineInvite = function(req, res){
       of restaurants will be returned. If the user has already voted on all restaurants, an empty array will be returned.
     - Failure: An empty array is returned and error message is printed to console.
  *********/
-let getUnVotedRestaurants = function(userId, eventId){
-    let hostEventUserRef = eventsRef.child(eventId).child('eventHost').child(userId);
-    let inviteeEventUserRef = eventsRef.child(eventId).child('eventInvitees').child(userId);
-    let hostInviteeCheckPromises = [hostEventUserRef.once('value'), inviteeEventUserRef.once('value')];
 
-    //returning a promise which resolves to the array of unvoted restaurants for the given user
-    return Promise.all(hostInviteeCheckPromises).then((resolvedHostInviteeCheck) => {
-        /* obtaining a firebase ref to the object which contains the users votes. This is necessary because vote details for the host vs. other event
-        participants are housed in different objects */
-        let userRef = getUserRef(eventId, userId, resolvedHostInviteeCheck);
-
-        if(!userRef){
+const getUnVotedRestaurants = function(userId, eventId) {
+    return dbUtilFunctions.getUserRefForEvent(userId, eventId)
+    .then((userEventRef) => {
+        if(!userEventRef) {
             console.error(`Function: getUnVotedRestaurants --- There is a data integrity problem. userId should not correspond with both (or neither) of the refs`);
             return [];
         } else {
-            return userRef.once('value').then((restaurantVotes) => {
-                //reduce the votes for a given user into a list of restaurantIDs (restaurant IDs are stored in the database as index values)
-                return restaurantVotes.val().reduce(function(accumulator, currentValue, index) {
-                    //a value of '-' indicates that a restaurant has not yet been voted on.
-                    if (currentValue === '-')
-                        accumulator.push(index);
-                    return accumulator;
-                }, []);
-            });
+            return dbUtilFunctions.getUserVotesForEvent(userEventRef)
+                .then((restaurantVotes) => {
+                    //reduce the votes for a given user into a list of restaurantIDs (restaurant IDs are stored in the database as index values)
+
+                    let unvotedRestaurants = restaurantVotes.val().reduce(function(accumulator, currentValue, index) {
+                        //a value of '-' indicates that a restaurant has not yet been voted on.
+                        if (currentValue === '-'){
+                            accumulator.push(index);
+                        }
+                        return accumulator;
+                    }, []);
+
+                    return unvotedRestaurants;
+                });
         }
-    });
+    })
 };
 
 /********
@@ -136,6 +134,7 @@ exports.getEventRestaurants = function(req, res){
 
         //call to function to get a promise which resolves with restaurants that a given user has not yet voted on
         let unVotedRestaurantsPromise = getUnVotedRestaurants(userId, eventKey);
+        //unVotedRestaurantsPromise.then(arr => console.log(arr));
 
         let yelpSearchResultForEventRef = yelpSearchResultsRef.child(eventDetails.val().yelpSearchResultsKey);
 
@@ -204,6 +203,15 @@ const createEventUsersVoteList = function(count) {
 
 const createEventDetail = function(details, hostId, guestIds, yelpResults) {
     let {yelpSearchResultsKey, count} = yelpResults;
+    let specialVotes = {
+        hasSuperLiked: false,
+        hasVetoed: false
+    };
+    let hostDetails = {
+        votes: createEventUsersVoteList(count),
+        specialVotes: specialVotes
+
+    };
     let eventDetails = {
         locationDetails: {
             address: details.address,
@@ -212,8 +220,9 @@ const createEventDetail = function(details, hostId, guestIds, yelpResults) {
         },
         foodType: details.searchTerm,
         eventHost :{
-            [hostId]: createEventUsersVoteList(count)
+            [hostId]: hostDetails
         },
+        vetoedRestaurants: createEventUsersVoteList(count),
         eventDateTime: new Date(details.dateTime).toString(),
         eventCreationDateTime: new Date().toString(),
         voteCutOffDateTime: new Date(details.cutOffDateTime).toString(),
@@ -221,7 +230,11 @@ const createEventDetail = function(details, hostId, guestIds, yelpResults) {
         yelpSearchResultsKey: yelpSearchResultsKey
     };
     let eventInvitees = {}
-    guestIds.forEach(id => eventInvitees[id] = createEventUsersVoteList(count))
+    guestIds.forEach(id => {
+        eventInvitees[id] = {};
+        eventInvitees[id].votes = createEventUsersVoteList(count);
+        eventInvitees[id].specialVotes = specialVotes;
+    });
     eventDetails.eventInvitees = eventInvitees
     
     return eventDetails
