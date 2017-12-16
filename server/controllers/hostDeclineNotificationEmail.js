@@ -1,6 +1,6 @@
-
 const nodemailer = require('nodemailer')
 const gmailCreds = require('../keys/gmailCreds.json')
+
 
 //sets up connection with team's gmail account, passing in secret keys
 const transporter = nodemailer.createTransport({
@@ -12,17 +12,16 @@ const transporter = nodemailer.createTransport({
 })
 
 
-
 /*  
     this function inits all necessary fields for email message.
     its rendered as a function so that data can be passed in dynamically from front
     all data is generated from the create event component the user fills in
 */
-const mailOptions = function(email, hostName, eventDate, eventName, userId, eventId) {
+const mailOptions = function(hostEmail, hostName, eventName) {
  return {
 	from: 'team.eatly@gmail.com',
-	to: email,
-	subject: `${hostName} invited you to a meal with Eatly!`,
+	to: hostEmail,
+	subject: `We've got some RSVP news regarding your meal with Eatly`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -106,7 +105,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
 
 
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-                You've been invited by ${hostName} to collaborate a meal planning on Eatly!</span>
+                You've started a new meal with Eatly!</span>
               
               <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 4px;">
 
@@ -117,29 +116,14 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
                           <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
-                            Hi!</p>
+                            Hi again ` +hostName+`!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                              You've been invited to 
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
-                              ${eventName}!</div> <br>
+                              We've got some unfortunate news regarding your meal ` +eventName+ ` with Eatly... One of your guests had to decline.
+                               <br>
+                              On their behalf, we extend apologies. Not to worry though, your event will still be taking place! View the details now,
+                               including the guests who are attending :)
 
-                              Hosted by <br> 
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                              ${hostName}</div> <br> on
-                              
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
-                                ${eventDate}
-                              </div>... <br><br>
-                              
-                              "But where?!" you might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
-                              
-                              <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
-                              Eatly
-                            </div>
-                            --- cast your ballots for a place to go, and the final results will be revealed before you and your friends go to meet up!
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
@@ -149,7 +133,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/Swipe?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Get Started!</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://memory-alpha.wikia.com/wiki/USS_Franklin" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">`+eventName+`</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -158,29 +142,6 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                             </tbody>
                           </table>
                           
-                          <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                            Can't make it? Maybe you don't feel like going out? No worries! We'll politely decline on your behalf and keep it secret from the rest of the group. Just click here:
-                          </p>
-
-
-                          <table border="0" cellpadding="0" cellspacing="0" class="btn btn-decline" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
-                            <tbody>
-                              <tr>
-                                <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;">
-                                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
-                                    <tbody>
-                                      <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/decline?userId=${userId}$eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Decline RSVP</a> </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-
-
                           
                         </td>
                       </tr>
@@ -208,10 +169,11 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
   }
 }
 
+
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendInviteEmail = function(email, hostName, eventDate, eventName, userId, eventId) { 
-  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName, userId, eventId), function(err, info){
+const sendHostEmail = function(hostEmail, hostName, eventName) { 
+  transporter.sendMail(mailOptions(hostEmail, hostName, eventName), function(err, info){
     if(err)
   		console.log(err)
   	else
@@ -219,5 +181,5 @@ const sendInviteEmail = function(email, hostName, eventDate, eventName, userId, 
   })
 }
 
-exports.sendInviteEmail = sendInviteEmail
+exports.sendHostEmail = sendHostEmail
 exports.mailOptions = mailOptions

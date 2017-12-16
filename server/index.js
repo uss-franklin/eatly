@@ -40,7 +40,7 @@ app.delete('/deleteEvent', deleteEvent);
 app.get('/finalYelpResult', finalResults.FinalYelpResult);
 app.get('/declineInvite', eventController.declineInvite);
 app.get('/validateURL', eventController.validateEventUser);
-
+app.get('/getInvitee', finalResults.getInvitee)
 
 
 
