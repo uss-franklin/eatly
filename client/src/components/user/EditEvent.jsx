@@ -7,7 +7,7 @@ import queryString from  'query-string'
 import EventGuest from './EventGuest'
 import AddGuestForm from './AddGuestForm'
 
-export default class InputForm extends React.Component {
+export default class EditEvent extends React.Component {
   constructor() {
     super()
     this.state = {
