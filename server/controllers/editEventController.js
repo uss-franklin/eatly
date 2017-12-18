@@ -14,11 +14,18 @@ const createUsersAndAddUsersToEvent = (eid, guestEmails, guestNames, yelpResults
 		for (let i = 0; i < yelpResultsCount; i++) {
 			yelpResultsVoteList[i] = '-'
 	}
+	let userVoteObj = {
+		votes: yelpResultsVoteList,
+		specialVotes: {
+			hasSuperLiked: false,
+			hasVetoed: false
+		}
+	}
 	return createGuestEmailUser(guestEmails, guestNames, eid, false)
 	.then(userIds => {
 		return Promise.all(userIds.map(uid => {
-				console.log('Trying to update event: ', eid, 'with user: ',uid )
-				return EventsRef.child(eid).child('eventInvitees').update({[uid]: yelpResultsVoteList})
+				// console.log('Trying to update event: ', eid, 'with user: ', uid )
+				return EventsRef.child(eid).child('eventInvitees').update({[uid]: userVoteObj})
 		}))
 	})
 }
@@ -46,7 +53,6 @@ exports.editEvent = function(req, res) {
 
 const deleteUserEvent = (uid, eid, isHost) => {
 	let userType = isHost ? 'hostEvents' : 'invitedEvents'
-	console.log(uid, eid, userType)
 	return UsersRef.child(uid).child(userType).once('value')
 		.then(hostEvents => {
 			let eventsArr = hostEvents.val().slice()
