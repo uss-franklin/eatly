@@ -29,6 +29,7 @@ const getEventDetails = (eventId, isHost) => {
   return EventsRef.child(eventId).once('value')
     .then(event => {
       let eventDetails = event.val()
+      // console.log('getting event details', eventId, eventDetails)
       eventDetails.eid = eventId
       if (!isHost) return eventDetails
       return getInvitedUsersDetails(eventDetails)
