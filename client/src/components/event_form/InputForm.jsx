@@ -46,13 +46,20 @@ export default class InputForm extends React.Component {
   //InputMoment returns a moment object which should not be accessed directly. To extract the values, use the format method. 
   //see https://momentjs.com/docs/#/displaying/format/
     if(dateTime.unix() < moment().unix()) {
+      if (isCutOff) {
+        this.setState({cutOffDateTime: moment().add(1, 'hour')})
+      } else {
+        this.setState({dateTime: moment().add(2, 'hour')})
+      }
       alert('You can\'t live in the past')
     } else {
       if (!isCutOff) {
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      this.setState({'dateTime': dateTime, 'cutOffDateTime': newCutOffTime}) 
+      this.setState({dateTime: dateTime, 'cutOffDateTime': newCutOffTime}) 
       } else {
       if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
+        let failSafeMoment = moment(this.state.dateTime).subtract(1, 'hour')
+        this.setState({cutOffDateTime: failSafeMoment})
         alert('Please select a cut off time that\'s at least an hour before the event time')
       }
       this.setState({'cutOffDateTime': dateTime })
@@ -73,9 +80,12 @@ export default class InputForm extends React.Component {
   }
   removeGuest(idx) {
     this.setState(prevState => {
-      let guestEmails = prevState.guestEmails.slice().splice(idx, 1)
-      let guestPhones = prevState.guestPhones.slice().splice(idx, 1)
-      let guestNames = prevState.guestNames.slice().splice(idx, 1)
+      let guestEmails = prevState.guestEmails.slice()
+      guestEmails.splice(idx, 1)
+      let guestPhones = prevState.guestPhones.slice()
+      guestPhones.splice(idx, 1)
+      let guestNames = prevState.guestNames.slice()
+      guestNames.splice(idx, 1)
       return {guestEmails: guestEmails, guestPhones: guestPhones, guestNames: guestNames}
     },)
   }
