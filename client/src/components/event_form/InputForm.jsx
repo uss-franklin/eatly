@@ -55,14 +55,15 @@ export default class InputForm extends React.Component {
     } else {
       if (!isCutOff) {
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      this.setState({dateTime: dateTime, 'cutOffDateTime': newCutOffTime}) 
+      console.log('newcutofftime ', newCutOffTime)
+      this.setState({dateTime: dateTime, cutOffDateTime: newCutOffTime}) 
       } else {
       if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
         let failSafeMoment = moment(this.state.dateTime).subtract(1, 'hour')
         this.setState({cutOffDateTime: failSafeMoment})
         alert('Please select a cut off time that\'s at least an hour before the event time')
       }
-      this.setState({'cutOffDateTime': dateTime })
+      this.setState({cutOffDateTime: dateTime })
       }
     }
   }
