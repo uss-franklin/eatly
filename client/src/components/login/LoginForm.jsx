@@ -41,14 +41,7 @@ export default class LoginForm extends React.Component {
 			let name = user.displayName || '-'
 			console.log('here: ', user)
 		}).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			// The email of the user's account used.
-			var email = error.email;
-			// The firebase.auth.AuthCredential type that was used.
-			var credential = error.credential;
-			// ...
+			console.log(error.email, error.code, error.message)
 		});
 	}
   //handles log in event, bound to the log in button
