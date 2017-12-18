@@ -42,7 +42,6 @@ export default class Account extends React.Component {
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
-    console.log(eventsData)
     this.setState(Object.assign(userData, eventsData, {dataFetched : true}))
   }
   componentDidMount() {

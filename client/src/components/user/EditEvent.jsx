@@ -90,7 +90,7 @@ export default class EditEvent extends React.Component {
   submitForm() {
     let fieldsToUpdate = Object.assign({}, this.state.eventDataToUpdate)
     if (this.state.newGuestsEmails[0] !== null) {
-      fieldsToUpdate.yelpResultsCount = this.state.eventHost[Object.keys(this.state.eventHost)[0]].length
+      fieldsToUpdate.yelpResultsCount = this.state.eventHost[Object.keys(this.state.eventHost)[0]].votes.length
       //if the user left an empty field, we remove it from our payload
       if (this.state.newGuestsEmails[this.state.newGuestsEmails.length - 1] === null) {
         this.state.newGuestsEmails.pop()
