@@ -1,4 +1,5 @@
 const dbRef = require('../db/firebaseRealtimeDB.js').dbRef;
+var sendDeleteEventEmail = require('./deleteEventEmail.js').sendDeleteEventEmail;
 
 //for adding new guests to the event being edited
 const createAnonUsers = require('./userController.js').createAnonUsers;
@@ -57,10 +58,66 @@ const deleteUserEvent = (uid, eid, isHost) => {
 
 exports.deleteEvent = (req, res) => {
 	console.log('deleting: ', req.query.eid)
+
+	/*
+		Following lines of code parse through necessary data for sending notifications to guests
+		that the event they're invited to has been deleted.
+	*/
+	
+	//declares variables to populate with relevant event data, then pass into invocation of send email function
+	let eventId = req.query.eid
+	let hostId = req.query.uid
+	console.log("HOST ID IN DELETE EVENT FUNC : " + hostId)
+	console.log("EVENT ID IN DELETE EVENT FUNC : " + eventId)
+	let guestIds, hostName, eventName
+
+	//queries the DB for relevant data to pass into vars declared above
+	Promise.all([
+
+		//plucks hostName from the DB
+		UsersRef.child(hostId).child('name').once('value').then((nameResult) => {
+				nameResult = nameResult.val()
+				console.log("RESULTING HOST NAME FROM THE HOST ID IN PROMISES CHAIN : " +nameResult)
+				return nameResult
+			}).catch((err) => console.log("Error finding hostname from DB in sending deleted event notifications function :", err)),
+
+		//plucks the eventName from the DB
+		EventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => {
+			eventNameResult = eventNameResult.val()
+			console.log("EVENT NAME IN PROMISES CHAIN : ", eventNameResult)
+			return eventNameResult
+		}).catch((err) => console.log("Error finding eventName from DB in sending deleted event notifications function :", err)),
+
+		//plucks guest Id's from the DB
+		EventsRef.child(eventId).child('eventInvitees').once('value').then((resultInvitees) => {
+			resultInvitees = resultInvitees.val()
+			console.log("RESULT INVITEES LINE 93 === ", resultInvitees)
+			console.log("OBJECT KEYS OF RESULT INVITEES LINE 93 ===", Object.keys(resultInvitees))
+			resultInvitees = Object.keys(resultInvitees)
+			return resultInvitees
+		}).catch((err) => console.log("Error finding guest Id's from DB in  sending deleted event notifications function :", err))
+	]).then((resolvedArray) => {
+		//sets the resolved values of each promise to the variables declared above
+		guestIds = resolvedArray[2]
+		eventName = resolvedArray[1]
+		hostName = resolvedArray[0]
+
+		//iterates through each userId to send an email to each guest
+		guestIds.forEach((userId) => {
+			UsersRef.child(userId).child('email').once('value').then((result) => {
+				let guestEmail = result.val()
+				sendDeleteEventEmail(guestEmail, hostName, eventName)
+				return console.log('deleted event notification send to : ' + guestEmail)
+			})
+		})
+	}).then(() => {
+
 	EventsRef.child(req.query.eid).remove() //remove event from events table
 	.then(() => deleteUserEvent(req.query.uid, req.query.eid, true)) //delete event on host
 	.then(() => Promise.all(req.query.inviteeuids.map(uid => deleteUserEvent(uid, req.query.eid, false)))) //delete event on invitees
 	.then(() => YelpRef.child(req.query.yelpresultsid).remove())// delete yelp search results
 	.then(() => res.end())
 	.catch(err => console.log('error deleteing event', req.query.eid, err))
+
+	})
 }
