@@ -37,8 +37,6 @@ exports.getConsensusOnEventsPastCutOff = function() {
                         if(consensus){
                             votingResultRef.set(consensus).then(() => {
                                 //sends emails to host and all guests regarding the results of their event
-                                console.log("EVENT KEY IN SENDING EMAILS RESULTS::: ", eventKey)
-                                console.log("CONSENSUS IN SENDING EMAILS RESULTS:::: ", consensus)
                                 sendResultsEmails(eventKey, consensus)
                                 //this needs to be fixed
                                 console.log(`consensus restaurant of ${consensus} was selected`);
