@@ -13,8 +13,8 @@ export default class Swipe extends React.Component {
       current: null,
       totalRestaurants: null,
       consensus: false,
-      superLike: true,
-      veto: true,
+      hasSuperLiked: false,
+      hasVetoed: false,
       guests: [],
     }
 
@@ -24,6 +24,7 @@ export default class Swipe extends React.Component {
     this.veto = this.veto.bind(this)
     this.lastClickTrue = this.lastClickTrue.bind(this)
     this.lastClickFalse = this.lastClickFalse.bind(this)
+    this.specialVotes = this.specialVotes.bind(this)
     this.checkifConsensus = this.checkifConsensus.bind(this)
     this.setGuestList = this.setGuestList.bind(this)
     this.getInviteeinfo = this.getInviteeinfo.bind(this)
@@ -32,7 +33,6 @@ export default class Swipe extends React.Component {
     
   }
   //records a no vote on a restaurant 
-  //VOTING 0,1,2,3
   noVote() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
       vote: 1}
@@ -68,13 +68,15 @@ export default class Swipe extends React.Component {
       Axios.post('/vote', voteObj)
         .then((response) => {
           let num = ++this.state.current
-          this.setState({current: num}, () => {
-            this.setState({superLike: false})
+          this.setState({current: num}, 
+            () => {
+            this.setState({hasSuperLiked: true})
             if (this.state.current > this.state.totalRestaurants) {
               this.lastClickTrue()
             }
           })
         })
+        .catch(err => console.log('superlike error', err))
   }
   veto() {
     let voteObj = {eventId: this.state.eventKey, userId: this.state.userId, restaurantId: this.state.current, 
@@ -83,12 +85,13 @@ export default class Swipe extends React.Component {
         .then((response) => {
           let num = ++this.state.current
           this.setState({current: num}, () => {
-            this.setState({veto: false})
+            this.setState({hasVetoed: true})
             if (this.state.current > this.state.totalRestaurants) {
               this.lastClickFalse()
             }
           })
         })
+        .catch(err => console.log('veto error', err))
   }
   //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant
   lastClickTrue(){
@@ -113,15 +116,33 @@ export default class Swipe extends React.Component {
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
+  specialVotes(){
+    Axios.get('/getUserSpecialVoteStatus?userId=' +this.state.userId + '&eventId=' + this.state.eventKey)
+      .then((response) => {
+        console.log('specialvotes resp', response)
+        if (response.data.hasSuperLiked === true) {
+          this.setState({hasSuperLiked: true}, () => {
+            console.log('has superliked')
+          })
+        }
+        if (response.data.hasVetoed === true) {
+          this.setState({hasVetoed: true}, () => {
+            console.log('has vetoed')
+          })
+        }
+      })
+      .catch(err => {console.log('special votes error', err)})
+  }
   checkifConsensus(eid) {
-    Axios.get(`/getSingleEvent?eid=${eid}`).then((resp) => {
-      if (resp.data.groupConsensusRestaurant) {
-        this.setState({consensus: true}, () => {
-          console.log('consensus set')
-        })
-      }
+    Axios.get(`/getSingleEvent?eid=${eid}`)
+      .then((resp) => {
+        if (resp.data.groupConsensusRestaurant) {
+          this.setState({consensus: true}, () => {
+            console.log('consensus set')
+          })
+        }
     })  
-      .catch(err => console.log('event details error', err))
+    .catch(err => console.log('event details error', err))
   }
   setGuestList(eid) {
     Axios.get(`/getSingleEvent?eid=${eid}`)
@@ -174,6 +195,7 @@ export default class Swipe extends React.Component {
       }
       this.setGuestList(this.state.eventKey)
       this.checkifConsensus(this.state.eventKey)
+      this.specialVotes()
       })
       .catch((err) => console.log(err))
   }
@@ -213,27 +235,43 @@ export default class Swipe extends React.Component {
         let restaurant = this.state.data.data.yelpSearchResultForEvent[this.state.current]
         let event = this.state.data.data
         let totalRestaurants = this.state.totalRestaurants + 1
+
+        let superLikeButton =  
+          <button className="yesButton" onClick={() => this.superLike()}>
+            <img src="./images/fire.png" />
+              SuperLike
+          </button>
+
+          let vetoButton = 
+            <button className="noButton" onClick={() => this.veto()}>
+              <img src="./images/ld.jpg" />
+                Veto
+            </button>
+
+        if (this.state.hasSuperLiked === true){
+          superLikeButton = null
+        }
+        if (this.state.hasVetoed === true) {
+          vetoButton = null
+        }
+
         view = 
           <div className="swipeForm">
             <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,21)} </div>
             <div className="photoholder"> 
-              <img className="photos" src={restaurant.image_url} />
+              <div className="photo">
+                <img className="photos" src={restaurant.image_url} />
+              </div>
               <div className="votecounter"> 
                 Restaurant: {this.state.current + 1} of {totalRestaurants}
               </div>
             </div> 
             <div> 
-              <button className="noButton" onClick={() => this.veto()}>
-              <img src="./images/ld.jpg" />
-                Veto
-              </button>
+              {vetoButton}
               <button className="noButton" onClick={() => this.noVote() }>
                 <img src="./images/redx.png"/>
               </button>
-              <button className="yesButton" onClick={() => this.superLike()}>
-                <img src="./images/fire.png" />
-                SuperLike
-              </button>
+              {superLikeButton}
               <button className="yesButton" onClick={() => this.yesVote() }>
                 <img src="./images/checkmark.png"/>
               </button>
