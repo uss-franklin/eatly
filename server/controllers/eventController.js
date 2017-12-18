@@ -240,7 +240,6 @@ const createYelpResults = function(searchRequestParams, eventDate) {
 
 exports.createEvent = function(req, res){
     console.log('create event request started')
-
     let usersRef = dbRef.child('users')
     let eventsRef = dbRef.child('events')
 
@@ -257,6 +256,7 @@ exports.createEvent = function(req, res){
         sort_by: 'best_match',
         latitude: req.body.latitude,
         longitude: req.body.longitude,
+        price: req.body.priceRange.toString(),
         locale: 'en_US',
         radius: 6437,//This value corresponds with 4 miles (in meters). The default value is 10000 meters(6.2 miles)
         term: req.body.searchTerm || 'restaurant'
