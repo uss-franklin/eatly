@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import InputMoment from 'input-moment'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
 import queryString from  'query-string'

@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import InputMoment from 'input-moment'
 import GuestForm from './GuestForm'
 import Axios from 'axios'
 import NavBar from '../NavBar'
