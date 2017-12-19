@@ -189,8 +189,9 @@ const createEventDetail = function(details, hostId, guestIds, yelpResults) {
     let eventDetails = {
         locationDetails: {
             address: details.address,
-            latitude: null,
-            longitude: null
+            latitude: details.latitude,
+            longitude: details.longitude,
+            radius: details.radius
         },
         foodType: details.searchTerm,
         eventHost :{
@@ -244,12 +245,13 @@ exports.createEvent = function(req, res){
     let usersRef = dbRef.child('users')
     let eventsRef = dbRef.child('events')
 
+    //sets data for sending emails to convenient variables
 
-        //sets data for sending emails to convenient variables
-        
-        let eventDate = req.body.dateTime
-        let eventName = req.body.eventName
-        let hostEmail = req.body.hostEmail
+    let eventDate = req.body.dateTime
+    let eventName = req.body.eventName
+    let hostEmail = req.body.hostEmail
+    let radiusInMeters = Math.floor(req.body.radius * 1609.34);
+    console.log('RADIUS IN METERS: ', radiusInMeters);
 
     //object to be constructed from request object
     let searchRequestParams = {
@@ -258,8 +260,8 @@ exports.createEvent = function(req, res){
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         locale: 'en_US',
-        radius: 6437,//This value corresponds with 4 miles (in meters). The default value is 10000 meters(6.2 miles)
-        term: req.body.searchTerm || 'restaurant'
+        radius: radiusInMeters,
+        term: req.body.searchTerm || 'restaurant',
         //categories:
     };
     //need to create the ref to new event so that we can add it to the each user
