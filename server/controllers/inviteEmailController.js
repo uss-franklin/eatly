@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
     its rendered as a function so that data can be passed in dynamically from front
     all data is generated from the create event component the user fills in
 */
-const mailOptions = function(email, hostName, eventDate, eventName, userId, eventId) {
+const mailOptions = function(email, hostName, eventDate, eventName, userId, eventId, eventDescription) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: email,
@@ -133,8 +133,12 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
                                 ${eventDate}
                               </div>... <br><br>
+
+                              ${hostName} has this to say about this event: <br>
+
+                              ${eventDescription}<br>
                               
-                              "But where?!" you might ask, and funny you should... We don't know yet! That's your job to decide, and all the fun of 
+                              Notice anything missing from the details of this event? The location, of course! That's your job to decide, and all the fun of 
                               
                               <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
                               Eatly
@@ -210,8 +214,8 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendInviteEmail = function(email, hostName, eventDate, eventName, userId, eventId) { 
-  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName, userId, eventId), function(err, info){
+const sendInviteEmail = function(email, hostName, eventDate, eventName, userId, eventId, eventDescription) { 
+  transporter.sendMail(mailOptions(email, hostName, eventDate, eventName, userId, eventId, eventDescription), function(err, info){
     if(err)
   		console.log(err)
   	else
