@@ -1,0 +1,18 @@
+.scaledRestaurantPhoto {
+    max-width: 20%;
+    max-height: 5%
+}
+
+#restaurantcontainer {
+    display: block;
+}
+
+#leftcolumn {
+    display:inline;
+    width:20%;
+}
+
+#rightcolumn {
+    display:inline;
+    position:relative
+}
