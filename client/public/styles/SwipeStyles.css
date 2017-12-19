@@ -1,9 +1,77 @@
 .noButton {
   float: left;
+  background-color: rgb(255, 0, 0);
+  color: white;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-size: 16px;
+}
+
+/* .noButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+} */
+
+.noButton:active {
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(5px);
+  
 }
 
 .yesButton {
   float: right;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-size: 16px;
+}
+
+.yesButton:focus, .noButton:focus{
+  outline: none
+}
+/* .yesButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.25), 0 17px 50px 0 rgba(0,0,0,0.19);
+} */
+.yesButton:active {
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(5px);
+  
+}
+
+.superLikeButton {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  
+}
+
+.superLikeButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.superLikeButton:active {
+  transform: translateY(5px);
+  
+}
+
+.vetoButton {
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  
+}
+
+.vetoButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.vetoButton:active {
+  transform: translateY(5px);
+  
 }
 
 .swipeForm {
@@ -65,23 +133,7 @@
   border-style: solid
 }
 
-.superlike {
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 16px;
-  
-}
 
-.veto {
-  background-color: red;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 16px;
-  
-}
 
 
 
