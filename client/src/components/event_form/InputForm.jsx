@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import InputMoment from 'input-moment'
 import GuestForm from './GuestForm'
 import Axios from 'axios'
 import NavBar from '../NavBar'
@@ -25,7 +24,6 @@ export default class InputForm extends React.Component {
       eventDescription: '',
       dateTime: moment().add(2, 'hour'),
       cutOffDateTime: moment().add(1, 'hour'),
-      timeContraint: {}, //used to limit selectable hour in cuttofftime
       //Need to use a ternary here otherwise we get a ref error when inputForm is loaded without location state
       //Location state is sent through the Link route 'to' property
       guestEmails: this.props.routeProps.location.state !== undefined ? this.props.routeProps.location.state.usersToInvite.guestEmails : [''], //requires intial value to render the first guest email form
@@ -226,7 +224,7 @@ export default class InputForm extends React.Component {
               value={this.state.dateTime} 
               isValidDate={this.handleValidDate} 
               onChange={this.handleEventDateChange.bind(this)}
-              />
+            />
           </label>
         </div>
         <div className="form-date-time-cutoff" className="inputs">
@@ -237,8 +235,7 @@ export default class InputForm extends React.Component {
               value={this.state.cutOffDateTime} 
               closeOnSelect={true}
               onChange={this.handleCutOffDateChange.bind(this)}
-              timeConstraints={this.state.timeContraint}
-              />
+            />
           </label>
         </div>
         <div className="form-add-guests" className="inputs">
