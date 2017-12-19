@@ -189,7 +189,7 @@ export default class InputForm extends React.Component {
         </label>
         </div>
         <div className="price-range"> 
-          Price Range:<ReactStars char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
+          Price Range:<ReactStars count={4} char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
         </div>
         {emailNameInputs}
         <div className="form-event-name" className="inputs">
