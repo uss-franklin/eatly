@@ -52,13 +52,13 @@ app.get('/*', frontEndCatchAllRouter);
     console.log(oauth2Credentials.credentials);
 });*/
 
-// cron.schedule('* * * * *', () => {
-//     console.log('>>>>>>>>>>>>>>>');
-//     console.log('running cron.... (Every minute)');
-//     voteController.getConsensusOnEventsPastCutOff();
-//     console.log('cron complete...');
-//     console.log('>>>>>>>>>>>>>>>');
-// });
+cron.schedule('* * * * *', () => {
+    console.log('>>>>>>>>>>>>>>>');
+    console.log('running cron.... (Every minute)');
+    voteController.getConsensusOnEventsPastCutOff();
+    console.log('cron complete...');
+    console.log('>>>>>>>>>>>>>>>');
+});
 
 
 
