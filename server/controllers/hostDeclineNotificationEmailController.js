@@ -26,7 +26,7 @@ const mailOptions = function(hostEmail, eventName, eventId) {
  return {
 	from: 'team.eatly@gmail.com',
 	to: hostEmail,
-	subject: `We've got some RSVP news regarding your meal with Eatly`,
+	subject: `We've got some news regarding your meal with Eatly`,
 	html:
       `<style>
       @media only screen and (max-width: 620px) {
@@ -126,14 +126,11 @@ const mailOptions = function(hostEmail, eventName, eventId) {
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
                               We've got some unfortunate news regarding your meal ${eventName} with Eatly... One of your guests had to decline.
                                <br>
-                              On their behalf, we extend apologies. Not to worry though, your event will still be taking place! View the details now,
-                               including the guests who are attending :)
+                              On their behalf, we extend apologies. Not to worry though, your event will still be taking place! We understand this may change the logistics of the outing,
+                              so we've made it simple-as-pie to add more guests to your event. Check it out!
 
                           </p>
 
-                          <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                            Why not add a new friend to join the meal? You can edit your event now and add as many new guests as you'd like!
-                          </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                             <tbody>
