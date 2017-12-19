@@ -249,6 +249,7 @@ exports.createEvent = function(req, res){
     let eventDate = req.body.dateTime
     let eventName = req.body.eventName
     let hostEmail = req.body.hostEmail
+    let eventDescription = req.body.eventDescription
     let radiusInMeters = Math.floor(req.body.radius * 1609.34);
     console.log('RADIUS IN METERS: ', radiusInMeters);
 
@@ -318,7 +319,7 @@ exports.createEvent = function(req, res){
             guestUserIds.forEach((userId) => {
                 usersRef.child(userId).child('email').once('value').then((result) => {
                     let guestEmail = result.val()
-                    sendInviteEmail(guestEmail, hostName, eventDate, eventName, userId, returnObj.eventId)
+                    sendInviteEmail(guestEmail, hostName, eventDate, eventName, userId, returnObj.eventId, eventDescription)
                     return ('email invitation successfully sent to ' + guestEmail)
                 })
             })
