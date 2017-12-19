@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import queryString from  'query-string'
 import EventGuest from './EventGuest'
 import AddGuestForm from './AddGuestForm'
+import DateTimePicker from 'react-datetime'
 
 export default class EditEvent extends React.Component {
   constructor() {
@@ -82,9 +83,16 @@ export default class EditEvent extends React.Component {
     this.setState({eventName: target.value})
     this.updatePutObj.call(this, 'eventName', target.value)  
   }
-  handleInputMoment(dateTime) {
-    this.setState({voteCutOffDateTime: dateTime })
-    this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
+  handleValidCutOffDate(current) {
+    let yesterday = moment().subtract(1, 'day')
+    let maxDate = this.state.eventDateTime
+    return current.isAfter(yesterday) && current.isBefore(maxDate)
+  } 
+  handleCutOffDateChange(dateTime){
+    if (typeof dateTime !== 'string') {
+      this.setState({voteCutOffDateTime: dateTime})
+      this.updatePutObj.call(this, 'voteCutOffDateTime', dateTime.format('llll'))
+    }
   }
   submitForm() {
     let fieldsToUpdate = Object.assign({}, this.state.eventDataToUpdate)
@@ -143,10 +151,11 @@ export default class EditEvent extends React.Component {
         <div className="form-date-time-cutoff" className="inputs">
           <label>
             New Cutoff Time:
-          <InputMoment
-            moment={this.state.voteCutOffDateTime}
-            onChange={m => this.handleInputMoment.call(this, m)}
-            minStep={10}
+            <DateTimePicker 
+              isValidDate={this.handleValidCutOffDate.bind(this)} 
+              value={this.state.voteCutOffDateTime} 
+              closeOnSelect={true}
+              onChange={this.handleCutOffDateChange.bind(this)}
             />
           </label>
         </div>
