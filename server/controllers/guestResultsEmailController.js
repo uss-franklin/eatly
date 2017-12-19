@@ -135,7 +135,9 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
                               <div style="font-size: 40px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
                               ${eventLocation}</div>
 
-                              
+                              <p>
+                              Check out the results now! While you're there, save ${hostName} the trouble of planning the next group outing, and start your own event! 
+
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">

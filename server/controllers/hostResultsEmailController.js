@@ -121,7 +121,7 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation, host
                             Hey there ` +hostName+`!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
-                              Guess what? We've collected the votes, made the calculations, and the results are in for your meal,  <p style="font-size: 28px; font-weight: bold">` +eventName+ `!</p>
+                              We've collected the votes, made the calculations, and the results are in for your meal,  <p style="font-size: 28px; font-weight: bold">` +eventName+ `!</p>
                                <br>
                                You and your friends will be eating at
 
@@ -129,6 +129,8 @@ const mailOptions = function(hostEmail, hostName, eventName, eventLocation, host
                             ` + eventLocation +`
 
                             !</p>
+
+                            Congrats! Check out the full details now, and while you're there, we've made it easy-as-pie to invite all your friends from this meal to the next one, all with the click of one button! Why not keep the fun rolling?
                          
 
 

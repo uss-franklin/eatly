@@ -121,6 +121,7 @@ const mailOptions = function(hostEmail, hostName, eventName, eventId, hostId) {
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
                               You've started a new event on Eatly!
                                <br>
+                              Check it out now! Maybe you want to invite more people? Change the name? Set a new vote cut-off time? We've made it easy-as-pie to edit details regarding your event. Check it out!
 
                           </p>
 

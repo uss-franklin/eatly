@@ -125,13 +125,15 @@ const mailOptions = function(email, hostName, eventName) {
                               <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
                               ${hostName}.</div> <br>
 
-                              Their meal has been canceled, and you'll no longer be meeting them and friends.<br> 
+                              They had to cancel the group outing, ${eventName}<br> 
                               
-                              The good news is, it's just as simple for you to make a new event! Why not share the love with ${hostName} and crew, and plan your very own outing with
+                              The silver lining is it's just as simple for you to make a new event! Why not share the love with ${hostName} and crew, and plan your very own outing with
                               <div style="font-size: 18px; display: inline-block; margin-left: 5px; font-weight: bold; color: #d30808;">
                               Eatly
                             </div>
-                              All you gotta do is cook up a time to meet, narrow down the type and general neighborhood for a restaurant, and who you wanna join in on the fun. Then watch and wait as the votes trickle in, till the clock counts down to cut off time. When that time hits, we surprise you and your friends with the results!
+                              All you have to do is cook up a time, neighborhood, and who you want to join. 
+                              Then watch and wait as the votes trickle in and till the clock counts down to cut off time. 
+                              When that time comes, we at eatly will calculate the results of your friends' votes and surprise you all with the results!
                           </p>
 
                           <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
