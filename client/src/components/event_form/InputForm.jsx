@@ -10,7 +10,7 @@ import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
 import authenticateUser from '../login/AuthenticateUserHelper'
 import Loading from '../Loading'
 import ReactStars from 'react-stars'
-import ReactDateTime from 'react-datetime'
+import DateTimePicker from 'react-datetime'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -25,8 +25,9 @@ export default class InputForm extends React.Component {
       eventDescription: '',
       dateTime: moment().add(2, 'hour'),
       cutOffDateTime: moment().add(1, 'hour'),
+      timeContraint: {}, //used to limit selectable hour in cuttofftime
       //Need to use a ternary here otherwise we get a ref error when inputForm is loaded without location state
-      //Location state is sent through a link route 'to' property
+      //Location state is sent through the Link route 'to' property
       guestEmails: this.props.routeProps.location.state !== undefined ? this.props.routeProps.location.state.usersToInvite.guestEmails : [''], //requires intial value to render the first guest email form
       guestPhones: [''],
       guestNames: this.props.routeProps.location.state !== undefined ? this.props.routeProps.location.state.usersToInvite.guestNames : [''],
@@ -45,7 +46,28 @@ export default class InputForm extends React.Component {
   handleInputChange({ target }){
     this.setState({[target.name]: target.value});  
   }
-  handleInputMoment(dateTime, isCutOff) {
+  handleValidCutOffDate(current) {
+    let yesterday = moment().subtract(1, 'day')
+    let maxDate = this.state.dateTime
+    return current.isAfter(yesterday) && current.isBefore(maxDate)
+  }
+  handleValidDate(current) {
+    //prevent selecting a day in the past
+    let yesterday = moment().subtract(1, 'day')
+    return current.isAfter(yesterday)
+  }
+  handleCutOffDateChange(dateTime){
+    if (typeof dateTime !== 'string') {
+      this.setState({cutOffDateTime: dateTime}, () => console.log(this.state.cutOffDateTime))
+    }
+  }
+  handleEventDateChange(dateTime){
+    if (typeof dateTime !== 'string') {
+      let cutOffDateTime = moment(dateTime).subtract(1, 'hour')
+      this.setState({dateTime: dateTime, cutOffDateTime: cutOffDateTime}, () => console.log(this.state.dateTime))
+      //update the time constraint to on the date picker component
+      
+    }
   }
   updatePriceRange(newPrice) {
     this.setState({priceRange: newPrice})
@@ -154,7 +176,7 @@ export default class InputForm extends React.Component {
           />
         </label>
         </div>
-        <div class="price-range"> 
+        <div className="price-range"> 
           Price Range:<ReactStars char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
         </div>
         {emailNameInputs}
@@ -185,12 +207,24 @@ export default class InputForm extends React.Component {
         </div>
         <div className="form-date-time" className="inputs">
           <label>
-
+            Event Time:
+            <DateTimePicker
+              value={this.state.dateTime} 
+              isValidDate={this.handleValidDate} 
+              onChange={this.handleEventDateChange.bind(this)}
+              />
           </label>
         </div>
         <div className="form-date-time-cutoff" className="inputs">
           <label>
-
+            Cutoff Time:
+            <DateTimePicker 
+              isValidDate={this.handleValidCutOffDate.bind(this)} 
+              value={this.state.cutOffDateTime} 
+              closeOnSelect={true}
+              onChange={this.handleCutOffDateChange.bind(this)}
+              timeConstraints={this.state.timeContraint}
+              />
           </label>
         </div>
         <div className="form-add-guests" className="inputs">
