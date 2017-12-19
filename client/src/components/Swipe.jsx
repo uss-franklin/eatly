@@ -30,6 +30,7 @@ export default class Swipe extends React.Component {
     this.getInviteeinfo = this.getInviteeinfo.bind(this)
     this.votingExpired = this.votingExpired.bind(this)
     this.parseUser = this.parseUser.bind(this)
+    this.convertTime24to12 = this.convertTime24to12.bind(this)
     
   }
   //records a no vote on a restaurant 
@@ -199,6 +200,23 @@ export default class Swipe extends React.Component {
       })
       .catch((err) => console.log(err))
   }
+  convertTime24to12(time24){
+    var tmpArr = time24.split(':'), time12;
+    if ( +tmpArr[0] === 12 ) {
+      time12 = tmpArr[0] + ':' + tmpArr[1] + ' pm';
+    } else {
+        if ( +tmpArr[0] === 0 + 0 ) {
+          time12 = '12:' + tmpArr[1] + ' am';
+      } else {
+          if ( +tmpArr[0] > 12 ) {
+            time12 = (+tmpArr[0]-12) + ':' + tmpArr[1] + ' pm';
+        } else {
+            time12 = (+tmpArr[0]) + ':' + tmpArr[1] + ' am';
+          }
+        }
+      }
+    return time12;
+  }
 
   render() {
     // console.log('new state', this.state)
@@ -237,14 +255,10 @@ export default class Swipe extends React.Component {
         let totalRestaurants = this.state.totalRestaurants + 1
 
         let superLikeButton =  
-          <button className="superlike" onClick={() => this.superLike()}>
-              SuperLike (1 Left)
-          </button>
+          <button className="superLikeButton" onClick={() => this.superLike()}>SuperLike (1 Left)</button>
 
         let vetoButton = 
-          <button className="veto" onClick={() => this.veto()}>
-              Veto (1 Left)
-          </button>
+          <button className="vetoButton" onClick={() => this.veto()}>Veto (1 Left)</button>
 
         if (this.state.hasSuperLiked === true){
           superLikeButton = null
@@ -255,7 +269,8 @@ export default class Swipe extends React.Component {
 
         view = 
           <div className="swipeForm">
-            <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,21)} </div>
+            <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,16) 
+                + this.convertTime24to12(event.eventDateTime.slice(16,24))} </div>
             <div > 
               <div className="photo">
                 {vetoButton}
@@ -267,23 +282,28 @@ export default class Swipe extends React.Component {
               </div>
             </div> 
             <div> 
-            {/* {vetoButton} */}
               <button className="noButton" onClick={() => this.noVote() }>
-                <img src="./images/redx.png"/>
+                No
+                {/* <img src="./images/redx.png"/> */}
               </button>
-              {/* {superLikeButton} */}
               <button className="yesButton" onClick={() => this.yesVote() }>
-                <img src="./images/checkmark.png"/>
+                Yes
+                {/* <img src="./images/checkmark.png"/> */}
               </button>
-              
             </div>
+
             <br/>
+
             <div className="descriptions"> {restaurant.name} </div>
             <div className="descriptions"> Price: {restaurant.price} </div>
             <div className="descriptions"> Rating: {restaurant.rating}/5 </div>
             <div className="descriptions"> Number of Reviews: {restaurant.review_count} </div>
+
             <br />
-            <div> Voting ends at: {event.voteCutOffDateTime.slice(0,21)}</div>
+
+            <div> Voting ends: {event.voteCutOffDateTime.slice(0,16) 
+                + this.convertTime24to12(event.voteCutOffDateTime.slice(16,24))}
+            </div>
             <br/>
             <div>
               <MapWithAMarker
