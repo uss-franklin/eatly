@@ -14,6 +14,8 @@ export default class LoginForm extends React.Component {
 			name: '',
 			txtEmail: '',
 			txtPassword: '',
+			loginEmail: '',
+			loginPassword: '',
 			loggedIn: 'false',
 			googleProvider: new firebase.auth.GoogleAuthProvider(),
 			facebookProvider: new firebase.auth.FacebookAuthProvider(),
@@ -21,7 +23,7 @@ export default class LoginForm extends React.Component {
 		this.firebase = this.props.firebase
 	}
 	handleInputChange({ target }) {
-		this.setState({[target.name]: target.value})
+		this.setState({[target.name]: target.value}, () => console.log(this.state))
 	}
 	//intitiates oAuth
 	signInWithProvider(providerName) {
@@ -46,9 +48,9 @@ export default class LoginForm extends React.Component {
 	}
   //handles log in event, bound to the log in button
 	handleLogIn() {
-		let { txtEmail, txtPassword } = this.state
+		let { loginEmail, loginPassword } = this.state
 		//firebase does the heavy lifting of valid email input verification
-		this.firebase.auth().signInWithEmailAndPassword(txtEmail, txtPassword)
+		this.firebase.auth().signInWithEmailAndPassword(loginEmail, loginPassword)
 			.then((data) => console.log('logged in with: ', data))
 			.catch((error) => console.log('error in user login: ' +error.code+ " --" + error.message))
 	}
@@ -61,6 +63,7 @@ export default class LoginForm extends React.Component {
 	handleSignUp() {
 		let { txtEmail, txtPassword } = this.state
 		//all users created this way are visible on the online firebase console
+		console.log(txtPassword)
 		this.firebase.auth().createUserWithEmailAndPassword(txtEmail, txtPassword)
 			.then((user) => {
 				user.updateProfile({displayName : this.state.name})
@@ -72,19 +75,30 @@ export default class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<div className="loginSignUpForm">
-				<input name="name" type="text" placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
-				<input name="txtEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
-				<input name="txtPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
-								
-				<div className="buttons">
-						<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
-						<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
-				</div>
-				<div className="signInWithOAuth">
-					<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
-					<button className="signOnWithGoogle" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
-				</div>
+			<div className="Login-SignIn">
+				<div className="SignUpForm">
+					<input name="name" type="text" value={this.state.name} placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
+					<input name="txtEmail" type="text" value={this.state.txtEmail} placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+					<input name="txtPassword" type="text" value={this.state.txtPassword} placeholder="password" onChange={this.handleInputChange.bind(this)}></input>		
+					<div className="buttons">
+							<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
+					</div>
+					<div className="signUpWithOAuth">
+						<button className="signUpWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign Up With Google</button>
+						<button className="signUpWithFacebook" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign Up With Facebook</button>
+					</div>
+			</div>
+			<div className="LoginForm">
+					<input name="loginEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+					<input name="loginPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
+					<div className="buttons">
+							<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
+					</div>
+					<div className="signInWithOAuth">
+						<button className="signInWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
+						<button className="signInWithFaceBook" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
+					</div>
+			</div>
 		</div>
 		)
 	}
