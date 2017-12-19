@@ -34,7 +34,8 @@ export default class InputForm extends React.Component {
       firebaseId: this.props.firebaseId, 
       longitude: null,
       latitude: null,
-      submitClick: false
+      submitClick: false,
+      radius: null
     }
   }
   updateLatLng(lat, lng){
@@ -161,8 +162,21 @@ export default class InputForm extends React.Component {
         <div className="form-location" className="inputs">
         <label>
           Restaurants Around:
-          <AutoCompleteFrame updateLatLng={this.updateLatLng.bind(this)} updateAddress={this.updateAddress.bind(this)}/>
+          <AutoCompleteFrame updateLatLng={this.updateLatLng.bind(this)} updateAddress={this.updateAddress.bind(this)} />
         </label>
+        </div>
+        <div className="form-proximity-dropdown" className="inputs">
+          <label>
+            Within how many miles:
+            <select name="radius" value={this.state.radius} onChange={this.handleInputChange.bind(this)} >
+                <option value="default">Please Select </option>
+                <option value= "0.5">0.5 miles</option>
+                <option value = "1">1 mile</option>
+                <option value = "3">3 miles</option>
+                <option value = "5">5 miles</option>
+                <option value = "10">10 miles</option>
+            </select>
+          </label>
         </div>
         <div className="form-food-search" className="inputs">
         <label>
