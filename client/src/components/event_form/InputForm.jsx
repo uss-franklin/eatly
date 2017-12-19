@@ -10,6 +10,7 @@ import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
 import authenticateUser from '../login/AuthenticateUserHelper'
 import Loading from '../Loading'
 import ReactStars from 'react-stars'
+import ReactDateTime from 'react-datetime'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -45,29 +46,6 @@ export default class InputForm extends React.Component {
     this.setState({[target.name]: target.value});  
   }
   handleInputMoment(dateTime, isCutOff) {
-  //InputMoment returns a moment object which should not be accessed directly. To extract the values, use the format method. 
-  //see https://momentjs.com/docs/#/displaying/format/
-    if(dateTime.unix() < moment().unix()) {
-      if (isCutOff) {
-        this.setState({cutOffDateTime: moment().add(1, 'hour')})
-      } else {
-        this.setState({dateTime: moment().add(2, 'hour')})
-      }
-      alert('You can\'t live in the past')
-    } else {
-      if (!isCutOff) {
-      let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      console.log('newcutofftime ', newCutOffTime)
-      this.setState({dateTime: dateTime, cutOffDateTime: newCutOffTime}) 
-      } else {
-      if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
-        let failSafeMoment = moment(this.state.dateTime).subtract(1, 'hour')
-        this.setState({cutOffDateTime: failSafeMoment})
-        alert('Please select a cut off time that\'s at least an hour before the event time')
-      }
-      this.setState({cutOffDateTime: dateTime })
-      }
-    }
   }
   updatePriceRange(newPrice) {
     this.setState({priceRange: newPrice})
@@ -207,22 +185,12 @@ export default class InputForm extends React.Component {
         </div>
         <div className="form-date-time" className="inputs">
           <label>
-            Event Date:
-            <InputMoment
-              moment={this.state.dateTime}
-              onChange={m => this.handleInputMoment.call(this, m, false)}
-              minStep={30}
-              />
+
           </label>
         </div>
         <div className="form-date-time-cutoff" className="inputs">
           <label>
-            Cutoff Time:
-          <InputMoment
-            moment={this.state.cutOffDateTime}
-            onChange={m => this.handleInputMoment.call(this, m, true)}
-            minStep={30}
-            />
+
           </label>
         </div>
         <div className="form-add-guests" className="inputs">
