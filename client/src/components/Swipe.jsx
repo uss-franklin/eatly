@@ -237,16 +237,14 @@ export default class Swipe extends React.Component {
         let totalRestaurants = this.state.totalRestaurants + 1
 
         let superLikeButton =  
-          <button className="yesButton" onClick={() => this.superLike()}>
-            <img src="./images/fire.png" />
-              SuperLike
+          <button className="superlike" onClick={() => this.superLike()}>
+              SuperLike (1 Left)
           </button>
 
-          let vetoButton = 
-            <button className="noButton" onClick={() => this.veto()}>
-              <img src="./images/ld.jpg" />
-                Veto
-            </button>
+        let vetoButton = 
+          <button className="veto" onClick={() => this.veto()}>
+              Veto (1 Left)
+          </button>
 
         if (this.state.hasSuperLiked === true){
           superLikeButton = null
@@ -258,29 +256,35 @@ export default class Swipe extends React.Component {
         view = 
           <div className="swipeForm">
             <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,21)} </div>
-            <div className="photoholder"> 
+            <div > 
               <div className="photo">
+                {vetoButton}
                 <img className="photos" src={restaurant.image_url} />
+                {superLikeButton}
               </div>
               <div className="votecounter"> 
                 Restaurant: {this.state.current + 1} of {totalRestaurants}
               </div>
             </div> 
             <div> 
-              {vetoButton}
+            {/* {vetoButton} */}
               <button className="noButton" onClick={() => this.noVote() }>
                 <img src="./images/redx.png"/>
               </button>
-              {superLikeButton}
+              {/* {superLikeButton} */}
               <button className="yesButton" onClick={() => this.yesVote() }>
                 <img src="./images/checkmark.png"/>
               </button>
               
             </div>
+            <br/>
             <div className="descriptions"> {restaurant.name} </div>
             <div className="descriptions"> Price: {restaurant.price} </div>
             <div className="descriptions"> Rating: {restaurant.rating}/5 </div>
             <div className="descriptions"> Number of Reviews: {restaurant.review_count} </div>
+            <br />
+            <div> Voting ends at: {event.voteCutOffDateTime.slice(0,21)}</div>
+            <br/>
             <div>
               <MapWithAMarker
                   lat={restaurant.coordinates.latitude}
@@ -290,7 +294,6 @@ export default class Swipe extends React.Component {
                   mapElement={<div style={{height: `100%`}}/>}
               />
             </div>
-            <div> Voting ends at: {event.voteCutOffDateTime.slice(0,21)}</div>
           </div>
       }
   

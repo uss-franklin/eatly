@@ -13,7 +13,7 @@ export default class GuestEmailForm extends React.Component {
     this.setState({[target.name]: target.value })
   }
   render() {
-    console.log(this.state.name)
+    // console.log(this.state.name)
     const { addGuest, removeGuest, idx } = this.props;
     return (
       <div className="guestForm">
