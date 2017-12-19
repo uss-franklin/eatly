@@ -251,7 +251,11 @@ exports.createEvent = function(req, res){
     let hostEmail = req.body.hostEmail
     let eventDescription = req.body.eventDescription
     let radiusInMeters = Math.floor(req.body.radius * 1609.34);
-    console.log('RADIUS IN METERS: ', radiusInMeters);
+    let enumeratedPriceRange = [];
+
+    for(let i = 1; i<= req.body.priceRange; i++){
+        enumeratedPriceRange.push(i);
+    }
 
     //object to be constructed from request object
     let searchRequestParams = {
@@ -259,7 +263,7 @@ exports.createEvent = function(req, res){
         sort_by: 'best_match',
         latitude: req.body.latitude,
         longitude: req.body.longitude,
-        price: req.body.priceRange.toString(),
+        price: enumeratedPriceRange.join(','),
         locale: 'en_US',
         radius: radiusInMeters,
         term: req.body.searchTerm || 'restaurant',
