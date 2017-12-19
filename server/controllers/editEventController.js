@@ -54,7 +54,7 @@ exports.editEvent = function(req, res) {
 	.then(() => {
 		//sends invite emails to all new guests 
 		//declare variables
-		let hostName, eventDate, eventName
+		let hostName, eventDate, eventName, eventDescription
 		let eventId = req.body.eid
 		let newUsersEmails = []
 
@@ -91,11 +91,18 @@ exports.editEvent = function(req, res) {
 			EventsRef.child(eventId).child('eventName').once('value').then((eventNameResult) => {
 				eventNameResult = eventNameResult.val()
 				return eventNameResult
-			}).catch((err) => console.log('error in retrieving event name for sending new guests email invites : ', err))
+			}).catch((err) => console.log('error in retrieving event name for sending new guests email invites : ', err)),
+
+			//plucks the event description from the DB
+			EventsRef.child(eventId).child('eventDescription').once('value').then((resultDescription) => {
+				resultDescription = resultDescription.val()
+				return resultDescription
+			}).catch((err) => console.log('error in retrieving event description for sending new guest email invites : ', err))
 		]).then((resolvedArrayEventChunks) => {
 			hostName = resolvedArrayEventChunks[0]
 			eventDate = resolvedArrayEventChunks[1]
 			eventName = resolvedArrayEventChunks[2]
+			eventDescription = resolvedArrayEventChunks[3]
 
 			console.log("after the promise chain, gonna start looping through emails")
 
@@ -113,7 +120,7 @@ exports.editEvent = function(req, res) {
 							if(resultEmail === email) {
 								console.log("email to match is : ", email)
 								console.log("email that is matching is: ", resultEmail)
-								sendInviteEmail(email, hostName, eventDate, eventName, key, eventId)
+								sendInviteEmail(email, hostName, eventDate, eventName, key, eventId, eventDescription)
 							}
 						})
 					})
@@ -149,7 +156,7 @@ exports.deleteEvent = (req, res) => {
 	let hostId = req.query.uid
 	console.log("HOST ID IN DELETE EVENT FUNC : " + hostId)
 	console.log("EVENT ID IN DELETE EVENT FUNC : " + eventId)
-	let guestIds, hostName, eventName
+	let guestIds, hostName, eventName, eventDescription
 
 	//queries the DB for relevant data to pass into vars declared above
 	Promise.all([
