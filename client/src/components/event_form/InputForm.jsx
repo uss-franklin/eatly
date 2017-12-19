@@ -9,6 +9,7 @@ import AutoCompleteFrame from './AutoCompleteFrame.jsx'
 import MapWithAMarker from '../location_form/MapWithAMarker.jsx'
 import authenticateUser from '../login/AuthenticateUserHelper'
 import Loading from '../Loading'
+import ReactStars from 'react-stars'
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class InputForm extends React.Component {
     this.state = {
       address: '',
       searchTerm: '',
+      priceRange: 0,
       hostEmail: this.props.userAccountEmail || '',
       hostName: this.props.displayName || '',
       eventName: '',
@@ -55,16 +57,20 @@ export default class InputForm extends React.Component {
     } else {
       if (!isCutOff) {
       let newCutOffTime = moment(dateTime).subtract(1, 'hour')
-      this.setState({dateTime: dateTime, 'cutOffDateTime': newCutOffTime}) 
+      console.log('newcutofftime ', newCutOffTime)
+      this.setState({dateTime: dateTime, cutOffDateTime: newCutOffTime}) 
       } else {
       if (dateTime.unix() > moment(this.state.dateTime).subtract(1, 'hour').unix()) {
         let failSafeMoment = moment(this.state.dateTime).subtract(1, 'hour')
         this.setState({cutOffDateTime: failSafeMoment})
         alert('Please select a cut off time that\'s at least an hour before the event time')
       }
-      this.setState({'cutOffDateTime': dateTime })
+      this.setState({cutOffDateTime: dateTime })
       }
     }
+  }
+  updatePriceRange(newPrice) {
+    this.setState({priceRange: newPrice})
   }
   addGuest(list, value, idx){
     //list determines whether we need to update the guestemail list or phone guest list
@@ -169,6 +175,9 @@ export default class InputForm extends React.Component {
             onChange={this.handleInputChange.bind(this)}
           />
         </label>
+        </div>
+        <div class="price-range"> 
+          Price Range:<ReactStars char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
         </div>
         {emailNameInputs}
         <div className="form-event-name" className="inputs">
