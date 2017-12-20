@@ -1,16 +1,96 @@
-.noButton {
-  float: left;
-  background-color: rgb(255, 0, 0);
-  color: white;
-  border-radius: 5px;
-  padding: 10px 25px;
-  font-size: 16px;
+.swipeForm {
+  text-align: center;
+  display: grid;
+  grid-auto-columns: 1fr;
+  justify-content: center;
+  background-color: #FFFFF0;
+}
+
+.eventTitle {
+  padding: 10px;
+  width: 25em;
+  margin: 15px auto;
+  border-radius: 8px;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  font-size: 17px;
+  background-color: #FFFFF0;
+}
+
+.eventTitleDiv {
+  background-color: #FFFFF0;
+  border-bottom: 1px solid black;
   
 }
 
-/* .noButton:hover {
+.swipeDiv {
+  /* border: solid red; */
+}
+
+.swipePhotoDiv {
+  /* border: solid blue;  */
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.swipePhoto {
+  /* border: solid green; */
+  width: 30em;
+  height: 27em;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.yesAndNoButtons {
+  display: flex;
+  justify-content: center;
+  /* border: solid black; */
+  text-align: center;
+  padding: 10px;
+  
+}
+
+.voteCounter {
+  /* border: solid blue; */
+  top: 100px;
+  text-align: center;
+  min-width: 12.5em;
+  line-height: 40px;
+}
+
+.noButtonDiv {
+
+}
+
+.yesButtonDiv {
+  
+}
+
+.vetoButtonDiv {
+  align-self: flex-end;
+}
+
+.superLikeButtonDiv {
+  align-self: flex-end;
+}
+
+/* Button styling */
+
+
+.noButton {
+  float: left;
+  background-color: #660000;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+  width: 6em;
+}
+
+.noButton:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-} */
+}
 
 .noButton:active {
   /* box-shadow: 0 5px #666; */
@@ -20,36 +100,40 @@
 
 .yesButton {
   float: right;
-  background-color: green;
+  background-color: #0066cc;
   color: white;
   border-radius: 5px;
-  padding: 10px 25px;
+  padding: 10px 15px;
   font-size: 16px;
+  text-align: center;
+  width: 6em;
 }
 
 .yesButton:focus, .noButton:focus{
   outline: none
 }
-/* .yesButton:hover {
+.yesButton:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.25), 0 17px 50px 0 rgba(0,0,0,0.19);
-} */
+}
 .yesButton:active {
   /* box-shadow: 0 5px #666; */
   transform: translateY(5px);
   
 }
 
-.yesAndNoButtons {
-  margin: auto;
-  display: block;
-  width: 50%;
-}
 .superLikeButton {
-  background-color: #4CAF50;
+  background-color: #0066cc;
   color: white;
   border-radius: 5px;
   padding: 10px 15px;
   font-size: 16px;
+  width: 10em;
+}
+
+.superLikeButton:disabled {
+  /* background-color: grey; */
+  opacity: .2;
+  width: 8em;
   
 }
 
@@ -63,12 +147,17 @@
 }
 
 .vetoButton {
-  background-color: red;
+  background-color: #660000;
   color: white;
   border-radius: 5px;
   padding: 10px 15px;
   font-size: 16px;
-  
+  width: 10em;
+}
+
+.vetoButton:disabled {
+  opacity: .2;
+  width: 8em;
 }
 
 .vetoButton:hover {
@@ -80,14 +169,42 @@
   
 }
 
- .swipeForm {
-  text-align: center;
+/* end button styling */
+
+.swipebackground {
+  background-image: url('../images/bg.jpg');
+  /* background-repeat: no-repeat; */
 }
 
-.eventTitle {
-  /* border: 1px solid black; */
-  padding: 15px;
+.restuarantInfoDiv {
+  /* border: solid red; */
+  width: 30em;
+  margin: 15px auto;
+  background-color: #FFFFF0;
+  border-radius: 8px;
 }
+
+.restaurantDescription:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  font-size: 22px;
+}
+
+.restaurantDescription {
+  font-size: 20px;
+  border-radius: 8px;
+
+}
+
+.MapWithAMarker {
+  width: 40%;
+  margin: 20px auto;
+  /* border: solid red; */
+}
+
+/* clean up later */
+
+
+
 
 .loadingtext {
   text-align: center;
@@ -120,28 +237,10 @@
   border-radius: 10px;
 }
 
-.photo {
-  border-style: solid
-}
 
-.swipePhotos {
-  width: 50%;
-  height: 45%;
-  border-radius: 8px;
-  margin: auto;
-}
 
-.MapWithAMarker {
-  width: 75%;
-  margin: auto;
-}
 
-.swipeDiv {
-  border: solid red;
-}
-.swipePhotos {
-  display: relative;
-  top: 10px;
-  border: solid red;
-}
+
+
+
 
