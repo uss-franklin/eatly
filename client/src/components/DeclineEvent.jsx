@@ -48,50 +48,42 @@ export default class DeclineEvent extends React.Component {
 
     }
 
-
-
-    /*isValidEventUser(){
-        if(!this.state.eventId || !this.state.userId){
-            console.log('no eventID or userID');
-            console.log('Event ID: ', this.state.eventId, 'User ID: ', this.state.userId);
-            this.setState({validEventUser: false});
-        } else {
-            Axios.get(`/validateURL?userId=${this.state.userId}&eventId=${this.state.eventId}`)
-            .then((val) => console.log(val))
-            .catch((err) => 'Uh-oh')
-        }
-    }*/
-
     render(){
         let view = null;
         let restaurantCount = 0;
         let restaurantViews = [];
         let yelpResult = this.state.eventDetails.yelpSearchResultForEvent;
-        while(yelpResult && yelpResult[restaurantCount] && restaurantCount < 3){
+        let buttonStyle = {marginRight: '2cm'};
+        while(yelpResult && yelpResult[restaurantCount] && restaurantCount < 2){
             restaurantViews.push(<RestaurantView name={yelpResult[restaurantCount].name} image={yelpResult[restaurantCount].image_url} address={yelpResult[restaurantCount].location.display_address.join(' ')} rating={yelpResult[restaurantCount].rating} />)
             restaurantCount++;
         }
 
         if(this.state.eventDetails && !this.state.declined){
-            console.log('CHECKING STATE: ', this.state.eventName,' ', this.state.eventDescription);
+            console.log('CHECKING STATE: ', this.state.eventDetails.eventName,' ', this.state.eventDetails.eventDescription);
             view = <div>
-                <h1>
-                    <div> You're busy... We get it </div>
-                    <div> But are you sure you can't attend this event?</div>
-                </h1>
-                <div>
-                    {this.state.eventName}<br />
-                    {this.state.eventDescription}
-                </div>
-                <h2> You could be dining at these restaurants (or others)...</h2>
+                <h1 class="title is-3"> You're busy... We get it! </h1>
+                <h1 class="subtitle is-5"> But are you sure you can't attend this event?</h1>
+                <article class="message">
+                    <div class="message-header">
+                        <p><strong>{this.state.eventDetails.eventName}</strong></p>
+                    </div>
+                    <div class="message-body">
+                        <strong>Event Description: </strong> {this.state.eventDetails.eventDescription} <br />
+                        <strong>Event Date: </strong> Whenever
+                    </div>
+                </article>
+                <h1 class="subtitle is-5"> You could be dining at these restaurants (or others)...</h1>
                 {restaurantViews}
-                <h2> So what's your final decision?</h2>
-                <button className="startNewMealButtonResultsComponent" onClick={() => {window.location = `/Swipe?eventKey=${this.state.eventId}&userId=${this.state.userId}`}}>
-                    Ok, I'll Go
-                </button>
-                <button className="startNewMealButtonResultsComponent" onClick={() => this.declineEvent()}>
-                    Can't Make It
-                </button>
+                <h1 class="title is-3"> So what's your final decision?</h1>
+                <div class="centered">
+                    <a class="button" style={buttonStyle} onClick={() => this.declineEvent()}>
+                        Can't Make It
+                    </a>
+                    <a class="button" onClick={() => {window.location = `/Swipe?eventKey=${this.state.eventId}&userId=${this.state.userId}`}}>
+                        Ok, I'll Go
+                    </a>
+                </div>
             </div>
         } else if (this.state.declined && !this.state.goToInputForm) {
             view = <div>
@@ -108,10 +100,6 @@ export default class DeclineEvent extends React.Component {
             console.log(this.state);
             view = <div>Houston... We have a problem</div>
         }
-
-
-
-
 
         return view
     };
