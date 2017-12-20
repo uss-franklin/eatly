@@ -27,4 +27,8 @@ h1 {
 .title {
   margin: 50px;
 }
+body {
+  margin: 0;
+  padding: 0
+}
 
