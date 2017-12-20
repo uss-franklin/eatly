@@ -161,6 +161,7 @@ export default class InputForm extends React.Component {
                         {this.state.formErrors.map(message => <FormErrors message={message} />)}
                       </div>
     console.log(this.props.userAccountEmail)
+
     return (
       this.state.submitClick ? <Loading /> :
       <div className="whole-form">
@@ -200,7 +201,8 @@ export default class InputForm extends React.Component {
         </div>
         <div className="price-range control"> 
           <label className="label">Price Range:</label>
-            <ReactStars count={4} size={24} char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
+
+            <ReactStars count={4} char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
         </div>
         {emailNameInputs}
         <div className="form-event-name control">
@@ -215,7 +217,8 @@ export default class InputForm extends React.Component {
           />
         </div>
         <div className="control">
-          <label className="label">Event Description:</label>
+
+          <label className="label"> Event Description:</label>
             <input
               className="input"
               type="text"
@@ -236,7 +239,8 @@ export default class InputForm extends React.Component {
             />
         </div>
         <div className="form-date-time-cutoff control">
-          <label className="label">Cutoff Time:</label>
+
+          <label class="label">Cutoff Time:</label>
           <DateTimePicker
             inputProps={{className: 'input'}}
             isValidDate={this.handleValidCutOffDate.bind(this)} 

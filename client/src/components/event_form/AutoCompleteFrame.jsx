@@ -81,7 +81,8 @@ export default class AutoCompleteFrame extends React.Component {
         const autoCompleteStyle = {
             root: {position: 'relative', paddingBottom: '0px', 'z-index': '1000'},
             input: {width: '100%'},
-            autocompleteItem: {color: 'black', 'backgroundcolor': 'white'},
+
+            autocompleteItem: {color: 'black', 'zindex': '1000', 'backgroundcolor': 'white'},
             autocompleteItemActive: {color: 'blue'}
         };
 
