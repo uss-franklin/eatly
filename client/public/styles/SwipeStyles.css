@@ -5,6 +5,7 @@
   border-radius: 5px;
   padding: 10px 25px;
   font-size: 16px;
+  
 }
 
 /* .noButton:hover {
@@ -38,6 +39,11 @@
   
 }
 
+.yesAndNoButtons {
+  margin: auto;
+  display: block;
+  width: 50%;
+}
 .superLikeButton {
   background-color: #4CAF50;
   color: white;
@@ -74,28 +80,13 @@
   
 }
 
-.swipeForm {
+ .swipeForm {
   text-align: center;
 }
 
-.photos {
-  max-height: 550px;
-  max-width: 650px;
-  min-width: 550px;
-  min-height: 550px;
-  border-radius: 8px;
-}
-
-.photoholder {
-  margin: auto;
-  max-height: 600px;
-  max-width: 750px;
-}
-
-.eventtitle {
-  border: 1px solid black;
-  padding: 7px;
-  border-radius: 4px;
+.eventTitle {
+  /* border: 1px solid black; */
+  padding: 15px;
 }
 
 .loadingtext {
@@ -133,9 +124,24 @@
   border-style: solid
 }
 
+.swipePhotos {
+  width: 50%;
+  height: 45%;
+  border-radius: 8px;
+  margin: auto;
+}
 
+.MapWithAMarker {
+  width: 75%;
+  margin: auto;
+}
 
-
-
-
+.swipeDiv {
+  border: solid red;
+}
+.swipePhotos {
+  display: relative;
+  top: 10px;
+  border: solid red;
+}
 
