@@ -1,12 +1,10 @@
-.form-create-event {
-  text-align: center;
+.whole-form {
+  width:40%;
+  margin: 0 auto 0 auto;
 }
-
-.inputs {
-  padding: 10px;
+label {
+  margin-top: 10px
 }
-.price-range {
-  display: block;
-  width:10%;
+.submit-event {
   margin: 0 auto 0 auto;
 }
