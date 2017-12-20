@@ -133,48 +133,49 @@ export default class InputForm extends React.Component {
         </div>
     }
     let emailNameInputs = <div>
-                            <div className="form-email" className="inputs">
-                            <label>
-                              Your Email:
+                            <div className="form-email control">
+                            <label className="label">Your Email:</label>
                               <input
-                                readOnly={this.props.userAccountEmail ? true : false}
+                                className="input"
                                 type="text"
                                 name="hostEmail"
                                 placeholder="Lookingforfood@something.com"
                                 value={this.state.hostEmail}
                                 onChange={this.handleInputChange.bind(this)}
                               />
-                            </label>
                             </div>
-                            <div className="form-host-name" className="inputs">
-                            <label>
-                              Your Name:
+                            <div className="form-host-name control">
+                            <label className="label">Your Name:</label>
                               <input
-                                readOnly={this.props.displayName? true : false}
+                                className="input"
                                 type="text"
                                 name="hostName"
                                 placeholder="Your Name"
                                 value={this.state.hostName}
                                 onChange={this.handleInputChange.bind(this)}
                               />
-                            </label>
                             </div>
                           </div>
     if (!!this.props.userAccountEmail) emailNameInputs = null
+    let errorMessage = <div class="notification is-warning">
+                        {this.state.formErrors.map(message => <FormErrors message={message} />)}
+                      </div>
     return (
       this.state.submitClick ? <Loading /> :
-      <div className="wholeForm">
-      {this.state.formErrors.map(message => <FormErrors message={message} />)}
-      <div className="form-create-event">
-        <div className="form-location" className="inputs">
-        <label>
-          Restaurants Around:
+      <div className="whole-form">
+      {this.state.formErrors.length ? errorMessage : null}
+      
+      <div className="form-create-event field">
+        <div className="form-location control">
+          <label className="label">Restaurants Around:</label>
           <AutoCompleteFrame updateLatLng={this.updateLatLng.bind(this)} updateAddress={this.updateAddress.bind(this)} />
-        </label>
+          {mapView}
         </div>
-        <div className="form-proximity-dropdown" className="inputs">
-          <label>
-            Within how many miles:
+        <div className="form-proximity-dropdown control">
+          <label className="label">
+          Within how many miles:
+          </label>
+          <div className="select">
             <select name="radius" value={this.state.radius} onChange={this.handleInputChange.bind(this)} >
                 <option value="default">Please Select </option>
                 <option value= "0.5">0.5 miles</option>
@@ -183,40 +184,39 @@ export default class InputForm extends React.Component {
                 <option value = "5">5 miles</option>
                 <option value = "10">10 miles</option>
             </select>
-          </label>
+          </div>
         </div>
-        <div className="form-food-search" className="inputs">
-        <label>
-          Type of Cuisine:
-          <input 
+        <div className="form-food-search control">
+        <label className="label">Type of Cuisine: </label>
+          <input
+            className="input"
             type="text"
             name="searchTerm"
             placeholder="What are you in the mood for?"
             value={this.state.searchTerm}
             onChange={this.handleInputChange.bind(this)}
           />
-        </label>
         </div>
-        <div className="price-range"> 
-          Price Range:<ReactStars count={4} char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
+        <div className="price-range control"> 
+          <label className="label">Price Range:</label>
+            <ReactStars count={4} char={'$'} half={false} value={this.state.priceRange} onChange={this.updatePriceRange.bind(this)}/>
         </div>
         {emailNameInputs}
-        <div className="form-event-name" className="inputs">
-        <label>
-          Event Name:
+        <div className="form-event-name control">
+          <label className="label">Event Name:</label>
           <input 
+            className="input"
             type="text"
             name="eventName"
             placeholder="Name your outing!"
             value={this.state.eventName}
             onChange={this.handleInputChange.bind(this)}
           />
-        </label>
         </div>
-        <div className="inputs">
-          <label>
-            Event Description:
+        <div className="control">
+          <label className="label"> Event Description:</label>
             <input
+              className="input"
               type="text"
               size="30"
               name="eventDescription"
@@ -224,30 +224,27 @@ export default class InputForm extends React.Component {
               value={this.state.eventDescription}
               onChange={this.handleInputChange.bind(this)}
             />
-          </label>
         </div>
-        <div className="form-date-time" className="inputs">
-          <label>
-            Event Time:
+        <div className="form-date-time control">
+          <label className="label"> Event Time: </label>
             <DateTimePicker
+              inputProps={{className: 'input'}}
               value={this.state.dateTime} 
               isValidDate={this.handleValidDate} 
               onChange={this.handleEventDateChange.bind(this)}
             />
-          </label>
         </div>
-        <div className="form-date-time-cutoff" className="inputs">
-          <label>
-            Cutoff Time:
-            <DateTimePicker 
-              isValidDate={this.handleValidCutOffDate.bind(this)} 
-              value={this.state.cutOffDateTime} 
-              closeOnSelect={true}
-              onChange={this.handleCutOffDateChange.bind(this)}
-            />
-          </label>
+        <div className="form-date-time-cutoff control">
+          <label class="label">Cutoff Time:</label>
+          <DateTimePicker
+            inputProps={{className: 'input'}}
+            isValidDate={this.handleValidCutOffDate.bind(this)} 
+            value={this.state.cutOffDateTime} 
+            closeOnSelect={true}
+            onChange={this.handleCutOffDateChange.bind(this)}
+          /> 
         </div>
-        <div className="form-add-guests" className="inputs">
+        <div className="form-add-guests">
           {this.state.guestEmails
             .map((guestEmail, idx) => {
                return (
@@ -262,15 +259,15 @@ export default class InputForm extends React.Component {
               )
             })
           }
-          <button className="add-guests" onClick={this.addGuestEmailInputField.bind(this)}>
-            Add Another
+          <button className="add-guests button" onClick={this.addGuestEmailInputField.bind(this)}>
+            Add Another Guest
           </button>
         </div>
         <div>
-          {mapView}
+          
         </div>
-        <div className="form-create-event" className="inputs">
-          <button onClick={this.submitForm.bind(this)}>
+        <div className="form-create-event field  is-grouped is-grouped-centered">
+          <button className="submit-event button is-primary" onClick={this.submitForm.bind(this)}>
             Find Restaurants
           </button>
         </div>
