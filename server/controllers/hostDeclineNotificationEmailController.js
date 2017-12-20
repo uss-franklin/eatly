@@ -110,7 +110,7 @@ const mailOptions = function(hostEmail, eventName, eventId) {
 
 
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-                You've started a new meal with Eatly!</span>
+                Update on your meal, ${eventName}, with Eatly</span>
               
               <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 6px; border: 3px solid #0066cc">
 
@@ -120,7 +120,7 @@ const mailOptions = function(hostEmail, eventName, eventId) {
                       <tr>
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
-                          <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
+                          <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px; color: #00264d">
                             Hi again!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
@@ -178,7 +178,7 @@ const mailOptions = function(hostEmail, eventName, eventId) {
 
 //the actual send email function that takes in same dynamic data
 //also passes along the mailOptions object generated in previous function
-const sendHostDeclineNotificationEmail = function(eventId, userId) {
+const sendHostDeclineNotificationEmail = function(eventId) {
   let hostEmail, eventName
 
   //grabs necessary argument details from the DB for send host notification email
@@ -188,6 +188,7 @@ const sendHostDeclineNotificationEmail = function(eventId, userId) {
       result = Object.keys(result.val())[0]
       return usersRef.child(result).child('email').once('value').then((resultEmail) => {
         resultEmail = resultEmail.val()
+        console.log("RESULT EMAIL IN DECLINE INVITE NOTIFICATION FUNC ", resultEmail)
         return resultEmail
       })
       .catch((err) => console.log('Error in retrieving host email for sendHostDeclineNotificationEmail : ', err))
@@ -203,15 +204,16 @@ const sendHostDeclineNotificationEmail = function(eventId, userId) {
   .then((resolvedArray) => {
     hostEmail = resolvedArray[0]
     eventName = resolvedArray[1]
+
+    //sends host notification email to host that someone has declined RSVP
+    transporter.sendMail(mailOptions(hostEmail, eventName, eventId), function(err, info){
+      if(err)
+        console.log(err)
+      else
+        console.log("Successfully sent host decline notification email")
+    })
   }).catch((err) => console.log("Error in resolving promises retrieving data chunks for sendHostDeclineNotificationEmail : ", err))
 
-  //sends host notification email to host that someone has declined RSVP
-  transporter.sendMail(mailOptions(hostEmail, eventName, eventId), function(err, info){
-    if(err)
-  		console.log(err)
-  	else
-  		console.log("Successfully sent host decline notification email")
-  })
 }
 
 exports.sendHostDeclineNotificationEmail = sendHostDeclineNotificationEmail

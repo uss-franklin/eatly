@@ -191,7 +191,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #800000; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/decline?userId=${userId}$eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #ff0000; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">Decline RSVP</a> </td>
+                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #800000; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/decline?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #ff0000; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">Decline RSVP</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
