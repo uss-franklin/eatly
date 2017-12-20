@@ -27,7 +27,7 @@ export default class Swipe extends React.Component {
     this.specialVotes = this.specialVotes.bind(this)
     this.checkifConsensus = this.checkifConsensus.bind(this)
     this.setGuestList = this.setGuestList.bind(this)
-    this.getInviteeinfo = this.getInviteeinfo.bind(this)
+    this.getInviteeName = this.getInviteeName.bind(this)
     this.votingExpired = this.votingExpired.bind(this)
     this.parseUser = this.parseUser.bind(this)
     this.convertTime24to12 = this.convertTime24to12.bind(this)
@@ -94,14 +94,13 @@ export default class Swipe extends React.Component {
         })
         .catch(err => console.log('veto error', err))
   }
-  //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant
+  //runs on the last restaurant vote, checks if everyone has voted, and if so, returns the winning restaurant and generates results page
   lastClickTrue(){
     Axios.post('/calculateConsensus', {eventId: this.state.eventKey, 
       userId: this.state.eventId, 
       restaurantId:this.state.current, vote: true 
     })
       .then((response) => {
-        // console.log('lastClicktrue res', response)
         this.setState({consensus: true})
       })
       .catch((err) => {console.log('lastClick error', err)})
@@ -117,10 +116,10 @@ export default class Swipe extends React.Component {
       })
       .catch((err) => {console.log('lastClick error', err)})
   }
+  //checks in database if user has already vetoed or superliked - for the case when user opens a new session to complete voting
   specialVotes(){
     Axios.get('/getUserSpecialVoteStatus?userId=' +this.state.userId + '&eventId=' + this.state.eventKey)
       .then((response) => {
-        console.log('specialvotes resp', response)
         if (response.data.hasSuperLiked === true) {
           this.setState({hasSuperLiked: true}, () => {
             console.log('has superliked')
@@ -134,6 +133,7 @@ export default class Swipe extends React.Component {
       })
       .catch(err => {console.log('special votes error', err)})
   }
+  //checks if consensus exists in database
   checkifConsensus(eid) {
     Axios.get(`/getSingleEvent?eid=${eid}`)
       .then((resp) => {
@@ -145,6 +145,7 @@ export default class Swipe extends React.Component {
     })  
     .catch(err => console.log('event details error', err))
   }
+  //generates guest list for the event and is passed to results page where it is displayed
   setGuestList(eid) {
     Axios.get(`/getSingleEvent?eid=${eid}`)
       .then((response) => {
@@ -156,13 +157,13 @@ export default class Swipe extends React.Component {
           if (key !== QueryString.parse(location.search).userId)
           userkeys.push(key)
         }
-        console.log('setGuestList running', userkeys)
         userkeys.map((key) => {
-          this.getInviteeinfo(key)
+          this.getInviteeName(key)
         })
       })
   }
-  getInviteeinfo(inviteeId) {
+  //gets the guest name from the guest id
+  getInviteeName(inviteeId) {
     Axios.get('/getInvitee?inviteeId=' + inviteeId)
       .then((response) => {
         this.state.guests.push(response)
@@ -174,13 +175,13 @@ export default class Swipe extends React.Component {
     cutoff = new Date(cutoff)
     return (current.valueOf() > cutoff.valueOf())
   }
+  //immediately grabs user data from url
   componentWillMount() {
       this.parseUser();
   }
-  //gets the event data from the info in the url
+  //gets the event data from the query string in the url
   parseUser() {
     let parsedqs = QueryString.parse(location.search)
-    console.log('parse user')
     this.setState({userId: parsedqs.userId})
     Axios.get('/getRestaurants?eventKey=' + parsedqs.eventKey + '&userId=' + parsedqs.userId)
       .then((response) => {
@@ -194,11 +195,12 @@ export default class Swipe extends React.Component {
         this.setState({eventKey: parsedqs.eventKey, data: response, 
         current: 2, totalRestaurants: 1})
       }
+      //sets the guest list, checks for event result and if user has used veto or superlike
       this.setGuestList(this.state.eventKey)
       this.checkifConsensus(this.state.eventKey)
       this.specialVotes()
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log('parseuser error: ', err))
   }
   convertTime24to12(time24){
     var tmpArr = time24.split(':'), time12;
@@ -219,27 +221,22 @@ export default class Swipe extends React.Component {
   }
 
   render() {
-    // console.log('new state', this.state)
-    // console.log('new props', this.props)
-    //view is used to display different views of the page: loading, swiping, and finished voting (from completion or cutoff time) 
+    //view var is used to display different views of the page: loading, swiping, and finished voting (from completion or cutoff time) 
     let view = null
       if (this.state.data === undefined) {
         <Loading />
       }
-      //if past cutoff time, there will be a result
+      //if past cutoff time, result page is shown
       else if (this.votingExpired(new Date(), this.state.data.data.voteCutOffDateTime) === true) {
         console.log('else if one')
         view = <Results eventData={this.state}/>
       } 
-      //if curr > end && result exists, then show results page, below can be left as is
+      //checks if there is already a consensus, displays results page if so 
       else if (this.state.current > this.state.totalRestaurants && this.state.consensus === true) {
         console.log('else if two')
         view = <Results eventData={this.state}/>
       } 
-      else if (Object.keys(this.state.data.data.yelpSearchResultForEvent).length === 0 && this.state.consensus === true) {
-        console.log('else if three')
-        view = <Results eventData={this.state}/>
-      }
+      //if no consensus, user is shown the holder page
       else if (this.state.current > this.state.totalRestaurants) {
         console.log('else if four')
           view = 
@@ -248,12 +245,13 @@ export default class Swipe extends React.Component {
               <img className="endphoto" src="./images/done.png" />
             </div> 
       } 
+      //the swipe page 
       else {
-        console.log('swipe state', this.state)
         let restaurant = this.state.data.data.yelpSearchResultForEvent[this.state.current]
         let event = this.state.data.data
         let totalRestaurants = this.state.totalRestaurants + 1
 
+        //once used, superlike and veto buttons are taken off the page
         let superLikeButton =  
           <button className="superLikeButton" onClick={() => this.superLike()}>SuperLike (1 Left)</button>
 
@@ -268,29 +266,28 @@ export default class Swipe extends React.Component {
         }
 
         view = 
+          <div>
           <div className="swipeForm">
-            <div className="eventtitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,16) 
+            <div className="eventTitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,16) 
                 + this.convertTime24to12(event.eventDateTime.slice(16,24))} </div>
-            <div > 
-              <div className="photo">
-                {vetoButton}
-                <img className="photos" src={restaurant.image_url} />
-                {superLikeButton}
+                
+              <div className="swipeDiv">
+              
+                <div className="swipePhotoDiv">
+                  {vetoButton}
+                  <img className="swipePhotos" src={restaurant.image_url} />
+                  {superLikeButton}
+                </div>
+
               </div>
-              <div className="votecounter"> 
+              <div className="voteCounter"> 
                 Restaurant: {this.state.current + 1} of {totalRestaurants}
               </div>
-            </div> 
-            <div> 
-              <button className="noButton" onClick={() => this.noVote() }>
-                No
-                {/* <img src="./images/redx.png"/> */}
-              </button>
-              <button className="yesButton" onClick={() => this.yesVote() }>
-                Yes
-                {/* <img src="./images/checkmark.png"/> */}
-              </button>
-            </div>
+            
+              <div className="yesAndNoButtons">
+                <button className="noButton" onClick={() => this.noVote() }> No </button>
+                <button className="yesButton" onClick={() => this.yesVote() }> Yes </button>
+              </div>
 
             <br/>
 
@@ -305,7 +302,7 @@ export default class Swipe extends React.Component {
                 + this.convertTime24to12(event.voteCutOffDateTime.slice(16,24))}
             </div>
             <br/>
-            <div>
+            <div className="MapWithAMarker">
               <MapWithAMarker
                   lat={restaurant.coordinates.latitude}
                   lng={restaurant.coordinates.longitude}
@@ -314,6 +311,7 @@ export default class Swipe extends React.Component {
                   mapElement={<div style={{height: `100%`}}/>}
               />
             </div>
+          </div>
           </div>
       }
   
