@@ -64,15 +64,13 @@ export default class InputForm extends React.Component {
     if (typeof dateTime !== 'string') {
       let cutOffDateTime = moment(dateTime).subtract(1, 'hour')
       this.setState({dateTime: dateTime, cutOffDateTime: cutOffDateTime}, () => console.log(this.state.dateTime))
-      //update the time constraint to on the date picker component
-      
     }
   }
   updatePriceRange(newPrice) {
     this.setState({priceRange: newPrice})
   }
   addGuest(list, value, idx){
-    //list determines whether we need to update the guestemail list or phone guest list
+    //list determines whether we need to update the guest email, guest name list or guest phone list
     this.setState(prevState => {
       let updatedGuestList = prevState[list].slice();
       updatedGuestList[idx] = value
