@@ -22,9 +22,9 @@ exports.validateEventUser = function(req, res){
 exports.declineInvite = function(req, res){
     let {eventId, userId} = req.query;
 
-    sendHostDeclineNotificationEmail(eventId, userId)
+    // sendHostDeclineNotificationEmail(req.query.eventId)
 
-    Promise.all([dbUtilFunctions.deleteUserEvent(userId, eventId, false), dbUtilFunctions.deleteInviteeFromEvent(userId, eventId)])
+    Promise.all([sendHostDeclineNotificationEmail(req.query.eventId), dbUtilFunctions.deleteUserEvent(userId, eventId, false), dbUtilFunctions.deleteInviteeFromEvent(userId, eventId)])
     .then(() => dbUtilFunctions.eventHasInvitees(eventId))
     .then((eventHasInviteesBool) => {
         if(eventHasInviteesBool){
