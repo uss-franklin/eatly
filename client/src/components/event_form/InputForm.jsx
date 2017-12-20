@@ -10,6 +10,9 @@ import authenticateUser from '../login/AuthenticateUserHelper'
 import Loading from '../Loading'
 import ReactStars from 'react-stars'
 import DateTimePicker from 'react-datetime'
+import Validator from './Validator'
+import FormErrors from './FormErrors'
+
 
 export default class InputForm extends React.Component {
   constructor(props) {
@@ -33,7 +36,8 @@ export default class InputForm extends React.Component {
       longitude: null,
       latitude: null,
       submitClick: false,
-      radius: null
+      radius: null,
+      formErrors: []
     }
   }
   updateLatLng(lat, lng){
@@ -93,6 +97,12 @@ export default class InputForm extends React.Component {
     },)
   }
   submitForm(){
+    let errors = Validator(this.state)
+    if (errors.length) {
+      console.log(errors)
+      this.setState({formErrors: errors})
+      return
+    }
     this.setState({submitClick: true})
     let sendObj = Object.assign({}, this.state);
     console.log('sendobj', sendObj)
@@ -154,6 +164,7 @@ export default class InputForm extends React.Component {
     return (
       this.state.submitClick ? <Loading /> :
       <div className="wholeForm">
+      {this.state.formErrors.map(message => <FormErrors message={message} />)}
       <div className="form-create-event">
         <div className="form-location" className="inputs">
         <label>
