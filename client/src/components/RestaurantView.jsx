@@ -5,16 +5,26 @@ export default class DeclineEvent extends React.Component {
         super(props);
     };
     render(){
+        let imageLocation = './images/Yelp/web_and_ios/regular/regular_' + this.props.rating + '.png';
+        console.log('IMAGE LOCATION', imageLocation);
         return (
-            <div id="restaurantcontainer">
-                <img id="leftcolumn" src={this.props.image} />
-                <div id="rightcolumn">
-                    <h4>{this.props.name}</h4>
-                    <h4>{this.props.address}</h4>
-                    <h4>{this.props.rating} stars</h4>
+            <div class="centered">
+                <div class="frame-square">
+                    <div class="crop">
+                        <img src={this.props.image} alt="" />
+                    </div>
                 </div>
+                <div class="box">
+                    <p>
+                        <strong>{this.props.name}</strong>
+                        <br />
+                        <img src={imageLocation} />
+                        <br />
+                        {this.props.address}
+                    </p>
+                </div>
+                <br />
             </div>
-
         )
     }
 }
