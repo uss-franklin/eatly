@@ -253,65 +253,64 @@ export default class Swipe extends React.Component {
 
         //once used, superlike and veto buttons are taken off the page
         let superLikeButton =  
-          <button className="superLikeButton" onClick={() => this.superLike()}>SuperLike (1 Left)</button>
+          <button  className="superLikeButton" onClick={() => this.superLike()}>Superlike (1 Left)</button>
 
         let vetoButton = 
           <button className="vetoButton" onClick={() => this.veto()}>Veto (1 Left)</button>
 
         if (this.state.hasSuperLiked === true){
-          superLikeButton = null
+          superLikeButton = <button disabled={true} className="superLikeButton">Superlike </button>
         }
         if (this.state.hasVetoed === true) {
-          vetoButton = null
+          vetoButton = <button disabled={true} className="vetoButton">Veto</button>
         }
 
         view = 
-          <div>
           <div className="swipeForm">
-            <div className="eventTitle"> Event: <b>{event.eventName}</b> on {event.eventDateTime.slice(0,16) 
+          <div className="eventTitleDiv">
+            <div className="eventTitle"> <b>{event.eventName}</b> on {event.eventDateTime.slice(0,16) 
                 + this.convertTime24to12(event.eventDateTime.slice(16,24))} </div>
+            </div>
                 
               <div className="swipeDiv">
-              
                 <div className="swipePhotoDiv">
-                  {vetoButton}
-                  <img className="swipePhotos" src={restaurant.image_url} />
-                  {superLikeButton}
+                  <div className="vetoButtonDiv">{vetoButton}</div>
+                  <div className="swipeImgDiv"><img className="swipePhoto" src={restaurant.image_url} /> </div>
+                  <div className="superLikeButtonDiv">{superLikeButton}</div>
                 </div>
-
-              </div>
-              <div className="voteCounter"> 
-                Restaurant: {this.state.current + 1} of {totalRestaurants}
-              </div>
-            
-              <div className="yesAndNoButtons">
-                <button className="noButton" onClick={() => this.noVote() }> No </button>
-                <button className="yesButton" onClick={() => this.yesVote() }> Yes </button>
+                <div className="yesAndNoButtons">
+                  <div className="noButtonDiv"><button className="noButton" onClick={() => this.noVote() }> No </button></div>
+                  <div className="voteCounter">Restaurant: {this.state.current + 1} of {totalRestaurants} </div>
+                  <div className="yesButtonDiv"><button className="yesButton" onClick={() => this.yesVote() }> Yes </button> </div>
+                </div>
               </div>
 
             <br/>
+            <div className="swipebackground">
+              <div className="restuarantInfoDiv">
+                <div className="restaurantDescription"> {restaurant.name} </div>
+                <div className="restaurantDescription"> {restaurant.price} </div>
+                <div className="restaurantDescription"> {restaurant.rating}/5 Rating</div>
+                <div className="restaurantDescription"> {restaurant.review_count} Reviews </div>
 
-            <div className="descriptions"> {restaurant.name} </div>
-            <div className="descriptions"> Price: {restaurant.price} </div>
-            <div className="descriptions"> Rating: {restaurant.rating}/5 </div>
-            <div className="descriptions"> Number of Reviews: {restaurant.review_count} </div>
+                <br />
 
-            <br />
-
-            <div> Voting ends: {event.voteCutOffDateTime.slice(0,16) 
-                + this.convertTime24to12(event.voteCutOffDateTime.slice(16,24))}
+                <div className="restaurantDescription"> Voting ends {event.voteCutOffDateTime.slice(0,10) + ', '
+                    + this.convertTime24to12(event.voteCutOffDateTime.slice(16,24))}
+                </div>
+              </div>
+              <br/>
+              <div className="MapWithAMarker">
+                <MapWithAMarker
+                    lat={restaurant.coordinates.latitude}
+                    lng={restaurant.coordinates.longitude}
+                    defaultZoom={16}
+                    containerElement={<div style={{height: `400px`}}/>}
+                    mapElement={<div style={{height: `100%`}}/>}
+                />
+              </div>
+              <div>  here  </div>
             </div>
-            <br/>
-            <div className="MapWithAMarker">
-              <MapWithAMarker
-                  lat={restaurant.coordinates.latitude}
-                  lng={restaurant.coordinates.longitude}
-                  defaultZoom={16}
-                  containerElement={<div style={{height: `400px`}}/>}
-                  mapElement={<div style={{height: `100%`}}/>}
-              />
-            </div>
-          </div>
           </div>
       }
   
