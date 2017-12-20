@@ -21,8 +21,10 @@ exports.validateEventUser = function(req, res){
 
 exports.declineInvite = function(req, res){
     let {eventId, userId} = req.query;
+    console.log("REQ QUERY IN DECLINE INVITE FUNC, EVENT CONTROLLER : ", req.query)
+    console.log("REQ BODY IN DECLINE INVITE FUNC, EVENT CONTROLLER :",req.body)
 
-    sendHostDeclineNotificationEmail(eventId, userId)
+    // sendHostDeclineNotificationEmail(eventId, userId)
 
     Promise.all([dbUtilFunctions.deleteUserEvent(userId, eventId, false), dbUtilFunctions.deleteInviteeFromEvent(userId, eventId)])
     .then(() => dbUtilFunctions.eventHasInvitees(eventId))

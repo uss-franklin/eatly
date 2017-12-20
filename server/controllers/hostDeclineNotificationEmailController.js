@@ -120,7 +120,7 @@ const mailOptions = function(hostEmail, eventName, eventId) {
                       <tr>
                         <td style="font-family: sans-serif; font-size: 16px; vertical-align: top;">
                           
-                          <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px;">
+                          <p style="font-family: sans-serif; font-size: 35px; font-weight: bold; margin: 0; Margin-bottom: 15px; color: #00264d">
                             Hi again!</p>
                           
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
