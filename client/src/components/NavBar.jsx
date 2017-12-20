@@ -15,21 +15,21 @@ export default class NavBar extends React.Component {
   }
   render() {
     let loggedIn = this.props.loggedIn
-    let logoutButton = <button className="logout button" onClick={this.handleSignOut.bind(this)} key="logout">logout</button>
-    let loginButton =  <button className="login button" key="login">
-                         <Link to="/loginForm" style={{ textDecoration: 'none'}}>login or sign up</Link>
-                       </button>
+    let logoutButton = <button className="logout button is-link" onClick={this.handleSignOut.bind(this)} key="logout">logout</button>
+    let loginButton =  <Link to="/loginForm" ><button className="login button is-link" key="login">
+                         login or sign up
+                       </button></Link>
 
-    let accountButton = <button className="account button" key="account">
-                            <Link to="/account" style={{ textDecoration: 'none'}}>my account</Link>
-                        </button>
+    let accountButton = <Link to="/account"><button className="account button is-link" key="account">
+                            my account
+                        </button></Link>
     return (
       <div className="parent">
-        <div className="header"> 
-        <div className="field is-group-left">
+        <div className="header is-clearfix"> 
+        <div className="is-pulled-left">
           <Link to="/" style={{ textDecoration: 'none'}} className="navHeader"> eatly </Link>
         </div>
-          <div className="field is-grouped is-grouped-right">
+          <div className="is-pulled-right">
             {loggedIn ? [logoutButton, accountButton] : loginButton}
           </div>
         </div>
