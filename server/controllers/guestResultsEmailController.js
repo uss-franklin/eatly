@@ -96,7 +96,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
       </style>
 
     <body class="" style="background-color: #afacac; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
-      <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #d8d8d8;">
+      <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #e6f2ff">
         <tr>
           <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
           <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
@@ -106,7 +106,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
               <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
                 Get ready to feast with ${hostName} and friends!</span>
               
-              <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 4px;">
+              <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 6px; border: 3px solid #0066cc">
 
                 <tr>
                   <td class="wrapper" style="font-family: sans-serif; font-size: 16px; vertical-align: top; box-sizing: border-box; padding: 20px;">
@@ -120,19 +120,19 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
                           <p style="font-family: sans-serif; font-weight: normal; margin: 0; Margin-bottom: 15px; display: inline-block;">
                               You'll be attending 
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold;">
+                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; font-weight: bold; color: #00264d">
                               ${eventName}!</div> <br>
 
                               Hosted by <br> 
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
+                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;  color: #00264d">
                               ${hostName}</div> <br> on
                               
-                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
+                              <div style="font-size: 20px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;  color: #00264d">
                                 ${eventDate}
                               </div> at ... <br><br>
                               
-                              <div style="font-size: 40px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;">
+                              <div style="font-size: 40px; display: inline-block; margin-left: 8px; margin-right: 8px; font-weight: bold;  color: #00264d">
                               ${eventLocation}</div>
 
                               <p>
@@ -147,7 +147,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, eventLocatio
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #d30808; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/swipe?eventKey=${eventId}&userId=${userId}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #d30808; border: solid 3px #7f0202; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #7f0202;">Get Started!</a> </td>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0066cc; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/swipe?eventKey=${eventId}&userId=${userId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #66b3ff; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; ">${eventName}</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
