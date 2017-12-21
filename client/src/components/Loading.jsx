@@ -7,9 +7,9 @@ export default class Loading extends React.Component {
 
   render() {
     return (
-      <div>
-        <h3 className="loadingtext">Our minions are gathering restaurants... </h3>
-        <img className="trex" src='./images/pasta.gif' />
+      <div className="loadingPage">
+          <h3 className="loadingtext">Our minions are gathering your restaurants... </h3>
+          <img className="pastagif" src='./images/pastas.gif' />
       </div>
     )
   }
