@@ -11,8 +11,11 @@ export default class Holder extends React.Component {
       <div className="holderParent">
         <div className="imageHolder">
         <div className="holderText">
-          Thank you for voting, the results for you event will be displayed here
+          You're all set! Sit back, relax and we'll reach out when all the votes are in
         </div>
+        </div>
+        <div className="HolderButtonDiv">
+          <button className="HolderEventButton" onClick={() => {window.location = '/inputForm'}}>Plan Another Event </button>
         </div>
       </div>
     )
