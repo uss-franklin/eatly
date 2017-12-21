@@ -74,7 +74,7 @@ export default class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<div className="loginSignIn columns is-mobile">
+			<div className="loginSignIn columns">
 				<div className="signUpForm column field">
 					<h1 class="title is-4">Sign Up!</h1>
 					<label className="label">Name:</label>
