@@ -125,70 +125,56 @@ export default class EditEvent extends React.Component {
   render(){
     const dateTime = this.state.eventDateTime;
     return (
-      <div className="editEventForm parent">
-      <div className="form-edit-event">
-        <div className="form-event-name inputs">
-
-	        <h1 className="editEventFormCurrentTitle">
-	        	Edit: {this.state.eventName}
-	        </h1>
-	        <h2 className="editEventFormCurrentDateTime">
-	        	{dateTime.format('MMM [the] Do [of] YYYY')} at {dateTime.format('h:mm a')}
-	        </h2>
-          <p className="edit-page-message">If you would like to change the event time please create a <Link to="/inputForm" style={{ textDecoration: 'underline', color: 'blue'}}>new event</Link>.</p>
-	        <label>
-	          New Name:
-	          <input 
-	            type="text"
-	            name="eventName"
-	            placeholder="Name your outing!"
-	            value={this.state.eventName}
-	            onChange={this.handleTitleChange.bind(this)}
-	          />
-	        </label>
-        </div>
-        
-        <div className="form-date-time-cutoff" className="inputs">
-          <label>
-            New Cutoff Time:
-            <DateTimePicker 
-              isValidDate={this.handleValidCutOffDate.bind(this)} 
-              value={this.state.voteCutOffDateTime} 
-              closeOnSelect={true}
-              onChange={this.handleCutOffDateChange.bind(this)}
-            />
-          </label>
-        </div>
-
-        <div className="editFormGuests">
-        	<h3 className="editFormGuestsText">
-        		Guests:
-        	</h3>
-          <table> 
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              {/* <th>Remove</th> */}
-            </tr>
-              {this.state.inviteesDetails.map((userDetails, idx) => <EventGuest details={userDetails} key={idx}/>)}
-            </tbody>
-          </table>
-        </div>
-        <div className="editFormAddGuests">
-            {this.state.newGuestsEmails.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}
-        </div>
-        <button onClick={this.addAnotherGuestForm.bind(this)} >Add Another </button>
-
-
-        <div className="editFormSaveChanges">
-        	<button className="editFormSaveChangesButton" onClick={this.submitForm.bind(this)}>Save Changes</button>
-        </div>
-
-        <div className="editFormDeleteEvent">
-        	<button className="editFormDeleteEventButton" onClick={this.deleteEvent.bind(this)}>Delete Event</button>
-        </div>
-        
+      <div className="editEventForm">
+        <div className="cardContainer is-centered">
+          <div className="card">
+            <header className="card-header">
+              <p className="card-header-title is-centered">
+                {this.state.eventName} on {dateTime.format('MMM [the] Do [of] YYYY')} at {dateTime.format('h:mm a')}
+              </p>
+            </header>
+            <div className="card-content">
+              <p className="edit-page-message">If you would like to change the event time please create a <Link to="/inputForm">new event</Link>.</p>
+              <label className="label">New Name:</label>
+                <input 
+                  className="input"
+                  type="text"
+                  name="eventName"
+                  placeholder="Name your outing!"
+                  value={this.state.eventName}
+                  onChange={this.handleTitleChange.bind(this)}
+                />
+               <label className="label">New Cutoff Time:</label>
+                  <DateTimePicker 
+                    inputProps={{className: 'input'}}
+                    isValidDate={this.handleValidCutOffDate.bind(this)} 
+                    value={this.state.voteCutOffDateTime} 
+                    closeOnSelect={true}
+                    onChange={this.handleCutOffDateChange.bind(this)}
+                  />
+                <div className="editFormGuests">
+                <label className="label">Who's coming along:</label>
+                  <table className="table"> 
+                    <tbody>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                      </tr>
+                        {this.state.inviteesDetails.map((userDetails, idx) => <EventGuest details={userDetails} key={idx}/>)}
+                    </tbody>
+                  </table>
+              </div>
+              <div className="addGuests">
+                <label className="label">Invite more friends:</label>
+                {this.state.newGuestsEmails.map((guest, idx) => <AddGuestForm key={idx} idx={idx} addNewGuestToState={this.addNewGuestToState.bind(this)} /> )}
+                <button className="button is-link is-small" onClick={this.addAnotherGuestForm.bind(this)} >Add Another </button>
+              </div>
+            </div>
+            <footer className="class-card-footer">
+              <a className="editFormSaveChangesButton card-footer-item" onClick={this.submitForm.bind(this)}>Save Changes</a>
+              <a className="editFormDeleteEventButton card-footer-item" onClick={this.deleteEvent.bind(this)}>Delete Event</a>
+            </footer>
+          </div>
       	</div>
      </div>
     )

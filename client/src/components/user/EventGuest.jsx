@@ -6,7 +6,6 @@ const EventGuest = ( {details}) => {
     <tr>
       <td>{details.name}</td>
       <td>{details.email}</td>
-      {/* <td><input type="checkbox" /></td> */}
     </tr>
   )
 }
