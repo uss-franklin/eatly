@@ -5,6 +5,10 @@
   background-color: #FFFFF0;
 }
 
+.homePage {
+  background: url('.././images/woodtableForkKnife.jpeg');
+}
+
 .planMealButton {
   margin-left: auto;
   margin-right: auto;
@@ -26,19 +30,7 @@
   padding: 0;
 }
 
-.aboutMeSectionBackgroundImg1 {
-  background: url('.././images/saladAndShrimpTable.jpeg') no-repeat center center;
-  background-size: contain;
-}
-
-.aboutMeSectionBackgroundImg2 {
-  background: url('.././images/mediterraneanFoodTable.jpeg') no-repeat center center;
-  background-size: fill;
-}
-
 .aboutMeSectionBackgroundImg3 {
-  background: url('.././images/saladFriends.jpeg') no-repeat center center;
-  background-size: fill;
 }
 
 .generalInfoAppTextContainer {
