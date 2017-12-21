@@ -5,14 +5,10 @@
   font-size: 150%;
   color: white;
 }
-
-.login {
-  float: right;
-  margin-top: auto;
-  margin-bottom: auto;
-  text-align: center;
-  padding-top: 3px;
+.account-login button {
+  margin-left: 10px;
 }
+
 
 .navHeader {
   color: white;
