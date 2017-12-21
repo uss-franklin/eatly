@@ -1,35 +1,12 @@
-.editEventTitleDiv {
-	margin-left: auto;
-	margin-right: auto;
-	width: 60%;
+.cardContainer {
+	width:50%;
+	margin:0 auto 0 auto;
+}
+.editFormGuests p{
+	margin-top:10px;
+}
+.addGuests button {
+	margin-top:10px;
 }
 
-.editEventFormCurrentTitle {
-	margin-right: 1%;
-}
 
-.editEventFormCurrentDateTime {
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-.editFormAddGuestsButton {
-	padding: 8px;
-}
-
-.editFormRemoveGuestsButton {
-	padding: 8px;
-}
-
-.editFormSaveChangesButton {
-	margin-top: 5%;
-	padding: 8px;
-}
-
-.editFormDeleteEventButton {
-	margin-top: 2%;
-	background-color: #ad0011;
-	color: #FFFFFF;
-	padding: 8px;
-}
