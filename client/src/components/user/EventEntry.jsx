@@ -3,13 +3,21 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 const EventEntry = ({event, canEdit, uid, buttonAction}) => {
+  let  buttons = [
+      <div>
+        <a href key={'edit'} onClick={()=> buttonAction('edit', event.eid, uid)}>Edit Event</a>
+        <span> | </span>
+        <a href key={'swipe'} onClick={()=> buttonAction('swipe', event.eid, uid)}>     Vote</a>
+        <span> | </span>
+      </div>]
   
-  let buttons = [
+  /*let buttons = [
     <button key={'edit'} className="editOrVoteEventButton" onClick={()=> buttonAction('edit', event.eid, uid)}>edit</button>,
     <button key={'swipe'} className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>
-  ]
+  ]*/
   if (!canEdit) {
-    buttons = [<button className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>]
+    buttons = [<a href onClick={()=> buttonAction('swipe', event.eid, uid)}>     Vote</a>, <span> | </span>]
+    //buttons = [<button className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>]
   }
 
   let isExpired = event.voteCutOffDateTimeMoment.isBefore(moment())
@@ -17,7 +25,8 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
   if (isExpired) buttons = [null]
 
   if (event.groupConsensusRestaurant) {
-    buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
+    buttons.push(<a href onClick={()=> buttonAction('swipe', event.eid, uid)}>      Vote</a>, <span> | </span>)
+    //buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
   }
   if (event.invitedUserDetails) {
     let usersToinvite = event.invitedUserDetails.reduce((acc, guest) => {
@@ -26,7 +35,8 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
       return acc
     },{guestEmails: [], guestNames: []})
 
-    buttons.push(<Link key={event.eid} to={{pathname: './inputForm', state: {usersToInvite: usersToinvite}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>)
+    buttons.push(<Link key={event.eid} to={{pathname: './inputForm', state: {usersToInvite: usersToinvite}}}><a>Invite Group to New Meal</a></Link> )
+    //buttons.push(<Link key={event.eid} to={{pathname: './inputForm', state: {usersToInvite: usersToinvite}}}><button className="inviteGroup" >Invite Group To New Meal</button></Link>)
   }
   
   return (

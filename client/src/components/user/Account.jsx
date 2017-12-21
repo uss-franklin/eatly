@@ -37,12 +37,16 @@ export default class Account extends React.Component {
     event.sortBy = event.voteCutOffDateTimeMoment.unix()
   }
   processData(userData, eventsData){
+    console.log('IS THIS FUNCTION WORKING?')
     //Update and sort all event details
     eventsData.hostEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
     eventsData.invitedEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.invitedEvents.sort((a, b) => b.sortBy - a.sortBy)
-    this.setState(Object.assign(userData, eventsData, {dataFetched : true}))
+    this.setState(Object.assign(userData, eventsData, {dataFetched : true}), ()=> {
+        console.log(this.state);
+    })
+
   }
   componentDidMount() {
     Axios.all([
@@ -50,8 +54,11 @@ export default class Account extends React.Component {
       this.getUserEvents()
     ])
     .then(Axios.spread((userDetails, userEvents) => {
+      //console.log('USER DETAILS: ', userDetails.data);
       this.processData(userDetails.data, userEvents.data)
-    }))
+    })).catch(() => {
+        console.log('This page is not loading because there is something wrong with the get requests')
+    })
   }
   handleVoteOrEditButton(page, eventId, userId){
     let addUser = page === 'swipe' ? `&userId=${userId}` : ' '
@@ -87,48 +94,64 @@ export default class Account extends React.Component {
     if (this.state.dataFetched && !this.state.invitedEvents.length) invitedEventsEntriesDOM = []
     if (this.state.dataFetched && !this.state.hostEvents.length) hostEventsEntriesDOM = []
     return (
-    <div className="Parent">
-      <div className="usernameHeader">
-        <h1>{welcome}</h1>
-        <button className="mealButton">
-            <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
-        </button> 
-      </div>
-
-      <div className="usersEvents">
-        <h2 className="usersEventsTitle">
-          Your Events
-        </h2>
-          <table> 
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Cuisine</th>
-              <th>Time left</th>
-              <th>Actions</th>
-            </tr>
-              {hostEventsEntriesDOM}
-            </tbody>
-          </table>
-      </div>
-      <div className="usersInvitedEvents">
-        <h2 className="usersInvitedEventsTitle">
-          Events You're Attending
-        </h2>
-        <table> 
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Cuisine</th>
-              <th>Time left</th>
-              <th>Actions</th>
-            </tr>
-            {invitedEventsEntriesDOM} 
-          </tbody>
-        </table>
-      </div>
-
-    </div>
+        <div>
+          <h1 class="title">{welcome}</h1>
+          <div class="centered">
+            <a class="button mealButton is-link" onClick={() => {window.location = `/InputForm`}} >
+                Plan a Meal
+            </a>
+          </div>
+          <br/>
+          <div class="card cardFormat">
+            <header class="card-header">
+              <p class="card-header-title">
+                  Your Events
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <table class="table">
+                  <thead>
+                  <tr class="is-selected">
+                    <th>Name</th>
+                    <th>Cuisine</th>
+                    <th>Time Left</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {hostEventsEntriesDOM}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card cardFormat">
+            <header class="card-header">
+              <p class="card-header-title">
+                  Events You're Attending
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                  <table class="table">
+                      <thead>
+                      <tr class="is-selected">
+                          <th>Name</th>
+                          <th>Cuisine</th>
+                          <th>Time Left</th>
+                          <th>Actions</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {invitedEventsEntriesDOM}
+                      </tbody>
+                  </table>
+                  {invitedEventsEntriesDOM.length === 0 ? <span> No events that you're invited to...Feeling lonely?</span> : <span></span>}
+              </div>
+            </div>
+          </div>
+        </div>
     )
   }
 }
