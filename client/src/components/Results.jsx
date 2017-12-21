@@ -105,24 +105,25 @@ export default class Results extends React.Component {
           <h3 className="resultsDateAndTime">
             {this.state.data.data.eventDateTime.slice(0,15)} @ {this.convertTime24to12(this.state.data.data.eventDateTime.slice(16,24))}
           </h3>
-          <div>
+          <div className="ResultsMapDiv">
               <MapWithAMarker
                   lat={this.state.results.coordinates.latitude}
                   lng={this.state.results.coordinates.longitude}
-                  defaultZoom={18}
-                  containerElement={<div style={{height: `400px`}}/>}
-                  mapElement={<div style={{height: `100%`}}/>}
+                  defaultZoom={17}
+                  containerElement={<div style={{height: `350px`}}/>}
+                  mapElement={<div style={{height: `75%`}}/>}
               />
           </div>
-          <p className="viewInviteeVotesText">
-          {console.log('this.props guest test', this.props)}
-          You'll be dining with: 
-          {this.props.eventData.guests.map((x)=>{
-            return <li>{x.data.name} </li>
-          })} 
-          </p>
+          <div className="inviteeVotesText">
+            <p className="viewInviteeVotesText">
+              {console.log('this.props guest test', this.props)}
+              You'll be dining with: 
+              {this.props.eventData.guests.map((guest)=>{
+                return <li>{guest.data.name} </li>
+              })} 
+            </p>
+          </div>
           <p className="startNewMealTextResultsComponent">
-            <br />
             <br />
             Get started planning another evening of fun!
           </p>

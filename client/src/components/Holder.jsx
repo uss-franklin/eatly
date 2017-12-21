@@ -11,7 +11,7 @@ export default class Holder extends React.Component {
       <div className="holderParent">
         <div className="imageHolder">
         <div className="holderText">
-          You're all set! Sit back, relax and we'll reach out when all the votes are in
+          <b>You're all set! Sit back, relax and we'll reach out when all the votes are in</b>
         </div>
         </div>
         <div className="HolderButtonDiv">
