@@ -29,8 +29,8 @@ export default class NavBar extends React.Component {
         <div className="is-pulled-left">
           <Link to="/" style={{ textDecoration: 'none'}} className="navHeader"> eatly </Link>
         </div>
-          <div className="is-pulled-right">
-            {loggedIn ? [logoutButton, accountButton] : loginButton}
+          <div className="account-login is-pulled-right">
+            {loggedIn ? [accountButton, logoutButton] : loginButton}
           </div>
         </div>
       </div>

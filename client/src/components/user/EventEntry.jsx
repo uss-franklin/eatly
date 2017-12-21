@@ -14,7 +14,7 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
 
   let isExpired = event.voteCutOffDateTimeMoment.isBefore(moment())
   let timeLeft = event.voteCutOffDateTimeMoment.fromNow()
-  if (isExpired) buttons = [null]
+  if (isExpired || event.groupConsensusRestaurant) buttons = [null]
 
   if (event.groupConsensusRestaurant) {
     buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)

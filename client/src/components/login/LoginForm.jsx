@@ -23,7 +23,7 @@ export default class LoginForm extends React.Component {
 		this.firebase = this.props.firebase
 	}
 	handleInputChange({ target }) {
-		this.setState({[target.name]: target.value}, () => console.log(this.state))
+		this.setState({[target.name]: target.value})
 	}
 	//intitiates oAuth
 	signInWithProvider(providerName) {
@@ -41,7 +41,6 @@ export default class LoginForm extends React.Component {
 			// The signed-in user info.
 			let user = result.user;
 			let name = user.displayName || '-'
-			console.log('here: ', user)
 		}).catch(function(error) {
 			console.log(error.email, error.code, error.message)
 		});
@@ -75,29 +74,48 @@ export default class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<div className="Login-SignIn">
-				<div className="SignUpForm">
-					<input name="name" type="text" value={this.state.name} placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
-					<input name="txtEmail" type="text" value={this.state.txtEmail} placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
-					<input name="txtPassword" type="text" value={this.state.txtPassword} placeholder="password" onChange={this.handleInputChange.bind(this)}></input>		
-					<div className="buttons">
-							<button id="btnSignUp" className="signupButton" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
+			<div className="loginSignIn columns is-mobile">
+				<div className="signUpForm column field">
+					<h1 class="title is-4">Sign Up!</h1>
+					<label className="label">Name:</label>
+					<div className="control">
+						<input className="input" name="name" type="text" value={this.state.name} placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
+					</div>
+					<label className="label">Email Address:</label>
+					<div className="control">
+						<input className="input" name="txtEmail" type="text" value={this.state.txtEmail} placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+					</div>
+					<label className="label">Password:</label>
+					<div className="control">
+						<input className="input" name="txtPassword" type="password" value={this.state.txtPassword} placeholder="password" onChange={this.handleInputChange.bind(this)}></input>		
+					</div>
+					<div className="field">
+						<p className="control">
+							<button id="btnSignUp" className="signUpLoginButton button is-link" onClick={this.handleSignUp.bind(this)}>Sign Up</button>
+						</p>
 					</div>
 					<div className="signUpWithOAuth">
-						<button className="signUpWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign Up With Google</button>
-						<button className="signUpWithFacebook" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign Up With Facebook</button>
+						<button className="signUpWithGoogle button" onClick={this.signInWithProvider.bind(this, 'google')}>Sign Up With Google</button>
+						<button className="signUpWithFacebook button" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign Up With Facebook</button>
 					</div>
 			</div>
-			<div className="LoginForm">
-					<input name="loginEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
-					<input name="loginPassword" type="text" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
-					<div className="buttons">
-							<button id="btnLogin" className="loginButton" onClick={this.handleLogIn.bind(this)}>Log In</button>
-					</div>
-					<div className="signInWithOAuth">
-						<button className="signInWithGoogle" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
-						<button className="signInWithFaceBook" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
-					</div>
+			<div className="loginForm column field">
+				<h1 class="title is-4">Log In</h1>
+				<label className="label">Email Address:</label>
+				<div className="control">
+					<input className="input" name="loginEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
+				</div>
+				<label className="label">Password:</label>
+				<div className="control">
+					<input className="input" name="loginPassword" type="password" placeholder="password" onChange={this.handleInputChange.bind(this)}></input>
+				</div>
+				<div className="buttons">
+						<button id="btnLogin" className="signUpLoginButton button is-link" onClick={this.handleLogIn.bind(this)}>Log In</button>
+				</div>
+				<div className="signInWithOAuth">
+					<button className="signInWithGoogle button" onClick={this.signInWithProvider.bind(this, 'google')}>Sign On With Google</button>
+					<button className="signInWithFaceBook button" onClick={this.signInWithProvider.bind(this, 'facebook')}>Sign On With Facebook</button>
+				</div>
 			</div>
 		</div>
 		)

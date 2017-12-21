@@ -267,7 +267,7 @@ export default class InputForm extends React.Component {
           
         </div>
         <div className="form-create-event field  is-grouped is-grouped-centered">
-          <button className="submit-event button is-primary" onClick={this.submitForm.bind(this)}>
+          <button className="submit-event button is-link" onClick={this.submitForm.bind(this)}>
             Find Restaurants
           </button>
         </div>
