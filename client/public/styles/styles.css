@@ -6,13 +6,13 @@
 }
 
 .homePage {
-  background: url('.././images/woodtableForkKnife.jpeg');
+  background: url('.././images/woodtableForkKnife.jpeg') center top no-repeat fixed;
+  background-size: cover;
 }
 
 .planMealButton {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 8%;
   text-align: center;
 }
 
@@ -25,18 +25,28 @@
   font-size: 2em;
 }
 
+.mealButton2 {
+  background-color: #660000;
+  color: #FFFF11;
+  width: 180px;
+  height: 70px;
+  border-radius: 4px;
+  border: 2px solid #00264d;
+  font-size: 2em;
+  margin-bottom: 5%;
+}
+
 .aboutMeSectionContainer {
   margin: 0;
+  margin-top: 39%;
   padding: 0;
 }
 
-.aboutMeSectionBackgroundImg3 {
-}
 
 .generalInfoAppTextContainer {
   margin-top: 8%;
   background-color: #000d1a;
-  opacity: .9;
+  opacity: .8;
   color: #e6f2ff;
   border-bottom: 26px solid #cce5ff;
   border-top: 12px solid #1a88ff;
@@ -64,7 +74,7 @@
   border-top: 15px solid #ff9999;
   border-bottom: 8px solid #e60000;
   color: #ffe6e6;
-  opacity: .9;
+  opacity: .8;
 }
 
 .basicFunctionalityGuidelineTextHeader {
@@ -95,7 +105,7 @@ html, body {
   margin-top: 20%;
   background-color: #b3d9ff;
   border-top: 8px solid #004d99;
-  opacity: .9;
+  opacity: .8;
 }
 
 .magicOfEatlyTextHeader {
