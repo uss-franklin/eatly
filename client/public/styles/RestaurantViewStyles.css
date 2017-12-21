@@ -4,7 +4,7 @@
 }
 .frame-square {
     background: #fff;
-    border: 2px solid #000;
+    border: 2px solid #b3b3cc;
     display: inline-block;
     vertical-align: middle;
     padding: 10px;
@@ -56,4 +56,22 @@
 #rightcolumn {
     display:inline;
     position:relative
+}
+
+.articleFormat {
+    width: 50%;
+    margin: 0 auto 0 auto;
+}
+
+.restaurantColumn {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.declineParent{
+    background-image: url('./images/AdobeStock_86798789.jpeg');
+    background-image: cover;
+    background-repeat: no-repeat;
+
 }

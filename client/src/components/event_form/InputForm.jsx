@@ -97,12 +97,12 @@ export default class InputForm extends React.Component {
     },)
   }
   submitForm(){
-    let errors = Validator(this.state)
+    /*let errors = Validator(this.state)
     if (errors.length) {
       console.log(errors)
       this.setState({formErrors: errors})
       return
-    }
+    }*/
     this.setState({submitClick: true})
     let sendObj = Object.assign({}, this.state);
     console.log('sendobj', sendObj)
