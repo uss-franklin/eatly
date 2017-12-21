@@ -1,32 +1,70 @@
-h1 {
-  text-align: center;
-}
+
 
 .parent {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-}
-
-.picture {
-  margin: auto;
-  background-image: url('../images/pasta.jpg');
-  height: 400px;
-  width: 600px;
-  border-radius: 8px;
-}
-
-.name{
-  float: left;
-  font-size: large;
+  background-color: #FFFFF0;
 }
 
 .planMealButton {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
   text-align: center;
 }
 
-.title {
-  margin: 50px;
+.aboutMeSectionContainer {
+  margin: 0;
+  padding: 0;
 }
+
+.generalInfoAppTextContainer {
+  margin-top: 20%;
+  background-color: #000d1a;
+  opacity: .8;
+  color: #e6f2ff;
+  border-bottom: 26px solid #cce5ff;
+}
+
+.generalInfoAppTextHeader {
+  font-size: 3em;
+  font-weight: bold;
+  margin-left: 1em;
+  padding-top: 5%;
+}
+
+.generalInfoAppText {
+  width: 50%;
+  margin-top: 2%;
+  padding-bottom: 5%;
+  font-size: 1.5em;
+  margin-left: 43%;
+  text-align: right;
+}
+
+.basicFunctionalityGuidelineTextContainer {
+  margin-top: 20%;
+  background-color: #660000;
+  border-top: 15px solid #ff9999;
+  color: #ffe6e6;
+  opacity: .9;
+}
+
+.basicFunctionalityGuidelineTextHeader {
+  font-size: 2.3em;
+  margin-left: 7em;
+  text-align: center;
+  padding-top: 5%;
+}
+
+.basicFunctionalityGuidelineText {
+  font-size: 1.7em;
+  width: 55%;
+  margin-left: 2%;
+  margin-top: 40px;
+  text-align: left;
+  padding-bottom: 5%;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -34,3 +72,40 @@ html, body {
   min-height: 100vh;
 }
 
+.magicOfEatlyTextContainer {
+  margin-top: 20%;
+  background-color: #b3d9ff;
+  border-top: 8px solid #660000;
+  opacity: .8;
+}
+
+.magicOfEatlyTextHeader {
+  font-size: 2.2em;
+  text-align: center;
+  font-weight: bold;
+  margin-left: 10%;
+  color: #00264d;
+  padding-top: 5%;
+>>>>>>> added a bunch of styling to front page
+}
+
+.magicOfEatlyTextHeader2 {
+  color: #660000; 
+  font-size: 2em;
+  margin-right: 28%;
+}
+
+.magicOfEatlyText {
+  width: 69%;
+  color: #1a0000;
+  font-size: 1.3em;
+  margin-left: 18%;
+  margin-top: 4%;
+  padding-bottom: 5%;
+}
+
+.planMealButton2 {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
