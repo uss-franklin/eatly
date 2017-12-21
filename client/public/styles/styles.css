@@ -8,8 +8,17 @@
 .planMealButton {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2%;
+  margin-top: 8%;
   text-align: center;
+}
+
+.mealButton {
+  background-color: #e6f3ff;
+  width: 180px;
+  height: 70px;
+  border-radius: 4px;
+  border: 2px solid #00264d;
+  font-size: 2em;
 }
 
 .aboutMeSectionContainer {
@@ -17,19 +26,35 @@
   padding: 0;
 }
 
+.aboutMeSectionBackgroundImg1 {
+  background: url('.././images/saladAndShrimpTable.jpeg') no-repeat center center;
+  background-size: contain;
+}
+
+.aboutMeSectionBackgroundImg2 {
+  background: url('.././images/mediterraneanFoodTable.jpeg') no-repeat center center;
+  background-size: fill;
+}
+
+.aboutMeSectionBackgroundImg3 {
+  background: url('.././images/saladFriends.jpeg') no-repeat center center;
+  background-size: fill;
+}
+
 .generalInfoAppTextContainer {
-  margin-top: 20%;
+  margin-top: 8%;
   background-color: #000d1a;
-  opacity: .8;
+  opacity: .9;
   color: #e6f2ff;
   border-bottom: 26px solid #cce5ff;
+  border-top: 12px solid #1a88ff;
 }
 
 .generalInfoAppTextHeader {
   font-size: 3em;
   font-weight: bold;
   margin-left: 1em;
-  padding-top: 5%;
+  padding-top: 3%;
 }
 
 .generalInfoAppText {
@@ -45,13 +70,15 @@
   margin-top: 20%;
   background-color: #660000;
   border-top: 15px solid #ff9999;
+  border-bottom: 8px solid #e60000;
   color: #ffe6e6;
   opacity: .9;
 }
 
 .basicFunctionalityGuidelineTextHeader {
   font-size: 2.3em;
-  margin-left: 7em;
+  margin-left: 12em;
+  width: 60%;
   text-align: center;
   padding-top: 5%;
 }
@@ -60,7 +87,7 @@
   font-size: 1.7em;
   width: 55%;
   margin-left: 2%;
-  margin-top: 40px;
+  margin-top: 5%;
   text-align: left;
   padding-bottom: 5%;
 }
@@ -75,8 +102,8 @@ html, body {
 .magicOfEatlyTextContainer {
   margin-top: 20%;
   background-color: #b3d9ff;
-  border-top: 8px solid #660000;
-  opacity: .8;
+  border-top: 8px solid #004d99;
+  opacity: .9;
 }
 
 .magicOfEatlyTextHeader {
@@ -92,6 +119,7 @@ html, body {
 .magicOfEatlyTextHeader2 {
   color: #660000; 
   font-size: 2em;
+  font-weight: bold;
   margin-right: 28%;
 }
 

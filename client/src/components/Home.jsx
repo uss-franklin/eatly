@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import NavBar from './NavBar'
 
 const Home = () => (
-<div className="homePage">
+<div className="homePage parent">
       
       <div className="planMealButton">
           <button className="mealButton">
@@ -12,6 +12,7 @@ const Home = () => (
       </div>
     
       	<div className="aboutMeSectionContainer"> 	
+		    
 		    <div className="aboutMeSectionBackgroundImg1">
 		      	<div className="generalInfoAppTextContainer">
 		      		<h1 className="generalInfoAppTextHeader">
@@ -19,7 +20,7 @@ const Home = () => (
 		      		</h1>
 
 		      		<p className="generalInfoAppText">
-		      			All the scattered tasks of organizing a group outing has never been so easy. Avoid endless group chats and keeping track of everyone's personal preferences.
+		      			All the scattered tasks of organizing a group outing has never been easy. With Eatly, avoid endless group chats and keeping track of everyone's personal preferences.
 		      			At its core, Eatly is a place to plan group meals. Every guest gets to vote on the restaurants they most want to eat at, keeping the process fair and free of bother.
 		      		</p>
 		      	</div>
@@ -28,7 +29,7 @@ const Home = () => (
       		<div className="aboutMeSectionBackgroundImg2">
 		      	<div className="basicFunctionalityGuidelineTextContainer">
 		      		<h1 className="basicFunctionalityGuidelineTextHeader">
-		      			Invite your friends, choose a cuisine type, general neighborhood, and date. Then the real fun begins...
+		      			Invite your friends, choose a cuisine type, neighborhood, and date. Then the real fun begins...
 		      		</h1>
 
 		      		<p className="basicFunctionalityGuidelineText">
@@ -53,21 +54,22 @@ const Home = () => (
 		      			We cut the strife and any chance for messy drama by handling declined RSVP's, also by giving users the ability to "super like" restaurants they
 		      			 most want to eat at, also the right to "veto" restaurants they'd HATE to eat at. Our amazing math robots take care of all the voting. They even randomly
 		      			 	select restaurants when a tie-breaker is called for! Every meal is customizable and easy to edit. Emails and SMS messages are generated for all your friends
-		      			 	when they're invited to your event, also when a winning restaurant has been selected. You won't be spending time in group chat hell ever again!
+		      			 	when they're invited to your event, also when a winning restaurant has been selected. You won't be spending time in tedious group chats about dinner ever again!
 		      		</p>
 		      		</div>
+
+
+		      		<div className="planMealButton2">
+				        <button className="mealButton2">
+				        	<Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
+				        </button>  
+				     </div>
+
 	      		</div>
 	      	</div>
 
-	      	
+
     	</div>
-
-
-      <div className="planMealButton2">
-          <button className="mealButton2">
-            <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
-          </button>  
-      </div>
 
 </div>
 )
