@@ -76,7 +76,7 @@ export default class LoginForm extends React.Component {
 		return (
 			<div className="loginSignIn columns">
 				<div className="signUpForm column field">
-					<h1 class="title is-4">Sign Up!</h1>
+					<h1 className="title is-4">Sign Up!</h1>
 					<label className="label">Name:</label>
 					<div className="control">
 						<input className="input" name="name" type="text" value={this.state.name} placeholder="your name" onChange={this.handleInputChange.bind(this)}></input>
@@ -100,7 +100,7 @@ export default class LoginForm extends React.Component {
 					</div>
 			</div>
 			<div className="loginForm column field">
-				<h1 class="title is-4">Log In</h1>
+				<h1 className="title is-4">Log In</h1>
 				<label className="label">Email Address:</label>
 				<div className="control">
 					<input className="input" name="loginEmail" type="text" placeholder="email" onChange={this.handleInputChange.bind(this)}></input>
