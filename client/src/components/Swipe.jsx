@@ -5,6 +5,7 @@ import QueryString from 'query-string'
 import Results from './Results'
 import MapWithAMarker from './location_form/MapWithAMarker.jsx'
 import Loading from './Loading'
+import Holder from './Holder'
 
 export default class Swipe extends React.Component {
   constructor(props) {
@@ -239,11 +240,7 @@ export default class Swipe extends React.Component {
       //if no consensus, user is shown the holder page
       else if (this.state.current > this.state.totalRestaurants) {
         console.log('else if four')
-          view = 
-            <div> 
-              <div className="endtext"> Thanks for voting, this page will display results for your event when everyone has voted </div>
-              <img className="endphoto" src="./images/done.png" />
-            </div> 
+          view = <Holder />
       } 
       //the swipe page 
       else {
