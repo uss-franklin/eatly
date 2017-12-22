@@ -106,7 +106,7 @@ export default class EditEvent extends React.Component {
     }
     let payload = {eid: this.state.eid, fieldsToUpdate: fieldsToUpdate}
     Axios.put('/editEvent', payload)
-      .then((resp) => alert(resp.data))
+      .then((resp) => window.location.reload())
       .catch(err => console.log('Edit Event Form Submission Error: ', err));  
   }
   ////END HTTP PUT AND PROCESS DATA
