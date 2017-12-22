@@ -6,4 +6,8 @@
 
 .signUpLoginButton {
   margin-top:10px;
+  background-color: #0066cc !important;
+}
+.signUpLoginButton:hover {
+  background-color:#0080FF !important;
 }

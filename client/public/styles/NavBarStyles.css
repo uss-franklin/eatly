@@ -9,8 +9,11 @@
 }
 .account-login button {
   margin-left: 10px;
+  background-color: #0066cc !important;
 }
-
+.account-login button:hover {
+  background-color:#0080FF !important;
+}
 
 .navHeader {
   width: 4em;

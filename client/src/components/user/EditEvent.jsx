@@ -128,8 +128,8 @@ export default class EditEvent extends React.Component {
       <div className="editEventForm">
         <div className="cardContainer is-centered">
           <div className="card">
-            <header className="card-header">
-              <p className="card-header-title is-centered">
+            <header className="card-header editEventHeader">
+              <p className="card-header-title is-centered editEventHeaderText">
                 {this.state.eventName} on {dateTime.format('MMM [the] Do [of] YYYY')} at {dateTime.format('h:mm a')}
               </p>
             </header>
