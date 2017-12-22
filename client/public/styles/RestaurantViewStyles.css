@@ -1,0 +1,95 @@
+.scaledRestaurantPhoto {
+    max-width: 20%;
+    max-height: 5%
+}
+.frame-square {
+    background: #fff;
+    border: 2px solid #b3b3cc;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+    width: 128px;
+    height: 128px;
+    margin-right: .5em;
+    margin-bottom: .3em;
+}
+
+.crop {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    img {
+        display: block;
+        min-width: 100%;
+        min-height: 100%;
+        margin: auto;
+        position: absolute;
+        top: -100%;
+        right: -100%;
+        bottom: -100%;
+        left: -100%;
+    }
+}
+
+.thumb {
+    width:96px;
+    height:96px;
+    overflow:hidden;
+    object-fit:cover;
+    background-size:cover;
+}
+
+.centered {
+    text-align: center;
+}
+
+#restaurantcontainer {
+    display: block;
+}
+
+#leftcolumn {
+    display:inline;
+    width:20%;
+}
+
+#rightcolumn {
+    display:inline;
+    position:relative
+}
+
+.articleFormat {
+    width: 50%;
+    margin: 0 auto 0 auto;
+}
+
+.restaurantColumn {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.declineParent{
+    /*border: solid red;
+    background-color: yellow;*/
+    background-image: url('../images/decline.jpeg');
+    height: 100vh;
+    width: 100vw;
+    background-image: cover;
+    background-repeat: no-repeat;
+    color: #C3CAD6;
+
+}
+
+.declineText{
+    text-align: center;
+    padding:16.5vh 8.25vh
+}
+.redbutton {
+  background-color: #be0000 !important;
+  color: white;
+}
+
+.declinePage {
+  text-align: center;
+}

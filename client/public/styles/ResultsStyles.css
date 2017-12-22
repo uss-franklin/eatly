@@ -1,0 +1,110 @@
+.resultsComponent {
+	text-align: center;
+}
+
+.resultsTitle {
+	font-weight: bold;
+}
+
+.congratsText {
+	animation-name: swelling;
+	animation-iteration-count: 2;
+	animation-duration: 1s;
+	animation-timing-function: ease-in-out;
+}
+
+.results-Header {
+  text-align: center;
+  margin: auto;
+  background-color: #4F4F4F;
+  color: white;
+  font-size: 21px;
+}
+@keyframes swelling {
+	0% {
+		transform: scale(1.0);
+		color: red;
+	}
+	50% {
+		transform: scale(2.0);
+		color: red;
+	}
+	100% {
+		transform: scale(1.0);
+		color: red;
+	}
+}
+
+@-webkit-keyframes swelling {
+	0% {
+		transform: scale(1.0);
+		color: red;
+	}
+	50% {
+		transform: scale(2.0);
+		color: red;
+	}
+	100% {
+		transform: scale(1.0);
+		color: red;
+	}
+}
+
+.resultsHeader {
+	font-size: 20px;
+}
+
+.nameAndDesc {
+  font-size: 20px;
+  border-bottom: 1px solid #4F4F4F;
+  width: 60%;
+  margin: auto;
+}
+
+.resultsRestaurantTitle {
+	color: red;
+	font-size: 28px;
+}
+
+.resultsDateAndTime {
+	font-size: 24px;
+}
+
+.viewInviteeVotesText {
+	font-size: 18px;
+}
+
+.viewInviteesVotesButton {
+	width: 100px;
+	background-color: red;
+	color: white;
+	font-size: 22px;
+	border: 1px solid black;
+}
+
+.startNewMealTextResultsComponent {
+  font-size: 20px;
+}
+
+.startNewMealButtonResultsComponent {
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  width: 12em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+}
+
+.startNewMealButtonResultsComponent:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #0080FF;
+}
+
+
+.ResultsMapDiv {
+  margin: auto;
+  width: 60%;
+  
+}

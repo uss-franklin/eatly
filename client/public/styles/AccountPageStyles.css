@@ -1,0 +1,80 @@
+.usernameHeader {
+	font-size: 1.5em;
+}
+
+.usersEvents {
+	background-color: #dbdbdb;
+	width: 65%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 4px;
+	display:block;
+	height:auto;
+}
+
+.usersEventsTitle {
+	text-align: center;
+	font-size: 2em;
+}
+
+.usersEventItemTitle {
+	font-size: 1em;
+	display: inline-block;
+}
+
+.editEventButton {
+	display: inline-block;
+}
+
+.usersInvitedEvents {
+	background-color: #dbdbdb;
+	width: 65%;
+	margin-top: 2%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 4px;
+}
+
+.usersInvitedEventsTitle {
+	text-align: center;
+	font-size: 2em;
+}
+
+.userEvent ul{
+	list-style: none;
+	clear:both;
+}
+
+.userEvent ul li {
+	width: 130px;
+
+}
+.mealButton {
+	margin: 0 auto 0 auto;
+	display:block;
+}
+
+.cardFormat {
+	width: 75%;
+	margin: 0 auto 0 auto;
+}
+
+.accountHostTable {
+	background-color: #be0000 !important;
+}
+
+.accountHostTableText {
+    color: white;
+}
+
+.accountPlanMealButton {
+    background-color: #0066cc !important;
+    color:white;
+}
+
+.accountPlanMeanButton:hover {
+    background-color: #0080FF !important;
+}
+
+
+

@@ -1,0 +1,269 @@
+.swipeForm {
+  text-align: center;
+  display: grid;
+  grid-auto-columns: 1fr;
+  justify-content: center;
+  background-color: #FFFFF0;
+}
+
+.eventTitle {
+  padding: 10px;
+  width: 25em;
+  margin: 15px auto;
+  border-radius: 8px;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+  font-size: 20px;
+  background-color: #FFFFF0;
+}
+
+.eventTitleDiv {
+  background-color: #FFFFF0;
+  border-bottom: 1px solid black;
+  
+}
+
+.swipeDiv {
+  /* border: solid red; */
+}
+
+.swipePhotoDiv {
+  /* border: solid blue;  */
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.swipePhoto {
+  /* border: solid green; */
+  width: 30em;
+  height: 27em;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.yesAndNoButtons {
+  display: flex;
+  justify-content: center;
+  /* border: solid black; */
+  text-align: center;
+  padding: 10px;
+  
+}
+
+.voteCounter {
+  /* border: solid blue; */
+  top: 100px;
+  text-align: center;
+  min-width: 12.5em;
+  line-height: 40px;
+}
+
+.noButtonDiv {
+
+}
+
+.yesButtonDiv {
+  
+}
+
+.vetoButtonDiv {
+  align-self: flex-end;
+}
+
+.superLikeButtonDiv {
+  align-self: flex-end;
+}
+
+/* Button styling */
+
+
+.noButton {
+  float: left;
+  background-color: #be0000;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+  width: 6em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+  transition: .35s;
+}
+
+.noButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #990000;
+}
+
+.noButton:active {
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(5px);
+  
+}
+
+.yesButton {
+  float: right;
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+  width: 6em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+  transition: .35s;
+}
+
+.yesButton:focus, .noButton:focus{
+  outline: none
+}
+.yesButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.25), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #0080FF;
+}
+.yesButton:active {
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(5px);
+  
+}
+
+.superLikeButton {
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  width: 10em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+  transition: .35s;
+}
+
+.superLikeButton:disabled {
+  /* background-color: grey; */
+  opacity: .2;
+  width: 10em;
+  pointer-events: none;
+  
+}
+
+.superLikeButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #0080FF;
+}
+
+.superLikeButton:active {
+  transform: translateY(5px);
+  
+}
+
+.vetoButton {
+  background-color: #be0000;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  width: 10em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+  transition: .35s;
+}
+
+.vetoButton:disabled {
+  opacity: .2;
+  width: 10em;
+  pointer-events: none;
+  
+}
+
+.vetoButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #990000;
+}
+
+.vetoButton:active {
+  transform: translateY(5px);
+  
+}
+
+/* end button styling */
+
+.swipebackground {
+  background-image: url('../images/background.jpg');
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+}
+
+.restuarantInfoDiv {
+  /* border: solid red; */
+  width: 30em;
+  margin: 15px auto;
+  background-color: #FFFFF0;
+  border-radius: 8px;
+}
+
+.restaurantDescription:hover {
+  background-color: #F0F0E2;
+}
+
+.restaurantDescription {
+  font-size: 20px;
+  border-radius: 8px;
+
+}
+
+.MapWithAMarker {
+  width: 40%;
+  margin: 20px auto;
+}
+
+/* Holder page styling  */
+
+.holderParent {
+  height: 100vh;
+}
+
+.imageHolder {
+  display: flex;
+  margin-top: 5em;
+  margin-bottom: 5em;
+  background-image: url('../images/cuttingboardphoto.jpeg');
+  background-image: cover;
+  background-repeat: no-repeat;
+  height: 60vh; 
+  
+}
+
+.holderText {
+  color: #FFFFF0;
+  margin:auto;
+  text-align: center;
+  /* background-color: #FFFFF0; */
+  font-size: 1.5em;
+  /* border-radius: 8px; */
+  padding: 15px;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+}
+
+.HolderEventButton {
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  width: 12em;
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 5px 0 rgba(0,0,0,0.19);
+}
+
+.HolderEventButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  cursor: pointer;
+  background-color: #0080FF;
+}
+
+.HolderButtonDiv {
+  margin: auto;
+  text-align: center;
+}
