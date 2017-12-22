@@ -63,7 +63,7 @@ export default class DeclineEvent extends React.Component {
 
         if(this.state.eventDetails && !this.state.declined){
             console.log('CHECKING STATE: ', this.state.eventDetails.eventName,' ', this.state.eventDetails.eventDescription);
-            view = <div>
+            view = <div class="declinePage">
                 <h1 class="title is-3"> You're busy... We get it! </h1>
                 <h1 class="subtitle is-5"> But are you sure you can't attend this event?</h1>
                 <article class="message articleFormat">
@@ -73,7 +73,7 @@ export default class DeclineEvent extends React.Component {
                     <div class="message-body">
                         <strong>Event Name: </strong> {this.state.eventDetails.eventName} <br />
                         <strong>Event Description: </strong> {this.state.eventDetails.eventDescription} <br />
-                        <strong>Event Date: </strong> {this.state.eventDetails.eventDateTime ? DateFormat(new Date(this.state.eventDetails.eventDateTime), "dddd, mmmm dS, yyyy, h:MM:ss TT") : this.state.eventDetails.eventDateTime}
+                        <strong>Event Date: </strong> {this.state.eventDetails.eventDateTime ? DateFormat(new Date(this.state.eventDetails.eventDateTime), "dddd, mmmm dS, yyyy, h:MM TT") : this.state.eventDetails.eventDateTime}
                     </div>
                 </article>
                 <h1 class="subtitle is-5"> You could be dining at these restaurants (or others)...</h1>
@@ -82,7 +82,7 @@ export default class DeclineEvent extends React.Component {
                 </div>
                 <h1 class="title is-3"> So what's your final decision?</h1>
                 <div class="centered">
-                    <a class="button" style={buttonStyle} onClick={() => this.declineEvent()}>
+                    <a class="button redbutton" style={buttonStyle} onClick={() => this.declineEvent()}>
                         Can't Make It
                     </a>
                     <a class="button is-link" onClick={() => {window.location = `/Swipe?eventKey=${this.state.eventId}&userId=${this.state.userId}`}}>
