@@ -41,6 +41,7 @@
     "react-places-autocomplete": "^5.4.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-skrollr": "^1.0.3",
     "react-stars": "^2.2.5",
     "readline": "^1.3.0",
     "twilio": "^3.10.1",

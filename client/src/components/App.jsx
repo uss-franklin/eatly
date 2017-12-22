@@ -14,6 +14,8 @@ import DeclineEvent from './DeclineEvent'
 import firebase from './login/FirebaseAuth'
 import authenticateUser from './login/AuthenticateUserHelper'
 import queryString from 'query-string'
+import { ParallaxProvider, Parallax } from 'react-skrollr'
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,6 +31,17 @@ export default class App extends React.Component {
   render() {
     let loggedIn = this.state.firebaseAuthenticatedUser.uid !== null
     return (
+
+      <div>
+ 
+      <ParallaxProvider
+        init={{
+          smoothScrollingDuration: 500,
+          smoothScrolling: true,
+          forceHeight: false
+        }}
+      >
+      </ParallaxProvider>
 
   <Router>
     <div className="parent">
@@ -57,6 +70,8 @@ export default class App extends React.Component {
     
     </div>
   </Router>
+
+  </div>
     )
   }
 }
