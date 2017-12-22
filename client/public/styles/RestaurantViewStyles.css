@@ -85,3 +85,11 @@
     text-align: center;
     padding:16.5vh 8.25vh
 }
+.redbutton {
+  background-color: #be0000 !important;
+  color: white;
+}
+
+.declinePage {
+  text-align: center;
+}
