@@ -16,9 +16,19 @@ export default class MagicOfEatlyText extends React.Component {
 		      		<div className="magicOfEatlyInnerContainer">
 		      		<h1 className="magicOfEatlyTextHeader">
 		      			Never waste time organizing nights out. 
+		      			
+		      			<Parallax data={{
+		      				'data-center-center': 'font-size: 1.4em',
+							'data-bottom-top': 'font-size: 1em'
+		      			}}
+		      			>
+
 		      			<h2 className="magicOfEatlyTextHeader2">
 		      			Less planning, more eating!
 		      			</h2>
+
+		      			</Parallax>
+
 		      		</h1>
 
 		      		<p className="magicOfEatlyText">

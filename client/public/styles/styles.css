@@ -45,7 +45,7 @@ html, body {
 
 .aboutMeSectionContainer {
   margin: 0;
-  margin-top: 39%;
+  margin-top: 36%;
   padding: 0;
 }
 
@@ -60,7 +60,7 @@ html, body {
 }
 
 .generalInfoAppTextHeader {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
   margin-left: 1em;
   padding-top: 3%;
@@ -85,9 +85,9 @@ html, body {
 }
 
 .basicFunctionalityGuidelineTextHeader {
-  font-size: 2.3em;
-  margin-left: 12em;
-  width: 60%;
+  font-size: 1.3em;
+  margin-left: 6em;
+  width: 80%;
   text-align: center;
   padding-top: 5%;
 }
@@ -122,12 +122,11 @@ html, body {
   margin-left: 10%;
   color: #00264d;
   padding-top: 5%;
->>>>>>> added a bunch of styling to front page
 }
 
 .magicOfEatlyTextHeader2 {
   color: #660000; 
-  font-size: 2em;
+  font-size: 1em;
   font-weight: bold;
   margin-right: 28%;
 }

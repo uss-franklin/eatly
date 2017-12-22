@@ -12,9 +12,18 @@ export default class GeneralInfoAppText extends React.Component {
 				}}
 			>
 				<div className="generalInfoAppTextContainer">
+		      		
+				<Parallax data={{
+					'data-center-center': 'font-size: 1.4em',
+					'data-bottom-top': 'font-size: 1em'
+				}}
+				>
+
 		      		<h1 className="generalInfoAppTextHeader">
 		      			Spend less time planning, more time eating!
 		      		</h1>
+
+		      	</Parallax> 
 
 		      		<p className="generalInfoAppText">
 		      			All the scattered tasks of organizing a group outing has never been easy. With Eatly, avoid endless group chats and keeping track of everyone's personal preferences.

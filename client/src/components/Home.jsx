@@ -7,27 +7,28 @@ import BasicFunctionalityGuidelineText from './basicFunctionalityGuidelineTextCo
 import MagicOfEatlyText from './magicOfEatlyTextComponent'
 
 const Home = () => (
-<div className="homePage parent">
-      
-      <div className="planMealButton">
-          <button className="mealButton">
-            <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
-          </button>  
-      </div>
-    
-      	<div className="aboutMeSectionContainer"> 	
-		    
-		    <GeneralInfoAppText />
 
-      
-		    <BasicFunctionalityGuidelineText />
+	<div className="homePage parent">
+	      
+	      <div className="planMealButton">
+	          <button className="mealButton">
+	            <Link to="/inputForm" style={{ textDecoration: 'none'}}>Plan a Meal</Link>
+	          </button>  
+	      </div>
+	    
+	      	<div className="aboutMeSectionContainer"> 	
+			    
+			    <GeneralInfoAppText />
 
-		    <MagicOfEatlyText />
+	      
+			    <BasicFunctionalityGuidelineText />
+
+			    <MagicOfEatlyText />
 
 
-    	</div>
+	    	</div>
 
-</div>
+	</div>
 )
 
 export default Home;
