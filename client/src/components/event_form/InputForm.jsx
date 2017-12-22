@@ -36,7 +36,7 @@ export default class InputForm extends React.Component {
       longitude: null,
       latitude: null,
       submitClick: false,
-      radius: null,
+      radius: '',
       formErrors: []
     }
   }
@@ -97,12 +97,12 @@ export default class InputForm extends React.Component {
     },)
   }
   submitForm(){
-    /*let errors = Validator(this.state)
+    let errors = Validator(this.state)
     if (errors.length) {
       console.log(errors)
       this.setState({formErrors: errors})
       return
-    }*/
+    }
     this.setState({submitClick: true})
     let sendObj = Object.assign({}, this.state);
     console.log('sendobj', sendObj)
@@ -157,7 +157,7 @@ export default class InputForm extends React.Component {
                             </div>
                           </div>
     if (!!this.props.userAccountEmail) emailNameInputs = null
-    let errorMessage = <div class="notification is-warning">
+    let errorMessage = <div className="notification is-warning">
                         {this.state.formErrors.map(message => <FormErrors message={message} />)}
                       </div>
     console.log(this.props.userAccountEmail)
@@ -236,7 +236,7 @@ export default class InputForm extends React.Component {
             />
         </div>
         <div className="form-date-time-cutoff control">
-          <label class="label">Cutoff Time:</label>
+          <label className="label">Cutoff Time:</label>
           <DateTimePicker
             inputProps={{className: 'input'}}
             isValidDate={this.handleValidCutOffDate.bind(this)} 
