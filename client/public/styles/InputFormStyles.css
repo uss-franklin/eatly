@@ -7,4 +7,8 @@ label {
 }
 .submit-event {
   margin: 0 auto 0 auto;
+  background-color: #0066cc !important;
+}
+.submit-event:hover {
+  background-color:#0080FF !important;
 }
