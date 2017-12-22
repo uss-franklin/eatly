@@ -37,7 +37,6 @@ export default class Account extends React.Component {
     event.sortBy = event.voteCutOffDateTimeMoment.unix()
   }
   processData(userData, eventsData){
-    console.log('IS THIS FUNCTION WORKING?')
     //Update and sort all event details
     eventsData.hostEvents.forEach(event => this.makeCutOffTimeMoment(event))
     eventsData.hostEvents.sort((a, b) => b.sortBy - a.sortBy)
@@ -95,24 +94,24 @@ export default class Account extends React.Component {
     if (this.state.dataFetched && !this.state.hostEvents.length) hostEventsEntriesDOM = []
     return (
         <div>
-          <h1 class="title">{welcome}</h1>
-          <div class="centered">
-            <a class="button mealButton is-link" onClick={() => {window.location = `/InputForm`}} >
+          <h1 className="title">{welcome}</h1>
+          <div className="centered">
+            <a className="button mealButton is-link" onClick={() => {window.location = `/InputForm`}} >
                 Plan a Meal
             </a>
           </div>
           <br/>
-          <div class="card cardFormat">
-            <header class="card-header">
-              <p class="card-header-title">
+          <div className="card cardFormat">
+            <header className="card-header">
+              <p className="card-header-title">
                   Your Events
               </p>
             </header>
-            <div class="card-content">
-              <div class="content">
-                <table class="table">
+            <div className="card-content">
+              <div className="content">
+                <table className="table">
                   <thead>
-                  <tr class="is-selected">
+                  <tr className="is-selected">
                     <th>Name</th>
                     <th>Cuisine</th>
                     <th>Time Left</th>
@@ -126,17 +125,17 @@ export default class Account extends React.Component {
               </div>
             </div>
           </div>
-          <div class="card cardFormat">
-            <header class="card-header">
-              <p class="card-header-title">
+          <div className="card cardFormat">
+            <header className="card-header">
+              <p className="card-header-title">
                   Events You're Attending
               </p>
             </header>
-            <div class="card-content">
-              <div class="content">
-                  <table class="table">
+            <div className="card-content">
+              <div className="content">
+                  <table className="table">
                       <thead>
-                      <tr class="is-selected">
+                      <tr className="is-selected">
                           <th>Name</th>
                           <th>Cuisine</th>
                           <th>Time Left</th>

@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 const EventEntry = ({event, canEdit, uid, buttonAction}) => {
   let  buttons = [
       <div>
-        <a href key={'edit'} onClick={()=> buttonAction('edit', event.eid, uid)}>Edit Event</a>
+        <a key={'edit'} onClick={()=> buttonAction('edit', event.eid, uid)}>Edit Event</a>
         <span> | </span>
-        <a href key={'swipe'} onClick={()=> buttonAction('swipe', event.eid, uid)}>     Vote</a>
+        <a  key={'swipe'} onClick={()=> buttonAction('swipe', event.eid, uid)}>Vote</a>
         <span> | </span>
       </div>]
   
@@ -16,7 +16,7 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
     <button key={'swipe'} className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>
   ]*/
   if (!canEdit) {
-    buttons = [<a href onClick={()=> buttonAction('swipe', event.eid, uid)}>     Vote</a>, <span> | </span>]
+    buttons = [<a onClick={()=> buttonAction('swipe', event.eid, uid)}>Vote</a>, <span> | </span>]
     //buttons = [<button className="editOrVoteEventButton" onClick={()=> buttonAction('swipe', event.eid, uid)}>vote</button>]
   }
 
@@ -25,7 +25,7 @@ const EventEntry = ({event, canEdit, uid, buttonAction}) => {
   if (isExpired || event.groupConsensusRestaurant) buttons = [null]
 
   if (event.groupConsensusRestaurant) {
-    buttons.push(<a href onClick={()=> buttonAction('swipe', event.eid, uid)}>      Vote</a>, <span> | </span>)
+    buttons.push(<a onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</a>, <span> | </span>)
     //buttons.push(<button className="results" onClick={()=> buttonAction('swipe', event.eid, uid)}>Results</button>)
   }
   if (event.invitedUserDetails) {
