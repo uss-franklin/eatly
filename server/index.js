@@ -11,6 +11,7 @@ const {getAuthUserCreatedEvents, getSingleEvent} = require('./controllers/getEve
 const {getUserDetails, createAuthUser, getGroupInvitedUsersDetails} = require('./controllers/userController.js');
 const finalResults = require('./controllers/resultsController.js')
 const inviteEmailController = require('./controllers/inviteEmailController.js')
+const compression = require('compression')
 
 const gmailCredentials = {
     clientId: require('./keys/gmailOAuthKeys.js').clientID,
@@ -23,6 +24,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.resolve(__dirname + '/../client/public/')));
+app.use(compression())
 
 //Routes
 app.post('/createEvent', eventController.createEvent);
