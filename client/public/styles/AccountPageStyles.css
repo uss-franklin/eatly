@@ -55,8 +55,25 @@
 }
 
 .cardFormat {
-	width: 50%;
+	width: 75%;
 	margin: 0 auto 0 auto;
+}
+
+.accountHostTable {
+	background-color: #be0000 !important;
+}
+
+.accountHostTableText {
+    color: white;
+}
+
+.accountPlanMealButton {
+    background-color: #0066cc !important;
+    color:white;
+}
+
+.accountPlanMeanButton:hover {
+    background-color: #0080FF !important;
 }
 
 

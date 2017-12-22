@@ -13,6 +13,13 @@
 	animation-timing-function: ease-in-out;
 }
 
+.results-Header {
+  text-align: center;
+  margin: auto;
+  background-color: #4F4F4F;
+  color: white;
+  font-size: 21px;
+}
 @keyframes swelling {
 	0% {
 		transform: scale(1.0);
@@ -44,7 +51,14 @@
 }
 
 .resultsHeader {
-	font-size: 18px;
+	font-size: 20px;
+}
+
+.nameAndDesc {
+  font-size: 20px;
+  border-bottom: 1px solid #4F4F4F;
+  width: 60%;
+  margin: auto;
 }
 
 .resultsRestaurantTitle {
@@ -92,4 +106,5 @@
 .ResultsMapDiv {
   margin: auto;
   width: 60%;
+  
 }

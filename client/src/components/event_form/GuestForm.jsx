@@ -38,7 +38,6 @@ export default class GuestEmailForm extends React.Component {
             onChange={this.handleInputChange.bind(this)}
             onBlur={e => addGuest('guestNames', e.target.value, idx)}
           />
-        
         <label className="label"> Guest Phone Number:</label>
           <input
             className="input"

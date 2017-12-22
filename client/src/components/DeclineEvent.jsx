@@ -55,6 +55,7 @@ export default class DeclineEvent extends React.Component {
         let restaurantViews = [];
         let yelpResult = this.state.eventDetails.yelpSearchResultForEvent;
         let buttonStyle = {marginRight: '2cm'};
+        let headerStyle={color: 'white'/*'#C3CAD6'*/};
         while(yelpResult && yelpResult[restaurantCount] && restaurantCount < 4){
             restaurantViews.push(<RestaurantView name={yelpResult[restaurantCount].name} image={yelpResult[restaurantCount].image_url} address={yelpResult[restaurantCount].location.display_address.join(' ')} rating={yelpResult[restaurantCount].rating} />)
             restaurantCount++;
@@ -62,7 +63,7 @@ export default class DeclineEvent extends React.Component {
 
         if(this.state.eventDetails && !this.state.declined){
             console.log('CHECKING STATE: ', this.state.eventDetails.eventName,' ', this.state.eventDetails.eventDescription);
-            view = <div>
+            view = <div class="declinePage">
                 <h1 class="title is-3"> You're busy... We get it! </h1>
                 <h1 class="subtitle is-5"> But are you sure you can't attend this event?</h1>
                 <article class="message articleFormat">
@@ -72,7 +73,7 @@ export default class DeclineEvent extends React.Component {
                     <div class="message-body">
                         <strong>Event Name: </strong> {this.state.eventDetails.eventName} <br />
                         <strong>Event Description: </strong> {this.state.eventDetails.eventDescription} <br />
-                        <strong>Event Date: </strong> {this.state.eventDetails.eventDateTime ? DateFormat(new Date(this.state.eventDetails.eventDateTime), "dddd, mmmm dS, yyyy, h:MM:ss TT") : this.state.eventDetails.eventDateTime}
+                        <strong>Event Date: </strong> {this.state.eventDetails.eventDateTime ? DateFormat(new Date(this.state.eventDetails.eventDateTime), "dddd, mmmm dS, yyyy, h:MM TT") : this.state.eventDetails.eventDateTime}
                     </div>
                 </article>
                 <h1 class="subtitle is-5"> You could be dining at these restaurants (or others)...</h1>
@@ -81,7 +82,7 @@ export default class DeclineEvent extends React.Component {
                 </div>
                 <h1 class="title is-3"> So what's your final decision?</h1>
                 <div class="centered">
-                    <a class="button" style={buttonStyle} onClick={() => this.declineEvent()}>
+                    <a class="button redbutton" style={buttonStyle} onClick={() => this.declineEvent()}>
                         Can't Make It
                     </a>
                     <a class="button is-link" onClick={() => {window.location = `/Swipe?eventKey=${this.state.eventId}&userId=${this.state.userId}`}}>
@@ -90,17 +91,18 @@ export default class DeclineEvent extends React.Component {
                 </div>
             </div>
         } else if (this.state.declined && !this.state.goToInputForm) {
-            view = <div>
-                <h1 class="title is-3">Thanks for the heads-up!</h1>
-                    <h1 class="subtitle is-5"> We'll let the event organizer know you can't attend<br/><br/> <br/></h1>
-                <h1 class="title is-3"> You couldn't make this one, but you can always plan your own night of fun<br /><br /></h1>
-                <div class = "centered">
-                    <a class="button is-link " style={buttonStyle} onClick={() => {window.location = `/InputForm`}}>
-                        Plan An Event
-                    </a>
+            view = <div className="declineParent">
+                    <div className="declineText">
+                        <h1 class="title is-3" style={headerStyle}>Thanks for the heads-up!</h1> <br />
+                            <h1 class="subtitle is-5" style={headerStyle}> We'll let the event organizer know you can't attend<br/><br/> <br/></h1>
+                        <h1 class="title is-3" style={headerStyle}> You couldn't make this one, but you can always plan your own night of fun<br /><br /></h1>
+                        <div class = "centered">
+                            <a class="button is-link " style={buttonStyle} onClick={() => {window.location = `/InputForm`}}>
+                                Plan An Event
+                            </a>
+                    </div>
                 </div>
                 <br />
-                <img src='./images/AdobeStock_86798789.jpeg'/>
             </div>
         } else {
             console.log(this.state);
