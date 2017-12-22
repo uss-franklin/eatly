@@ -80,16 +80,19 @@ export default class Results extends React.Component {
       console.log('result state', this.state.results.url)
         view = 
           <div className="parent resultsComponent">
+          <div className="results-Header">
           <h1 className="resultsTitle">
             <div className="congratsText">
               Congrats!
             </div>
             You're Gonna Eat!
           </h1>
-          <div>
-            {this.props.eventData.data.data.eventName}<br /> 
+          </div>
+          <div className="nameAndDesc">
+           <b> {this.props.eventData.data.data.eventName}</b><br /> 
             {this.props.eventData.data.data.eventDescription}
           </div>
+          <br />
           <p className="resultsHeader">
             Get ready to meet your party at:
           </p>
@@ -105,13 +108,14 @@ export default class Results extends React.Component {
           <h3 className="resultsDateAndTime">
             {this.state.data.data.eventDateTime.slice(0,15)} @ {this.convertTime24to12(this.state.data.data.eventDateTime.slice(16,24))}
           </h3>
+          
           <div className="ResultsMapDiv">
               <MapWithAMarker
                   lat={this.state.results.coordinates.latitude}
                   lng={this.state.results.coordinates.longitude}
                   defaultZoom={17}
-                  containerElement={<div style={{height: `350px`}}/>}
-                  mapElement={<div style={{height: `75%`}}/>}
+                  containerElement={<div style={{height: `300px`}}/>}
+                  mapElement={<div style={{height: `100%`}}/>}
               />
           </div>
           <div className="inviteeVotesText">
