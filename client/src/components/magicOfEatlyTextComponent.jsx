@@ -18,7 +18,7 @@ export default class MagicOfEatlyText extends React.Component {
 		      			Never waste time organizing nights out. 
 		      			
 		      			<Parallax data={{
-		      				'data-center-center': 'font-size: 1.4em',
+		      				'data-center-center': 'font-size: 1.7em',
 							'data-bottom-top': 'font-size: 1em'
 		      			}}
 		      			>

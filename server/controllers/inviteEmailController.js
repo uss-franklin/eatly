@@ -170,7 +170,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #0066cc; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/Swipe?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #66b3ff; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #66b3ff;">Get Started!</a> </td>
+                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #0066cc; border-radius: 5px; text-align: center;"> <a href="http://eatly.herokuapp.com/Swipe?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #66b3ff; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #66b3ff;">Get Started!</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -191,7 +191,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                     <tbody>
                                       <tr>
-                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #800000; border-radius: 5px; text-align: center;"> <a href="http://localhost:3000/decline?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #ff0000; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">Decline RSVP</a> </td>
+                                        <td style="margin-left: auto; margin-right: auto; font-size: 14px; vertical-align: top; background-color: #800000; border-radius: 5px; text-align: center;"> <a href="http://eatly.herokuapp.com/decline?userId=${userId}&eventKey=${eventId}" target="_blank" style="display: inline-block; color: #ffffff; border: solid 3px #ff0000; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">Decline RSVP</a> </td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -214,7 +214,7 @@ const mailOptions = function(email, hostName, eventDate, eventName, userId, even
                   <tr>
                     <td class="content-block" style="vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #636262; text-align: center;">
                       <span class="apple-link" style="color: #636262; font-size: 12px; text-align: center;">Team Franklin, HRNYC11, New York, NY</span>
-                      <br> Don't like these emails? <a href="http://imgur.com/aZ88nJD" style="text-decoration: underline; color: #636262; font-size: 12px; text-align: center;">Unsubscribe</a>.
+                      
                     </td>
                   </tr>
                 </table>
