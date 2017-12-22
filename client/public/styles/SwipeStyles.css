@@ -143,7 +143,7 @@
 .superLikeButton:disabled {
   /* background-color: grey; */
   opacity: .2;
-  width: 8em;
+  width: 10em;
   pointer-events: none;
   
 }
@@ -172,7 +172,7 @@
 
 .vetoButton:disabled {
   opacity: .2;
-  width: 8em;
+  width: 10em;
   pointer-events: none;
   
 }
