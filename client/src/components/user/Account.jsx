@@ -96,14 +96,14 @@ export default class Account extends React.Component {
         <div>
           <h1 className="title">{welcome}</h1>
           <div className="centered">
-            <a className="button mealButton is-link" onClick={() => {window.location = `/InputForm`}} >
+            <a className="button accountPlanMealButton" onClick={() => {window.location = `/InputForm`}} >
                 Plan a Meal
             </a>
           </div>
           <br/>
           <div className="card cardFormat">
-            <header className="card-header">
-              <p className="card-header-title">
+            <header className="card-header accountHostTable">
+              <p className="card-header-title accountHostTableText">
                   Your Events
               </p>
             </header>
@@ -111,7 +111,7 @@ export default class Account extends React.Component {
               <div className="content">
                 <table className="table">
                   <thead>
-                  <tr className="is-selected">
+                  <tr>
                     <th>Name</th>
                     <th>Cuisine</th>
                     <th>Time Left</th>
@@ -122,12 +122,13 @@ export default class Account extends React.Component {
                     {hostEventsEntriesDOM}
                   </tbody>
                 </table>
+                  {hostEventsEntriesDOM.length === 0 ? <span> C'mon, get some eats with your pals. Click the button above</span> : <span></span>}
               </div>
             </div>
           </div>
           <div className="card cardFormat">
-            <header className="card-header">
-              <p className="card-header-title">
+            <header className="card-header accountHostTable">
+              <p className="card-header-title accountHostTableText">
                   Events You're Attending
               </p>
             </header>
@@ -135,7 +136,7 @@ export default class Account extends React.Component {
               <div className="content">
                   <table className="table">
                       <thead>
-                      <tr className="is-selected">
+                      <tr>
                           <th>Name</th>
                           <th>Cuisine</th>
                           <th>Time Left</th>
