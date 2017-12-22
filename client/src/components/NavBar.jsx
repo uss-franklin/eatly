@@ -23,7 +23,7 @@ export default class NavBar extends React.Component {
     let accountButton = <Link to="/account"><button className="account button is-link" key="account">
                             my account
                         </button></Link>
-    rreturn (
+    return (
       <div className="parent">
         <div className="header is-clearfix"> 
         <div className="is-pulled-left">
