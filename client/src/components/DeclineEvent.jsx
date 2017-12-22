@@ -55,6 +55,7 @@ export default class DeclineEvent extends React.Component {
         let restaurantViews = [];
         let yelpResult = this.state.eventDetails.yelpSearchResultForEvent;
         let buttonStyle = {marginRight: '2cm'};
+        let headerStyle={color: 'white'/*'#C3CAD6'*/};
         while(yelpResult && yelpResult[restaurantCount] && restaurantCount < 4){
             restaurantViews.push(<RestaurantView name={yelpResult[restaurantCount].name} image={yelpResult[restaurantCount].image_url} address={yelpResult[restaurantCount].location.display_address.join(' ')} rating={yelpResult[restaurantCount].rating} />)
             restaurantCount++;
@@ -90,17 +91,18 @@ export default class DeclineEvent extends React.Component {
                 </div>
             </div>
         } else if (this.state.declined && !this.state.goToInputForm) {
-            view = <div>
-                <h1 class="title is-3">Thanks for the heads-up!</h1>
-                    <h1 class="subtitle is-5"> We'll let the event organizer know you can't attend<br/><br/> <br/></h1>
-                <h1 class="title is-3"> You couldn't make this one, but you can always plan your own night of fun<br /><br /></h1>
-                <div class = "centered">
-                    <a class="button is-link " style={buttonStyle} onClick={() => {window.location = `/InputForm`}}>
-                        Plan An Event
-                    </a>
+            view = <div className="declineParent">
+                    <div className="declineText">
+                        <h1 class="title is-3" style={headerStyle}>Thanks for the heads-up!</h1>
+                            <h1 class="subtitle is-5" style={headerStyle}> We'll let the event organizer know you can't attend<br/><br/> <br/></h1>
+                        <h1 class="title is-3" style={headerStyle}> You couldn't make this one, but you can always plan your own night of fun<br /><br /></h1>
+                        <div class = "centered">
+                            <a class="button is-link " style={buttonStyle} onClick={() => {window.location = `/InputForm`}}>
+                                Plan An Event
+                            </a>
+                    </div>
                 </div>
                 <br />
-                <img src='./images/AdobeStock_86798789.jpeg'/>
             </div>
         } else {
             console.log(this.state);

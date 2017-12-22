@@ -70,8 +70,17 @@
 }
 
 .declineParent{
-    background-image: url('./images/AdobeStock_86798789.jpeg');
+    /*border: solid red;
+    background-color: yellow;*/
+    background-image: url('../images/AdobeStock_86798789.jpeg');
+    height: 100vh;
     background-image: cover;
     background-repeat: no-repeat;
+    color: #C3CAD6;
 
+}
+
+.declineText{
+    text-align: center;
+    padding:16.5vh 8.25vh
 }
