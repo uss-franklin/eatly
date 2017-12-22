@@ -13,7 +13,7 @@ const Validator = (formState) => {
        }
     },
     radius: () => {
-      if (formState.radius === null) {
+      if (formState.radius === '') {
         return 'Please select a radius'
       }
     },

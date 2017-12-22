@@ -16,11 +16,11 @@ export default class NavBar extends React.Component {
   render() {
     let loggedIn = this.props.loggedIn
     let logoutButton = <button className="logout button is-link" onClick={this.handleSignOut.bind(this)} key="logout">logout</button>
-    let loginButton =  <Link to="/loginForm" ><button className="login button is-link" key="login">
+    let loginButton =  <Link key="linkLogin" to="/loginForm" ><button className="login button is-link" key="login">
                          login or sign up
                        </button></Link>
 
-    let accountButton = <Link to="/account"><button className="account button is-link" key="account">
+    let accountButton = <Link key="linkAccount" to="/account"><button className="account button is-link" key="account">
                             my account
                         </button></Link>
     return (
