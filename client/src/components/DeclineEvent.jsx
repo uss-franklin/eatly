@@ -93,7 +93,7 @@ export default class DeclineEvent extends React.Component {
         } else if (this.state.declined && !this.state.goToInputForm) {
             view = <div className="declineParent">
                     <div className="declineText">
-                        <h1 class="title is-3" style={headerStyle}>Thanks for the heads-up!</h1>
+                        <h1 class="title is-3" style={headerStyle}>Thanks for the heads-up!</h1> <br />
                             <h1 class="subtitle is-5" style={headerStyle}> We'll let the event organizer know you can't attend<br/><br/> <br/></h1>
                         <h1 class="title is-3" style={headerStyle}> You couldn't make this one, but you can always plan your own night of fun<br /><br /></h1>
                         <div class = "centered">
