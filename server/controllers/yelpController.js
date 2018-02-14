@@ -31,7 +31,8 @@ exports.yelpSearch  = function(searchRequestParams, eventDateTime){
                 let restaurants = response.jsonBody.businesses.filter((restaurant) => restaurant.is_closed !== 'false');
                 let promisedRestaurants = [];
 
-                restaurants.forEach((restaurant) => {
+                //THIS SECTION WAS REMOVED DUE TO RATE LIMITING ON THE YELP SIDE WHICH CAUSED EATLY TO BE UNABLE TO RETRIEVE YELP BUSINESS DATA (RESTAURANT HOURS OF OPERATION)
+                /*restaurants.forEach((restaurant) => {
                     promisedRestaurants.push(getYelpBusinessDetails(client, restaurant).then(business => {
                         restaurant.location = business.jsonBody.location;
                         restaurant.photos = business.jsonBody.photos;
@@ -57,9 +58,13 @@ exports.yelpSearch  = function(searchRequestParams, eventDateTime){
                     //get the first 12 results only
                     decoratedRestaurants = decoratedRestaurants.length > 12 ? decoratedRestaurants.slice(0, 12) : decoratedRestaurants;
                     var newDataPath = yelpRef.push(decoratedRestaurants);
-                    //Todo
                     resolve({yelpSearchResultsKey: newDataPath.key, count: decoratedRestaurants.length });
-                });
+                });*/
+
+                //NEW CODE IMPLEMENTED TO ADDRESS RATE LIMITING ON THE YELP SIDE FOR THE BUSINESS API
+                restaurants = restaurants.length > 12 ? restaurants.slice(0, 12) : restaurants;
+                var newDataPath = yelpRef.push(restaurants);
+                resolve({yelpSearchResultsKey: newDataPath.key, count: restaurants.length });
 
             }).catch(err => {
                 console.log(err);
